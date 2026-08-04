@@ -1,0 +1,1 @@
+﻿// Chat session list sidebar

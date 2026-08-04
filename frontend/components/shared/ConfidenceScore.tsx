@@ -1,0 +1,1 @@
+﻿// Confidence score pill component
