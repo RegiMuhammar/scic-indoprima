@@ -43,9 +43,9 @@ export default function LoginPage() {
   // Jika user sudah terautentikasi, redirect ke /dashboard
   useEffect(() => {
     if (!loading && user) {
-      window.location.href = "/dashboard";
+      router.replace("/dashboard");
     }
-  }, [user, loading]);
+  }, [user, loading, router]);
 
   const {
     register,
@@ -73,9 +73,8 @@ export default function LoginPage() {
       description: "Redirecting to dashboard...",
     });
 
-    // Menggunakan window.location.href untuk memastikan browser mengirimkan HTTP Cookie header terbaru
-    // ke Next.js server & middleware tanpa race condition SPA router.
-    window.location.href = "/dashboard";
+    router.refresh();
+    router.push("/dashboard");
   };
 
   return (
