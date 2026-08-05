@@ -198,14 +198,12 @@ export default function LoginPage() {
               )}
             </div>
 
-            {/* Glass-Effect Submit Button */}
+            {/* Liquid Glass Effect Submit Button */}
             <button
               id="btn-signin"
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-11 rounded-none text-xs font-semibold text-white font-poppins transition-all duration-200 flex items-center justify-center gap-2 mt-3
-                bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md
-                disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="liquid-glass w-full h-11 rounded-full text-xs font-semibold text-white font-poppins hover:bg-white/10 hover:scale-[1.02] transition-all duration-300 transform flex items-center justify-center gap-2 mt-3 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <>
