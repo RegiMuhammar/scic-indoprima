@@ -84,7 +84,7 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <Link
                 href="/dashboard"
-                className="liquid-glass rounded-full px-6 py-2 text-white text-sm font-medium hover:bg-white/10 transition-all"
+                className="liquid-glass rounded-full px-6 py-2 text-white text-sm font-medium hover:bg-white/10 hover:scale-105 transition-all duration-300 transform inline-block"
               >
                 Explore Platform
               </Link>
