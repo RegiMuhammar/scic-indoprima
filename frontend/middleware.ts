@@ -62,14 +62,22 @@ export async function middleware(request: NextRequest) {
   if (!user && isProtected) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
-    return NextResponse.redirect(loginUrl);
+    const redirectResponse = NextResponse.redirect(loginUrl);
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie);
+    });
+    return redirectResponse;
   }
 
   // Jika user sudah login dan mengakses /login → redirect ke /dashboard
   if (user && pathname === "/login") {
     const dashboardUrl = request.nextUrl.clone();
     dashboardUrl.pathname = "/dashboard";
-    return NextResponse.redirect(dashboardUrl);
+    const redirectResponse = NextResponse.redirect(dashboardUrl);
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie);
+    });
+    return redirectResponse;
   }
 
   return supabaseResponse;

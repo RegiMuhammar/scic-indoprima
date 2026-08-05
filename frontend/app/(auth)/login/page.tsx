@@ -4,11 +4,11 @@
  * Login Page — /login
  *
  * Layout: 2 columns
- *   - Left  : Full cover image with dark overlay, branding, and white text
+ *   - Left  : Full cover image, branding, and white text
  *   - Right : Dark pitch background (#000000) with glass-effect form controls
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -36,9 +36,16 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
-  const { signIn } = useAuth();
+  const { signIn, user, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Jika user sudah terautentikasi, redirect ke /dashboard
+  useEffect(() => {
+    if (!loading && user) {
+      window.location.href = "/dashboard";
+    }
+  }, [user, loading]);
 
   const {
     register,
@@ -51,9 +58,9 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormValues) => {
     setIsSubmitting(true);
     const { error } = await signIn(data.email, data.password);
-    setIsSubmitting(false);
 
     if (error) {
+      setIsSubmitting(false);
       toast.error("Login failed", {
         description: error.includes("Invalid login credentials")
           ? "Incorrect email or password. Please try again."
@@ -65,7 +72,10 @@ export default function LoginPage() {
     toast.success("Login successful!", {
       description: "Redirecting to dashboard...",
     });
-    router.push("/dashboard");
+
+    // Menggunakan window.location.href untuk memastikan browser mengirimkan HTTP Cookie header terbaru
+    // ke Next.js server & middleware tanpa race condition SPA router.
+    window.location.href = "/dashboard";
   };
 
   return (
@@ -77,11 +87,9 @@ export default function LoginPage() {
           src="/cover.jpg"
           alt="Supply Chain Intelligence Center — PT Indoprima"
           fill
-          className="object-cover opacity-90"
+          className="object-cover"
           priority
         />
-        {/* Dark gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
 
         {/* Bottom: Tagline */}
         <div className="absolute bottom-10 left-10 right-10 z-10">
@@ -218,9 +226,7 @@ export default function LoginPage() {
 
           {/* Footer note */}
           <p className="text-center text-[11px] text-white/30 font-poppins mt-8 leading-relaxed">
-            Accounts are managed by PT Indoprima administrators.
-            <br />
-            Contact your admin if you have trouble accessing.
+            Accounts are managed by Regi as developer & administrator.
           </p>
         </div>
       </div>

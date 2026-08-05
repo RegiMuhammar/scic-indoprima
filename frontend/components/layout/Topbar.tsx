@@ -53,7 +53,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
   const handleSignOut = async () => {
     await signOut();
     toast.success("Logged out");
-    router.push("/login");
+    window.location.href = "/login";
   };
 
   const userEmail = user?.email ?? "shaban@efferd.com";
