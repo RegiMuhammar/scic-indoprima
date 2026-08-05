@@ -4,8 +4,8 @@
  * Login Page — /login
  *
  * Layout: 2 columns
- *   - Left  : Full cover image with dark overlay and branding
- *   - Right : Email + password login form via Supabase Auth
+ *   - Left  : Full cover image with dark overlay, branding, and white text
+ *   - Right : Dark pitch background (#000000) with glass-effect form controls
  */
 
 import { useState } from "react";
@@ -69,7 +69,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex min-h-screen w-full">
+    <main className="flex min-h-screen w-full bg-[#000000] text-white font-poppins">
       {/* ── Left: Cover Image Panel ──────────────────────────────────────── */}
       <div className="hidden lg:block lg:w-[55%] xl:w-[60%] relative overflow-hidden">
         {/* Full cover image */}
@@ -77,43 +77,39 @@ export default function LoginPage() {
           src="/cover.jpg"
           alt="Supply Chain Intelligence Center — PT Indoprima"
           fill
-          className="object-cover"
+          className="object-cover opacity-90"
           priority
         />
+        {/* Dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/50" />
 
         {/* Bottom: Tagline */}
         <div className="absolute bottom-10 left-10 right-10 z-10">
-          <p className="text-white text-2xl font-semibold font-poppins leading-snug tracking-tight drop-shadow-lg">
+          <p className="text-white text-2xl font-bold font-poppins leading-snug tracking-tight drop-shadow-lg">
             AI-Powered Supply Chain
             <br />
             Decision Intelligence
           </p>
-          <p className="text-blue-200/75 text-sm font-poppins mt-3 leading-relaxed max-w-[380px]">
+          <p className="text-white text-sm font-poppins mt-3 leading-relaxed max-w-[420px]">
             Real-time visibility across your entire supply chain — from demand
             forecasting to invoice reconciliation, powered by AI.
           </p>
         </div>
       </div>
 
-      {/* ── Right: Login Form ─────────────────────────────────────────────── */}
-      <div
-        className="flex-1 flex items-center justify-center px-6 py-12 lg:px-12"
-        style={{ background: "#f8fafc" }}
-      >
+      {/* ── Right: Dark Glass Login Form ──────────────────────────────────── */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12 lg:px-12 bg-[#000000] border-l border-white/10">
         <div className="w-full max-w-[400px]">
           {/* Mobile logo */}
           <div className="flex items-center gap-2.5 mb-8 lg:hidden">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #3b82f6, #6366f1)" }}
-            >
+            <div className="w-8 h-8 rounded-none border border-white/20 bg-white/10 flex items-center justify-center">
               <BarChart3 className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="font-semibold text-gray-900 text-base leading-none font-poppins">
+              <p className="font-semibold text-white text-base leading-none font-poppins">
                 SCIC
               </p>
-              <p className="text-gray-400 text-xs leading-none mt-0.5 font-poppins">
+              <p className="text-white/40 text-xs leading-none mt-0.5 font-poppins">
                 PT Indoprima
               </p>
             </div>
@@ -121,10 +117,10 @@ export default function LoginPage() {
 
           {/* Heading */}
           <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 font-poppins tracking-tight">
+            <h1 className="text-2xl font-bold text-white font-poppins tracking-tight">
               Welcome back
             </h1>
-            <p className="text-gray-500 text-sm mt-2 font-poppins">
+            <p className="text-white/40 text-sm mt-2 font-poppins">
               Sign in to Supply Chain Intelligence Center
             </p>
           </div>
@@ -135,7 +131,7 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="email"
-                className="text-sm font-medium text-gray-700 font-poppins"
+                className="text-xs font-medium text-white/70 font-poppins"
               >
                 Email address
               </label>
@@ -144,17 +140,16 @@ export default function LoginPage() {
                 type="email"
                 autoComplete="email"
                 placeholder="name@indoprima.co.id"
-                className={`w-full h-11 px-3.5 rounded-xl text-sm font-poppins bg-white transition-all duration-200 outline-none
+                className={`w-full h-11 px-3.5 rounded-none text-sm font-poppins bg-[#121212] text-white placeholder:text-white/30 transition-all duration-200 outline-none
                   ${
                     errors.email
-                      ? "border-2 border-red-400 focus:border-red-500"
-                      : "border border-gray-200 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10"
+                      ? "border border-red-500 focus:border-red-400"
+                      : "border border-white/10 focus:border-white/30 focus:bg-[#181818]"
                   }`}
-                style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-xs text-red-500 font-poppins mt-1">
+                <p className="text-xs text-red-400 font-poppins mt-1">
                   {errors.email.message}
                 </p>
               )}
@@ -164,7 +159,7 @@ export default function LoginPage() {
             <div className="space-y-1.5">
               <label
                 htmlFor="password"
-                className="text-sm font-medium text-gray-700 font-poppins"
+                className="text-xs font-medium text-white/70 font-poppins"
               >
                 Password
               </label>
@@ -174,20 +169,19 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  className={`w-full h-11 px-3.5 pr-11 rounded-xl text-sm font-poppins bg-white transition-all duration-200 outline-none
+                  className={`w-full h-11 px-3.5 pr-11 rounded-none text-sm font-poppins bg-[#121212] text-white placeholder:text-white/30 transition-all duration-200 outline-none
                     ${
                       errors.password
-                        ? "border-2 border-red-400 focus:border-red-500"
-                        : "border border-gray-200 focus:border-indigo-500 focus:ring-3 focus:ring-indigo-500/10"
+                        ? "border border-red-500 focus:border-red-400"
+                        : "border border-white/10 focus:border-white/30 focus:bg-[#181818]"
                     }`}
-                  style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                   {...register("password")}
                 />
                 <button
                   type="button"
                   id="toggle-password"
                   onClick={() => setShowPassword((v) => !v)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
@@ -198,31 +192,24 @@ export default function LoginPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-xs text-red-500 font-poppins mt-1">
+                <p className="text-xs text-red-400 font-poppins mt-1">
                   {errors.password.message}
                 </p>
               )}
             </div>
 
-            {/* Submit Button */}
+            {/* Glass-Effect Submit Button */}
             <button
               id="btn-signin"
               type="submit"
               disabled={isSubmitting}
-              className="w-full h-11 rounded-xl text-sm font-semibold text-white font-poppins transition-all duration-200 flex items-center justify-center gap-2 mt-2
-                disabled:opacity-60 disabled:cursor-not-allowed"
-              style={{
-                background: isSubmitting
-                  ? "linear-gradient(135deg, #6366f1, #4f46e5)"
-                  : "linear-gradient(135deg, #3b82f6, #6366f1)",
-                boxShadow: isSubmitting
-                  ? "none"
-                  : "0 4px 15px rgba(99, 102, 241, 0.35)",
-              }}
+              className="w-full h-11 rounded-none text-xs font-semibold text-white font-poppins transition-all duration-200 flex items-center justify-center gap-2 mt-3
+                bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur-md
+                disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
                   Verifying...
                 </>
               ) : (
@@ -232,7 +219,7 @@ export default function LoginPage() {
           </form>
 
           {/* Footer note */}
-          <p className="text-center text-xs text-gray-400 font-poppins mt-8 leading-relaxed">
+          <p className="text-center text-[11px] text-white/30 font-poppins mt-8 leading-relaxed">
             Accounts are managed by PT Indoprima administrators.
             <br />
             Contact your admin if you have trouble accessing.
