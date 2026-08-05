@@ -1,5 +1,5 @@
 """Application configuration via Pydantic Settings"""
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import field_validator
 from typing import List
 
@@ -9,18 +9,24 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "changeme"
 
     # CORS — daftar domain frontend yang diizinkan akses backend
-    # Development : ["http://localhost:3000"]
-    # Production  : ["https://scic-indoprima.vercel.app"]
-    # Isi via env var: CORS_ORIGINS=https://scic.vercel.app,https://custom-domain.com
-    CORS_ORIGINS: List[str] = ["http://localhost:3000"]
+    # Development : http://localhost:3000
+    # Production  : https://scic-indoprima.vercel.app
+    # Multiple   : https://scic.vercel.app,https://custom-domain.com
+    # Simpan sebagai string biasa; validator di bawah mengubahnya ke List[str]
+    CORS_ORIGINS: str = "http://localhost:3000"
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
-    def parse_cors_origins(cls, v):
-        """Support comma-separated string from env var, e.g. CORS_ORIGINS=url1,url2"""
-        if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
-        return v
+    def parse_cors_origins(cls, v) -> str:
+        """Normalise ke string; split dilakukan di property cors_origins_list."""
+        if isinstance(v, list):
+            return ",".join(v)
+        return str(v)
+
+    @property
+    def cors_origins_list(self) -> List[str]:
+        """Gunakan property ini di middleware CORS FastAPI."""
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
 
     # Supabase
     SUPABASE_URL: str = ""
@@ -56,9 +62,11 @@ class Settings(BaseSettings):
     # OpenAI (optional — embedding fallback)
     OPENAI_API_KEY: str = ""
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
 
 settings = Settings()
