@@ -2,7 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Middleware — proteksi rute via Supabase session cookie.
+ * Proxy — proteksi rute via Supabase session cookie.
  *
  * Rute yang dilindungi (LOGIN required):
  *   /dashboard, /chat, /invoice-matching, /demand-intelligence,
@@ -22,7 +22,7 @@ const PROTECTED_PATHS = [
   "/explainability",
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
   // Buat server-side Supabase client yang bisa baca/tulis cookies
