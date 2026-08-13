@@ -1,0 +1,9 @@
+machine_id,line_id,machine_name,machine_type,is_critical,instrumentation_status,rated_capacity_per_hour
+MCH-COILING-01,LINE-COIL-01,CNC Automatic Hot Coiler A,Hot Coiling,True,Full IoT,120.0
+MCH-COILING-02,LINE-COIL-01,CNC Automatic Hot Coiler B,Hot Coiling,False,Partial Sensor,100.0
+MCH-HEATTREAT-01,LINE-SPRING-01,Continuous Quenching Furnace 1,Heat Treatment,True,Full IoT,80.0
+MCH-TEMPERING-01,LINE-SPRING-01,Conveyor Tempering Furnace 1,Tempering,False,Partial Sensor,85.0
+MCH-SHOTPEEN-01,LINE-SPRING-01,Automatic Shot Peening Machine,Shot Peening,True,Partial Sensor,90.0
+MCH-PRESS-01,LINE-SPRING-02,Hydraulic Bending Press 500T,Bending Press,False,Manual/Analog,75.0
+MCH-STABILIZER-01,LINE-STABILIZER-01,Automatic Bar Upsetting Machine,Upsetting,True,Full IoT,60.0
+MCH-TESTING-01,LINE-COIL-01,Fatigue & Load Tester 100kN,Quality Testing,False,Partial Sensor,150.0

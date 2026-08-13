@@ -1,0 +1,11 @@
+part_id,part_name,category,criticality_level,unit_cost,default_supplier_lead_time_days,min_stock_level,max_stock_level,existing_reorder_point
+PRT-BRG-6205-2RS,Heavy Duty Shaft Roller Bearing 6205-2RS,Mechanical,Critical,450000.0,10,5,35,12
+PRT-SEAL-HT-50,Viton High-Temp Hydraulic Oil Seal 50mm,Hydraulic,Critical,275000.0,7,10,50,15
+PRT-ELEC-COIL-50KW,Induction Heating Coil Tube 50kW,Electrical,Critical,8500000.0,18,2,8,3
+PRT-NOZZLE-CARB-08,Tungsten Carbide Shot Peening Nozzle 8mm,Mechanical,Medium,1200000.0,5,6,24,8
+PRT-SENS-IND-24V,Inductive Proximity Sensor M12 24VDC,Electrical,Medium,350000.0,3,8,40,12
+PRT-HYD-VALVE-PROP,Proportional Hydraulic Control Valve 24V,Hydraulic,Critical,4200000.0,14,3,12,4
+PRT-BELT-CONV-HT,Stainless Steel Mesh Conveyor Belt HT,Mechanical,Medium,3100000.0,12,2,10,3
+PRT-TC-KTYPE-1200C,K-Type Thermocouple Sensor Furnace 1200C,Electrical,Critical,650000.0,4,5,20,8
+PRT-PNEU-CYL-100,ISO Pneumatic Cylinder 100mm Bore 250mm Stroke,Pneumatic,Low,890000.0,4,4,16,6
+PRT-GREASE-HT-20KG,Synthetic High-Temperature Bearing Grease 20kg,Chemical/Lubricant,Low,1850000.0,2,4,20,6

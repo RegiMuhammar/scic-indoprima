@@ -1,0 +1,7 @@
+sku_id,sku_name,category,ideal_cycle_time_seconds
+SKU-LS-HINO-01,Leaf Spring Assembly Hino Dutro HD,Leaf Spring,45.0
+SKU-LS-ISUZU-02,Leaf Spring Main Isuzu Giga 260PS,Leaf Spring,55.0
+SKU-CS-TOYOTA-01,Front Coil Spring Toyota Innova Zenix,Coil Spring,30.0
+SKU-CS-HONDA-02,Rear Coil Spring Honda HR-V Turbo,Coil Spring,28.0
+SKU-SB-CANTER-01,Front Stabilizer Bar Mitsubishi Canter,Stabilizer Bar,60.0
+SKU-SB-AVANZA-02,Rear Anti-Roll Stabilizer Toyota Avanza,Stabilizer Bar,40.0

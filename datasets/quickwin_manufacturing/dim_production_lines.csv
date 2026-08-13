@@ -1,0 +1,5 @@
+line_id,factory_id,line_name,target_oee_pct
+LINE-SPRING-01,FB-GRS-01,Lini Leaf Spring High Duty 1,85.0
+LINE-SPRING-02,FB-GRS-01,Lini Leaf Spring Light Duty 2,82.0
+LINE-COIL-01,FB-GRS-01,Lini Hot Coiling Spring 1,88.0
+LINE-STABILIZER-01,FB-NGJ-01,Lini Stabilizer Bar Nganjuk,80.0

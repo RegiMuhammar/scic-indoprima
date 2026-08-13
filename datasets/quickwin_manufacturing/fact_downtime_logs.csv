@@ -1,0 +1,152 @@
+downtime_id,machine_id,shift_number,start_time,end_time,duration_minutes,downtime_category,reason_description,is_unplanned
+DT-1001,MCH-TEMPERING-01,1,2026-07-01 02:30:06,2026-07-01 03:12:12,42.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1002,MCH-SHOTPEEN-01,3,2026-07-01 17:08:18,2026-07-01 17:40:24,32.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1003,MCH-PRESS-01,3,2026-07-01 17:40:34,2026-07-01 18:06:10,25.6,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1004,MCH-STABILIZER-01,3,2026-07-01 17:50:49,2026-07-01 18:21:37,30.8,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1005,MCH-TESTING-01,3,2026-07-01 18:04:52,2026-07-01 18:41:10,36.3,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1006,MCH-COILING-01,2,2026-07-02 09:45:08,2026-07-02 10:18:26,33.3,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1007,MCH-COILING-02,3,2026-07-02 18:53:26,2026-07-02 19:18:32,25.1,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1008,MCH-HEATTREAT-01,2,2026-07-02 09:05:04,2026-07-02 09:46:34,41.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1009,MCH-HEATTREAT-01,2,2026-07-02 13:35:10,2026-07-02 15:46:52,131.7,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1010,MCH-PRESS-01,1,2026-07-03 01:49:55,2026-07-03 02:12:31,22.6,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1011,MCH-COILING-02,3,2026-07-04 18:35:03,2026-07-04 19:12:51,37.8,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1012,MCH-HEATTREAT-01,1,2026-07-04 02:40:20,2026-07-04 03:03:02,22.7,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1013,MCH-HEATTREAT-01,1,2026-07-04 04:19:58,2026-07-04 05:07:10,47.2,Unplanned Breakdown,Bearing overheating & shaft vibration threshold breach,True
+DT-1014,MCH-TEMPERING-01,3,2026-07-04 18:01:24,2026-07-04 18:23:42,22.3,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1015,MCH-PRESS-01,3,2026-07-04 17:57:55,2026-07-04 18:40:43,42.8,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1016,MCH-STABILIZER-01,2,2026-07-04 09:37:42,2026-07-04 10:04:12,26.5,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1017,MCH-TESTING-01,2,2026-07-04 09:18:49,2026-07-04 09:54:55,36.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1018,MCH-COILING-01,3,2026-07-05 21:21:01,2026-07-05 22:00:25,39.4,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1019,MCH-TEMPERING-01,2,2026-07-05 09:08:00,2026-07-05 09:41:06,33.1,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1020,MCH-TEMPERING-01,3,2026-07-05 17:03:49,2026-07-05 17:28:37,24.8,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1021,MCH-TESTING-01,2,2026-07-05 10:22:45,2026-07-05 11:03:15,40.5,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1022,MCH-COILING-01,2,2026-07-06 10:50:58,2026-07-06 11:25:28,34.5,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1023,MCH-COILING-01,2,2026-07-06 12:57:41,2026-07-06 13:47:35,49.9,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1024,MCH-HEATTREAT-01,1,2026-07-06 05:32:31,2026-07-06 06:18:01,45.5,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1025,MCH-SHOTPEEN-01,1,2026-07-06 03:51:18,2026-07-06 05:34:00,102.7,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1026,MCH-SHOTPEEN-01,2,2026-07-06 12:20:04,2026-07-06 13:19:46,59.7,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1027,MCH-SHOTPEEN-01,3,2026-07-06 19:09:46,2026-07-06 20:46:10,96.4,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1028,MCH-PRESS-01,1,2026-07-06 01:33:40,2026-07-06 02:07:52,34.2,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1029,MCH-STABILIZER-01,3,2026-07-06 17:57:30,2026-07-06 18:30:48,33.3,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1030,MCH-COILING-02,3,2026-07-07 17:13:40,2026-07-07 17:46:16,32.6,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1031,MCH-TEMPERING-01,3,2026-07-07 18:37:54,2026-07-07 19:02:42,24.8,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1032,MCH-STABILIZER-01,1,2026-07-07 02:17:32,2026-07-07 02:53:08,35.6,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1033,MCH-STABILIZER-01,3,2026-07-07 18:25:21,2026-07-07 18:52:39,27.3,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1034,MCH-TESTING-01,3,2026-07-07 18:45:42,2026-07-07 19:06:12,20.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1035,MCH-COILING-01,1,2026-07-08 01:42:47,2026-07-08 02:08:05,25.3,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1036,MCH-COILING-02,1,2026-07-08 02:15:42,2026-07-08 02:43:48,28.1,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1037,MCH-COILING-02,3,2026-07-08 18:49:27,2026-07-08 19:09:51,20.4,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1038,MCH-HEATTREAT-01,2,2026-07-08 09:24:14,2026-07-08 09:56:44,32.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1039,MCH-PRESS-01,2,2026-07-08 10:42:29,2026-07-08 11:11:59,29.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1040,MCH-STABILIZER-01,1,2026-07-08 01:18:34,2026-07-08 01:50:16,31.7,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1041,MCH-STABILIZER-01,3,2026-07-08 18:59:05,2026-07-08 19:41:11,42.1,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1042,MCH-HEATTREAT-01,1,2026-07-09 02:00:23,2026-07-09 02:39:11,38.8,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1043,MCH-HEATTREAT-01,1,2026-07-09 05:02:22,2026-07-09 07:04:46,122.4,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1044,MCH-TEMPERING-01,2,2026-07-09 10:04:59,2026-07-09 10:32:05,27.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1045,MCH-SHOTPEEN-01,1,2026-07-09 05:49:49,2026-07-09 06:57:49,68.0,Unplanned Breakdown,Bearing overheating & shaft vibration threshold breach,True
+DT-1046,MCH-STABILIZER-01,1,2026-07-09 04:53:00,2026-07-09 05:44:00,51.0,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1047,MCH-HEATTREAT-01,1,2026-07-10 01:21:40,2026-07-10 01:44:52,23.2,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1048,MCH-HEATTREAT-01,1,2026-07-10 04:57:56,2026-07-10 06:09:38,71.7,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1049,MCH-TEMPERING-01,2,2026-07-10 10:34:33,2026-07-10 11:12:39,38.1,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1050,MCH-TESTING-01,1,2026-07-10 01:04:26,2026-07-10 01:24:38,20.2,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1051,MCH-TESTING-01,2,2026-07-10 09:33:10,2026-07-10 10:16:40,43.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1052,MCH-COILING-01,3,2026-07-11 19:32:37,2026-07-11 20:49:31,76.9,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1053,MCH-COILING-02,1,2026-07-11 01:07:38,2026-07-11 01:35:44,28.1,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1054,MCH-HEATTREAT-01,1,2026-07-11 05:54:11,2026-07-11 07:58:41,124.5,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1055,MCH-HEATTREAT-01,2,2026-07-11 09:20:00,2026-07-11 09:55:36,35.6,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1056,MCH-COILING-01,1,2026-07-12 01:20:13,2026-07-12 01:49:31,29.3,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1057,MCH-TEMPERING-01,1,2026-07-12 02:49:25,2026-07-12 03:25:49,36.4,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1058,MCH-SHOTPEEN-01,3,2026-07-12 17:46:11,2026-07-12 18:30:23,44.2,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1059,MCH-PRESS-01,3,2026-07-12 18:48:02,2026-07-12 19:17:32,29.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1060,MCH-STABILIZER-01,3,2026-07-12 20:07:53,2026-07-12 22:09:23,121.5,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1061,MCH-TESTING-01,1,2026-07-12 04:36:38,2026-07-12 05:18:38,42.0,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1062,MCH-TESTING-01,3,2026-07-12 17:56:16,2026-07-12 18:41:10,44.9,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1063,MCH-COILING-01,3,2026-07-13 17:36:02,2026-07-13 18:01:08,25.1,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1064,MCH-COILING-02,1,2026-07-13 03:54:36,2026-07-13 05:25:18,90.7,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1065,MCH-HEATTREAT-01,2,2026-07-13 09:47:21,2026-07-13 10:15:21,28.0,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1066,MCH-TESTING-01,3,2026-07-13 18:57:48,2026-07-13 19:28:30,30.7,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1067,MCH-COILING-01,3,2026-07-14 18:04:55,2026-07-14 18:42:07,37.2,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1068,MCH-COILING-02,1,2026-07-14 01:27:31,2026-07-14 02:00:07,32.6,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1069,MCH-COILING-02,3,2026-07-14 17:20:38,2026-07-14 17:47:32,26.9,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1070,MCH-HEATTREAT-01,1,2026-07-14 04:51:21,2026-07-14 06:13:33,82.2,Unplanned Breakdown,Bearing overheating & shaft vibration threshold breach,True
+DT-1071,MCH-HEATTREAT-01,2,2026-07-14 12:35:56,2026-07-14 13:50:14,74.3,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1072,MCH-TEMPERING-01,1,2026-07-14 04:35:54,2026-07-14 06:55:36,139.7,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1073,MCH-SHOTPEEN-01,2,2026-07-14 10:45:05,2026-07-14 11:09:35,24.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1074,MCH-PRESS-01,1,2026-07-14 02:40:32,2026-07-14 03:12:50,32.3,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1075,MCH-STABILIZER-01,2,2026-07-14 09:57:41,2026-07-14 10:34:53,37.2,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1076,MCH-COILING-01,1,2026-07-15 01:00:51,2026-07-15 01:41:51,41.0,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1077,MCH-SHOTPEEN-01,3,2026-07-15 17:52:49,2026-07-15 18:27:07,34.3,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1078,MCH-PRESS-01,1,2026-07-16 02:00:41,2026-07-16 02:31:35,30.9,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1079,MCH-STABILIZER-01,2,2026-07-16 10:02:25,2026-07-16 10:24:37,22.2,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1080,MCH-TESTING-01,1,2026-07-16 02:07:29,2026-07-16 02:36:17,28.8,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1081,MCH-COILING-02,1,2026-07-17 01:14:31,2026-07-17 01:35:37,21.1,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1082,MCH-HEATTREAT-01,3,2026-07-17 17:42:21,2026-07-17 18:12:33,30.2,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1083,MCH-SHOTPEEN-01,1,2026-07-17 03:52:11,2026-07-17 05:00:11,68.0,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1084,MCH-PRESS-01,1,2026-07-17 04:44:05,2026-07-17 05:46:11,62.1,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1085,MCH-PRESS-01,2,2026-07-17 09:39:22,2026-07-17 10:00:34,21.2,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1086,MCH-STABILIZER-01,1,2026-07-17 02:47:18,2026-07-17 03:07:30,20.2,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1087,MCH-TESTING-01,2,2026-07-17 10:47:40,2026-07-17 11:08:22,20.7,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1088,MCH-HEATTREAT-01,1,2026-07-18 03:21:56,2026-07-18 05:15:08,113.2,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1089,MCH-TEMPERING-01,2,2026-07-18 09:26:02,2026-07-18 09:57:02,31.0,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1090,MCH-SHOTPEEN-01,2,2026-07-18 09:46:18,2026-07-18 10:14:42,28.4,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1091,MCH-SHOTPEEN-01,3,2026-07-18 17:47:08,2026-07-18 18:14:26,27.3,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1092,MCH-STABILIZER-01,2,2026-07-18 09:14:55,2026-07-18 09:44:13,29.3,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1093,MCH-STABILIZER-01,3,2026-07-18 17:50:21,2026-07-18 18:13:57,23.6,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1094,MCH-COILING-01,1,2026-07-19 02:11:26,2026-07-19 02:43:14,31.8,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1095,MCH-COILING-02,1,2026-07-19 02:31:23,2026-07-19 02:53:59,22.6,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1096,MCH-HEATTREAT-01,3,2026-07-19 17:31:56,2026-07-19 18:16:26,44.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1097,MCH-HEATTREAT-01,1,2026-07-20 04:08:52,2026-07-20 05:05:46,56.9,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1098,MCH-HEATTREAT-01,2,2026-07-20 09:18:53,2026-07-20 09:48:41,29.8,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1099,MCH-SHOTPEEN-01,1,2026-07-20 02:42:44,2026-07-20 03:07:44,25.0,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1100,MCH-STABILIZER-01,3,2026-07-20 18:28:47,2026-07-20 18:58:23,29.6,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1101,MCH-COILING-02,3,2026-07-21 18:42:59,2026-07-21 19:08:23,25.4,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1102,MCH-SHOTPEEN-01,1,2026-07-21 01:44:52,2026-07-21 02:18:04,33.2,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1103,MCH-SHOTPEEN-01,1,2026-07-21 05:05:24,2026-07-21 05:50:54,45.5,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1104,MCH-SHOTPEEN-01,3,2026-07-21 18:15:42,2026-07-21 18:52:30,36.8,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1105,MCH-PRESS-01,3,2026-07-21 17:22:09,2026-07-21 17:42:57,20.8,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1106,MCH-STABILIZER-01,1,2026-07-21 02:39:42,2026-07-21 03:07:54,28.2,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1107,MCH-STABILIZER-01,3,2026-07-21 17:48:12,2026-07-21 18:32:48,44.6,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1108,MCH-TESTING-01,1,2026-07-21 02:44:17,2026-07-21 03:12:17,28.0,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1109,MCH-COILING-02,1,2026-07-22 02:31:37,2026-07-22 03:07:07,35.5,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1110,MCH-HEATTREAT-01,2,2026-07-22 09:29:02,2026-07-22 09:50:32,21.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1111,MCH-STABILIZER-01,2,2026-07-22 10:37:43,2026-07-22 11:06:01,28.3,Changeover,Tooling setup and die adjustment for SKU-SB-CANTER-01,False
+DT-1112,MCH-COILING-01,2,2026-07-23 09:57:34,2026-07-23 10:21:28,23.9,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1113,MCH-HEATTREAT-01,1,2026-07-23 03:38:01,2026-07-23 04:21:07,43.1,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1114,MCH-TEMPERING-01,3,2026-07-23 18:58:02,2026-07-23 19:23:32,25.5,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1115,MCH-STABILIZER-01,2,2026-07-23 09:27:59,2026-07-23 10:01:29,33.5,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1116,MCH-COILING-02,3,2026-07-24 17:31:20,2026-07-24 17:59:56,28.6,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1117,MCH-HEATTREAT-01,2,2026-07-24 11:37:07,2026-07-24 12:47:01,69.9,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1118,MCH-SHOTPEEN-01,2,2026-07-24 09:44:26,2026-07-24 10:16:32,32.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1119,MCH-STABILIZER-01,1,2026-07-24 02:36:05,2026-07-24 03:17:35,41.5,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1120,MCH-STABILIZER-01,2,2026-07-24 13:50:54,2026-07-24 15:08:24,77.5,Unplanned Breakdown,Hydraulic oil seal rupture & pressure drop,True
+DT-1121,MCH-STABILIZER-01,3,2026-07-24 17:30:16,2026-07-24 17:58:34,28.3,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1122,MCH-COILING-01,2,2026-07-25 09:50:46,2026-07-25 10:35:22,44.6,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1123,MCH-COILING-01,3,2026-07-25 17:44:55,2026-07-25 18:19:13,34.3,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1124,MCH-HEATTREAT-01,1,2026-07-25 01:18:45,2026-07-25 01:53:33,34.8,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1125,MCH-STABILIZER-01,3,2026-07-25 17:04:13,2026-07-25 17:33:01,28.8,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1126,MCH-COILING-02,1,2026-07-26 02:17:07,2026-07-26 02:46:13,29.1,Changeover,Tooling setup and die adjustment for SKU-CS-HONDA-02,False
+DT-1127,MCH-COILING-02,1,2026-07-26 05:34:56,2026-07-26 07:49:02,134.1,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1128,MCH-SHOTPEEN-01,3,2026-07-26 18:20:23,2026-07-26 18:51:29,31.1,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1129,MCH-STABILIZER-01,3,2026-07-26 19:23:01,2026-07-26 20:12:43,49.7,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1130,MCH-TESTING-01,1,2026-07-26 01:04:24,2026-07-26 01:48:54,44.5,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1131,MCH-HEATTREAT-01,3,2026-07-27 17:55:23,2026-07-27 18:25:23,30.0,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1132,MCH-HEATTREAT-01,3,2026-07-27 19:50:34,2026-07-27 21:27:52,97.3,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1133,MCH-STABILIZER-01,2,2026-07-27 10:32:00,2026-07-27 10:57:48,25.8,Changeover,Tooling setup and die adjustment for SKU-SB-AVANZA-02,False
+DT-1134,MCH-TESTING-01,3,2026-07-27 17:03:43,2026-07-27 17:33:25,29.7,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1135,MCH-COILING-02,2,2026-07-28 09:16:27,2026-07-28 09:46:15,29.8,Changeover,Tooling setup and die adjustment for SKU-CS-TOYOTA-01,False
+DT-1136,MCH-HEATTREAT-01,1,2026-07-28 01:45:25,2026-07-28 02:15:19,29.9,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1137,MCH-HEATTREAT-01,2,2026-07-28 10:52:10,2026-07-28 11:21:16,29.1,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1138,MCH-SHOTPEEN-01,2,2026-07-28 09:17:37,2026-07-28 09:39:43,22.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1139,MCH-COILING-01,1,2026-07-29 05:26:54,2026-07-29 06:17:30,50.6,Unplanned Breakdown,Induction heating element temperature fluctuation,True
+DT-1140,MCH-HEATTREAT-01,2,2026-07-29 10:19:21,2026-07-29 11:01:45,42.4,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1141,MCH-TEMPERING-01,1,2026-07-29 04:27:28,2026-07-29 05:24:16,56.8,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1142,MCH-SHOTPEEN-01,2,2026-07-29 09:08:03,2026-07-29 09:36:51,28.8,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1143,MCH-PRESS-01,1,2026-07-29 01:42:36,2026-07-29 02:26:42,44.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1144,MCH-TESTING-01,1,2026-07-29 01:11:29,2026-07-29 01:36:35,25.1,Changeover,Tooling setup and die adjustment for SKU-LS-HINO-01,False
+DT-1145,MCH-TESTING-01,1,2026-07-29 05:45:37,2026-07-29 07:02:49,77.2,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1146,MCH-HEATTREAT-01,3,2026-07-30 17:26:58,2026-07-30 17:59:40,32.7,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1147,MCH-TEMPERING-01,2,2026-07-30 10:22:16,2026-07-30 10:56:10,33.9,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1148,MCH-SHOTPEEN-01,2,2026-07-30 13:28:54,2026-07-30 15:38:30,129.6,Unplanned Breakdown,Proximity sensor misalignment on material feeder,True
+DT-1149,MCH-STABILIZER-01,3,2026-07-30 19:31:16,2026-07-30 20:19:22,48.1,Unplanned Breakdown,Shot peening nozzle clog & pressure failure,True
+DT-1150,MCH-TESTING-01,1,2026-07-30 02:54:07,2026-07-30 03:24:37,30.5,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
+DT-1151,MCH-TESTING-01,3,2026-07-30 18:57:33,2026-07-30 19:37:39,40.1,Changeover,Tooling setup and die adjustment for SKU-LS-ISUZU-02,False
