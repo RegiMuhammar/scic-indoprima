@@ -27,6 +27,7 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [email, setEmail] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState<boolean>(false);
 
   const handleWaitlistSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,26 +37,72 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.play().catch(() => {});
-    }
+    const checkShouldLoad = () => {
+      const isDesktop = window.innerWidth >= 768;
+      const isSaveData =
+        (navigator as unknown as { connection?: { saveData?: boolean } })?.connection?.saveData === true;
+      setShouldLoadVideo(isDesktop && !isSaveData);
+    };
+
+    checkShouldLoad();
+    window.addEventListener("resize", checkShouldLoad);
+    return () => window.removeEventListener("resize", checkShouldLoad);
   }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !shouldLoadVideo) return;
+
+    let isIntersecting = true;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isIntersecting = entry.isIntersecting;
+        if (isIntersecting && document.visibilityState === "visible") {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible" && isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    };
+
+    observer.observe(video);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [shouldLoadVideo]);
 
   return (
     <div className="bg-black min-h-screen text-white">
       {/* 1. HERO SECTION (100vh Full Viewport with Video Background) */}
       <section className="h-screen min-h-screen relative flex flex-col justify-between overflow-hidden">
-        {/* Background Video */}
-        <video
-          ref={videoRef}
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4"
-          muted
-          loop
-          playsInline
-          autoPlay
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        />
+        {/* Background Video (Desktop) or Aesthetic Fallback (Mobile/Save-Data) */}
+        {shouldLoadVideo ? (
+          <video
+            ref={videoRef}
+            src="https://m0z1tso2urd7gizb.public.blob.vercel-storage.com/prims3-VkGRd7fbTyKGFcJOdIxCAOFGTTcKOP"
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none transition-opacity duration-1000"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-b from-blue-950/20 via-zinc-950 to-black pointer-events-none" />
+        )}
 
         {/* Navigation Bar */}
         <nav className="relative z-20 px-8 py-6 bg-transparent">
