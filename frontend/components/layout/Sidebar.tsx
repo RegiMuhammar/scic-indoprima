@@ -78,7 +78,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
         {!isCollapsed ? (
           <div className="flex items-center gap-2">
             <span className="text-white text-xs font-semibold font-poppins tracking-wider uppercase">
-              Product
+              Demo Product SCIC
             </span>
           </div>
         ) : (
