@@ -1,0 +1,31 @@
+supplier_id,supplier_name_raw,source_system,tax_id,harmonized_supplier_id,harmonized_supplier_name
+SUP-001,PT Steelindo Utama Tbk,SAP_S4HANA_ERP,01.234.567.8-012.000,SUP-H-001,PT Steelindo Utama
+SUP-001,PT Steelindo,Indoprima_WMS,01.234.567.8-012.000,SUP-H-001,PT Steelindo Utama
+SUP-001,Steelindo Indo,E-Procurement_Portal,01.234.567.8-012.000,SUP-H-001,PT Steelindo Utama
+SUP-002,CV Bina Karya Metal,SAP_S4HANA_ERP,02.345.678.9-123.000,SUP-H-002,CV Bina Karya Metal
+SUP-002,Bina Karya,Indoprima_WMS,02.345.678.9-123.000,SUP-H-002,CV Bina Karya Metal
+SUP-002,BK Metal CV,E-Procurement_Portal,02.345.678.9-123.000,SUP-H-002,CV Bina Karya Metal
+SUP-003,PT Indo Primatama Sejahtera,SAP_S4HANA_ERP,03.456.789.0-234.000,SUP-H-003,PT Indo Primatama Sejahtera
+SUP-003,PT Indoprimatama,Indoprima_WMS,03.456.789.0-234.000,SUP-H-003,PT Indo Primatama Sejahtera
+SUP-003,Primatama Sejahtera,E-Procurement_Portal,03.456.789.0-234.000,SUP-H-003,PT Indo Primatama Sejahtera
+SUP-004,PT Gajah Tunggal Indonesia,SAP_S4HANA_ERP,04.567.890.1-345.000,SUP-H-004,PT Gajah Tunggal Indonesia
+SUP-004,PT Gajah Tunggal,Indoprima_WMS,04.567.890.1-345.000,SUP-H-004,PT Gajah Tunggal Indonesia
+SUP-004,Gajah Tunggal Indo,E-Procurement_Portal,04.567.890.1-345.000,SUP-H-004,PT Gajah Tunggal Indonesia
+SUP-005,PT Astra Otoparts Nusantara,SAP_S4HANA_ERP,05.678.901.2-456.000,SUP-H-005,PT Astra Otoparts Nusantara
+SUP-005,PT Astra Otoparts,Indoprima_WMS,05.678.901.2-456.000,SUP-H-005,PT Astra Otoparts Nusantara
+SUP-005,Astra Otoparts Indo,E-Procurement_Portal,05.678.901.2-456.000,SUP-H-005,PT Astra Otoparts Nusantara
+SUP-006,CV Mitra Teknik Bersama,SAP_S4HANA_ERP,06.789.012.3-567.000,SUP-H-006,CV Mitra Teknik Bersama
+SUP-006,Mitra Teknik,Indoprima_WMS,06.789.012.3-567.000,SUP-H-006,CV Mitra Teknik Bersama
+SUP-006,MT Bersama CV,E-Procurement_Portal,06.789.012.3-567.000,SUP-H-006,CV Mitra Teknik Bersama
+SUP-007,PT Surya Cipta Metalindo,SAP_S4HANA_ERP,07.890.123.4-678.000,SUP-H-007,PT Surya Cipta Metalindo
+SUP-007,PT Surya Cipta,Indoprima_WMS,07.890.123.4-678.000,SUP-H-007,PT Surya Cipta Metalindo
+SUP-007,Surya Cipta Metal,E-Procurement_Portal,07.890.123.4-678.000,SUP-H-007,PT Surya Cipta Metalindo
+SUP-008,PT Cakra Sentosa Abadi,SAP_S4HANA_ERP,08.901.234.5-789.000,SUP-H-008,PT Cakra Sentosa Abadi
+SUP-008,Cakra Sentosa,Indoprima_WMS,08.901.234.5-789.000,SUP-H-008,PT Cakra Sentosa Abadi
+SUP-008,Cakra Abadi PT,E-Procurement_Portal,08.901.234.5-789.000,SUP-H-008,PT Cakra Sentosa Abadi
+SUP-009,PT Waskita Beton Precast,SAP_S4HANA_ERP,09.012.345.6-890.000,SUP-H-009,PT Waskita Beton Precast
+SUP-009,Waskita Beton,Indoprima_WMS,09.012.345.6-890.000,SUP-H-009,PT Waskita Beton Precast
+SUP-009,Waskita Precast,E-Procurement_Portal,09.012.345.6-890.000,SUP-H-009,PT Waskita Beton Precast
+SUP-010,CV Delta Prima Energi,SAP_S4HANA_ERP,10.123.456.7-901.000,SUP-H-010,CV Delta Prima Energi
+SUP-010,Delta Prima,Indoprima_WMS,10.123.456.7-901.000,SUP-H-010,CV Delta Prima Energi
+SUP-010,DPE CV,E-Procurement_Portal,10.123.456.7-901.000,SUP-H-010,CV Delta Prima Energi

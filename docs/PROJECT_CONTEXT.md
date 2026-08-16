@@ -16,137 +16,110 @@ Mengubah data operasional lintas sistem (ERP, WMS, Procurement Portal) menjadi *
 
 ---
 
-## 2. Target Users
+## 2. Quick Win Use Cases (PT Indospring Tbk / Indoprima Group)
+
+Berdasarkan dokumen *Pre-Assessment & Quick Win Scoping*, SCIC difokuskan pada **2 Use Case Quick Win Utama** yang disokong oleh **1 Fondasi Data Bersama**:
+
+```
++-------------------------------------------------------------------------+
+|                         SCIC QUICK WIN PLATFORM                         |
++------------------------------------+------------------------------------+
+|  Use Case 1:                       |  Use Case 2:                       |
+|  MANUFACTURING PRODUCTIVITY (OEE)  |  SPARE PART READINESS              |
+|  - Real-time OEE (Avail, Perf, Qual)| - Spare Part Demand Forecasting   |
+|  - Unplanned Downtime Analysis     |  - Dynamic Safety Stock & Reorder  |
+|  - Shift & Labor Efficiency        |  - BOM Compatibility & Lead Time   |
++------------------------------------+------------------------------------+
+|                      FONDASI DATA BERSAMA                               |
+|       IoT Condition Monitoring & Telemetry (Vibration, Temp, RPM)       |
++-------------------------------------------------------------------------+
+```
+
+### 2.1 Use Case 1: Manufacturing Productivity berbasis OEE
+* **Tujuan & KPI:** Meningkatkan OEE real-time, menurunkan *unplanned downtime*, dan meningkatkan utilisasi tenaga kerja (*labor utilization*).
+* **Komponen & Metrik:**
+  1. **Availability**: Target Schedule vs Downtime Logs (*breakdown, changeover, planned maintenance*) vs status mesin (*running, idle, stop*).
+  2. **Performance**: Ideal vs Actual Cycle Time per SKU, analisis *speed loss* dan *minor stops*.
+  3. **Quality**: Output total vs *Good Count* vs *Defect Count* / *Rework*.
+  4. **Pabrik & Lini**: Pabrik Gresik (`FB-GRS`) & Nganjuk (`FB-NGJ`) dengan lini Leaf Spring, Coil Spring, dan Stabilizer Bar.
+
+### 2.2 Use Case 2: Spare Part Readiness & Predictive Maintenance
+* **Tujuan & KPI:** Menjamin ketersediaan suku cadang kritis, mencegah breakdown mesin akibat part kosong, menghemat *inventory carrying cost*, dan mempercepat MTTR (*Mean Time To Repair*).
+* **Komponen & Metrik:**
+  1. **Demand Forecasting Spare Part**: Prediksi kebutuhan part berbasis histori konsumsi dan pola operasional mesin.
+  2. **Dynamic Safety Stock & Smart Reorder Point**: Kalkulasi min/max level berdasarkan volatilitas konsumsi dan variasi *lead time* supplier.
+  3. **BOM & Compatibility Engine**: Pemetaan kecocokan sparepart terhadap aset mesin.
+  4. **Predictive Pre-positioning**: Integrasi sinyal anomali telemetri sensor IoT untuk memicu rekomendasi pengadaan/penyiapan part sebelum mesin rusak total.
+
+### 2.3 Fondasi Data Bersama (IoT Telemetry & Condition Monitoring)
+* Pemantauan sinyal sensor mesin real-time (*vibration, temperature, current, pressure, RPM*) untuk deteksi dini anomali dan integrasi otomatis dengan sistem work order & sparepart.
+
+---
+
+## 3. Target Users
 
 | Role | Tanggung Jawab |
 |---|---|
-| Supply Chain Manager | Pengawasan end-to-end rantai pasok, approval keputusan strategis |
-| Procurement Analyst | Rekonsiliasi invoice, manajemen vendor, negosiasi harga |
-| Warehouse Supervisor | Monitoring stok, eksekusi replenishment |
-| Finance Controller | Validasi transaksi, audit trail, laporan keuangan |
-| Operations Director | Oversight KPI, risk management, strategic reporting |
+| Plant & Production Manager | Monitoring OEE lini produksi, analisis downtime, efisiensi shift |
+| Maintenance & Reliability Engineer | Monitoring kondisi mesin (IoT), mitigasi breakdown, kebutuhan suku cadang |
+| Supply Chain & Warehouse Manager | Pengawasan stok sparepart & finished goods, approval replenishment |
+| Procurement Analyst | Evaluasi vendor/supplier lead time, eksekusi purchase order part |
+| Operations Director | Oversight KPI menyeluruh (OEE, OTIF, Inventory Turnover, Cost) |
 
 ---
 
-## 3. Page Inventory & Feature Specification
+## 4. Page Inventory & Route Strategy
 
-### 3.1 Landing Page & Login Page
+SCIC menerapkan strategi **Dual-Level Visibility**: *Executive Overview* di Control Tower (`/dashboard`) dan *Deep-Dive Operational Workflow* di halaman khusus masing-masing.
+
+### 4.1 Landing Page & Login Page
 **Route:** `/` dan `/login`
+**Purpose:** Entry point produk dan autentikasi pengguna via Supabase Auth.
 
-**Purpose:** Entry point produk — menampilkan value proposition SCIC dan autentikasi pengguna.
-
-**Features:**
-- Hero section dengan product pitch dan key differentiators
-- Feature highlights (Supply Chain Control Tower, AI Assistant, Demand Intelligence)
-- Login form dengan Supabase Auth (email/password + SSO)
-- Role-based redirect setelah login
-- Secure session management via JWT
-
----
-
-### 3.2 Dashboard Analytics & Monitoring (Supply Chain Control Tower)
+### 4.2 Supply Chain & Manufacturing Control Tower (Dashboard)
 **Route:** `/dashboard`
-
-**Purpose:** Pusat komando rantai pasok — visibilitas menyeluruh terhadap kesehatan operasional secara real-time.
-
+**Purpose:** Pusat komando eksekutif & ringkasan operasional real-time.
 **Features:**
-- **Supply Chain Health Score** — composite score berbasis weighted KPI
-- **KPI Monitoring Panel** — inventory turnover, OTIF rate, fill rate, lead time, procurement cycle time
-- **AI Priority Insights** — top-N actionable recommendations yang dihasilkan AI, disertai confidence score
-- **Early Warning Risk Radar** — anomaly detection, threshold breach alerts, risk categorization
-- **Live Data Feed** — streaming status dari ERP, WMS, Procurement Portal
-- **Entry Point ke AI Assistant Chatbot** — floating button / sidebar launcher yang membuka chat session
+- **Plant & Supply Chain Health Score**: Composite OEE dan Health Index pabrik.
+- **Executive KPI Cards**: Real-time OEE %, Availability %, MTTR, OTIF Rate, Critical Stockout Alerts.
+- **Top Downtime & Anomaly Radar**: Ringkasan downtime mesin terparah dan early warning IoT telemetry.
+- **AI Priority Recommendations**: Rekomendasi prioritas (maintenance darurat, replenishment part kritis) dengan confidence score.
+- **Fast Navigation / Tab Switcher**: Akses cepat drilldown ke detail OEE Pabrik atau Detail Demand/Part.
 
----
-
-### 3.3 Invoice Matching Intelligence
-**Route:** `/invoice-matching`
-
-**Purpose:** Rekonsiliasi dan harmonisasi transaksi keuangan lintas sistem secara cerdas.
-
+### 4.3 Manufacturing Productivity (OEE Deep-Dive)
+**Route:** `/dashboard` (Tab Dedicated) atau `/manufacturing-oee`
+**Purpose:** Analisis mendalam efektivitas mesin, shift, dan kualitas produksi.
 **Features:**
-- Upload dan parsing invoice (PDF, Excel)
-- Three-way matching: Purchase Order ↔ Goods Receipt ↔ Invoice
-- AI-powered discrepancy detection dengan confidence score
-- Explainability panel per transaksi (faktor penyebab mismatch)
-- Workflow approval: Draft → Review → Approved / Disputed
-- Audit trail lengkap per invoice
-- Bulk export ke PDF / Excel (ReportLab / OpenPyXL)
+- OEE 3-Pillar Breakdown (Availability, Performance, Quality) per pabrik & lini.
+- Shift Performance & Manpower Utilization (Shift 1, 2, dan analisa kelelahan Shift 3).
+- Downtime Category Pareto (Breakdown, Changeover, Tooling, Speed Loss).
+- Machine Condition & IoT Sensor Telemetry Explorer (Vibration, Temperature trend).
 
----
-
-### 3.4 Demand & Inventory Decision Intelligence
+### 4.4 Demand & Spare Part Decision Intelligence
 **Route:** `/demand-intelligence`
-
-**Purpose:** Peramalan permintaan dan manajemen stok berbasis AI untuk mencegah stockout dan overstock.
-
+**Purpose:** Peramalan permintaan dan manajemen inventaris cerdas untuk Spare Part kritis dan Finished Goods.
 **Features:**
-- **Demand Forecasting** — time-series prediction menggunakan StatsForecast/Prophet
-- **Stockout & Overstock Projection** — visualisasi probabilistik per SKU
-- **Replenishment Recommendation Engine** — saran order quantity, timing, dan supplier, dengan confidence score
-- **Safety Stock Calculator** — berbasis variabilitas demand dan lead time
-- **Scenario Planning** — what-if analysis (perubahan lead time, demand spike, dsb.)
-- **SKU-level Drill-down** — detail histori, proyeksi, dan rekomendasi per item
+- **Spare Part Demand Forecasting**: Model time-series peramalan kebutuhan part (StatsForecast/Prophet).
+- **Dynamic Reorder Point & Safety Stock**: Rekomendasi kuantitas & waktu reorder berbasis lead time supplier.
+- **Stockout & Overstock Risk Matrix**: Visualisasi probabilistik risiko kekosongan part kritis.
+- **BOM Machine Compatibility Viewer**: Penelusuran kompatibilitas part terhadap mesin & work order aktif.
+- **Human-in-the-Loop Reorder Approval**: Rekomendasi PO siap review & approve oleh Manager.
 
----
+### 4.5 Invoice Matching Intelligence
+**Route:** `/invoice-matching`
+**Purpose:** Rekonsiliasi transaksi keuangan tiga arah (PO ↔ GR ↔ Invoice) secara otomatis dan deteksi selisih via AI.
 
-### 3.5 AI Assistant Chatbot (RAG + Text-to-SQL Agent)
-**Route:** `/chat` (halaman penuh) + floating panel di `/dashboard`
+### 4.6 AI Assistant Copilot (RAG + Text-to-SQL)
+**Route:** `/chat` (Full page) + Floating Drawer di semua halaman
+**Purpose:** Asisten tanya-jawab natural language untuk query data OEE, status mesin, dan inventaris sparepart di MotherDuck via SQLGlot & LangGraph.
 
-**Architecture:** RAG + Text-to-SQL Agent via LangGraph/LangChain
+### 4.7 AI Agent Logging & Explainability
+**Route:** `/agent-logs` & `/explainability`
+**Purpose:** Audit trail eksekusi AI, trace tool-calling, serta transparansi confidence score dan faktor pembobot rekomendasi.
 
-**Features:**
-- **Multi-session Management** — user dapat membuat, mengganti, dan menghapus sesi percakapan
-- **Chat History Persistence** — riwayat percakapan tersimpan per user di Supabase PostgreSQL
-- **Hybrid Retrieval** — semantic search (ChromaDB) + SQL generation (Text-to-SQL via SQLGlot)
-- **Tool-calling AI Agent** — agent dapat memanggil tools: query_database, retrieve_documents, calculate_forecast, get_kpi
-- **Streaming Response** — output AI di-stream token-by-token (SSE / WebSocket)
-- **Context Window Management** — manajemen memori percakapan dengan sliding window + summary
-- **Suggested Questions** — contoh pertanyaan kontekstual berdasarkan halaman aktif user
-
----
-
-### 3.6 AI Agent Logging History
-**Route:** `/agent-logs`
-
-**Purpose:** Rekam jejak audit seluruh aktivitas AI agent — transparansi dan akuntabilitas penuh.
-
-**Features:**
-- Log tiap query yang masuk (user, timestamp, session ID)
-- Log tiap tool-call yang dieksekusi agent (tool name, parameters, response time, status)
-- Log reasoning chain agent (intermediate steps LangGraph)
-- Filter & search: by user, date range, session, tool name, status
-- Detail view per log entry: full trace, input/output, error (jika ada)
-- Export log ke CSV / JSON
-
----
-
-### 3.7 AI Explainability Panel
-**Route:** `/explainability` + embedded panel di setiap insight card
-
-**Purpose:** Transparansi keputusan dan rekomendasi AI agar pengguna memahami dasar logika di balik setiap output.
-
-**Features:**
-- **Confidence Score** — probabilitas kebenaran per output (0–100%)
-- **Contributing Factors** — variabel input yang paling berpengaruh terhadap output
-- **Data Sources Referenced** — dokumen, tabel, dan rentang data yang digunakan
-- **Reasoning Trace** — langkah-langkah reasoning agent yang dapat di-expand
-- **Feedback Mechanism** — user dapat memberi rating (thumbs up/down) pada setiap insight
-
----
-
-### 3.8 Monitoring Connection & Data Health
+### 4.8 Monitoring Connection & Data Health
 **Route:** `/data-connections`
-
-**Purpose:** Dashboard status koneksi dan kesehatan sinkronisasi dari setiap sistem sumber data.
-
-**Features:**
-- **Connection Status per Source System** — ERP, WMS, Procurement Portal, dan sistem lain
-- **Sync Health Metrics** — last sync timestamp, record count, latency, error rate
-- **Data Quality Indicators** — completeness, freshness, anomaly rate per dataset
-- **Alert Configuration** — threshold untuk notifikasi degradasi koneksi
-- **Manual Sync Trigger** — tombol untuk memicu sinkronisasi ulang (dengan konfirmasi)
-- **Connection Log** — histori sync events, errors, dan durasi per sistem
+**Purpose:** Monitoring kesehatan sinkronisasi data MotherDuck, IoT Telemetry, ERP, dan WMS.
 
 ---
 
@@ -383,12 +356,26 @@ scic-indoprima/
 |       +-- integration/
 |       +-- conftest.py
 |
-+-- datasets/                         # Dummy supply chain data (CSV, Parquet)
-|   +-- inventory/
-|   +-- invoices/
-|   +-- demand_history/
-|   +-- procurement/
-|   +-- erp_master/
++-- datasets/
+|   +-- quickwin_manufacturing/       # 18 CSV tables (MotherDuck warehouse sync)
+|   |   +-- dim_factories.csv
+|   |   +-- dim_production_lines.csv
+|   |   +-- dim_machines.csv
+|   |   +-- dim_skus.csv
+|   |   +-- dim_spare_parts.csv
+|   |   +-- dim_bom_compatibility.csv
+|   |   +-- fact_production_schedules.csv
+|   |   +-- fact_downtime_logs.csv
+|   |   +-- fact_production_outputs.csv
+|   |   +-- fact_quality_inspections.csv
+|   |   +-- fact_shift_manpower.csv
+|   |   +-- fact_part_consumptions.csv
+|   |   +-- fact_inventory_snapshots.csv
+|   |   +-- fact_purchase_orders.csv
+|   |   +-- fact_work_orders.csv
+|   |   +-- fact_work_order_parts.csv
+|   |   +-- fact_machine_telemetry.csv
+|   |   +-- fact_anomaly_events.csv
 |
 +-- prompts/                          # AI system prompts & templates
 |   +-- system/
@@ -407,9 +394,12 @@ scic-indoprima/
 |   +-- DEPLOYMENT.md                 # Deployment guide
 |
 +-- scripts/                          # Utility scripts
-|   +-- seed_data.py                  # Database seeder
-|   +-- index_documents.py            # RAG document indexer
-|   +-- generate_dummy_data.py        # Dummy data generator
+|   +-- generate_quickwin_data.py     # Generator 18 dataset CSV manufaktur realistis
+|   +-- upload_to_motherduck.py       # Uploader dataset ke MotherDuck Cloud
+|   +-- create_views.py               # Pembuat SQL analytical views (OEE & Spare Part)
+|   +-- sql/
+|       +-- 01_manufacturing_schema.sql
+|       +-- 02_create_oee_views.sql
 |
 +-- README.md                         # Project overview & quick start
 +-- .gitignore
@@ -427,11 +417,25 @@ Authentication:
   POST   /api/v1/auth/logout
   GET    /api/v1/auth/me
 
-Dashboard:
+Dashboard & Control Tower:
   GET    /api/v1/dashboard/health-score
   GET    /api/v1/dashboard/kpis
   GET    /api/v1/dashboard/insights
   GET    /api/v1/dashboard/alerts
+  GET    /api/v1/dashboard/oee-summary
+
+Manufacturing Productivity (OEE):
+  GET    /api/v1/oee/overview
+  GET    /api/v1/oee/lines/{id}
+  GET    /api/v1/oee/downtime-pareto
+  GET    /api/v1/oee/telemetry/{machine_id}
+
+Spare Part & Demand Intelligence:
+  GET    /api/v1/demand/forecast
+  GET    /api/v1/demand/spareparts/reorder-recommendations
+  GET    /api/v1/demand/spareparts/critical-stock
+  GET    /api/v1/demand/spareparts/{part_id}/bom
+  POST   /api/v1/demand/scenario
 
 Invoice Matching:
   GET    /api/v1/invoices
@@ -440,12 +444,6 @@ Invoice Matching:
   POST   /api/v1/invoices/{id}/match
   PATCH  /api/v1/invoices/{id}/status
   GET    /api/v1/invoices/{id}/explainability
-
-Demand Intelligence:
-  GET    /api/v1/demand/forecast
-  GET    /api/v1/demand/stockout-risk
-  GET    /api/v1/demand/recommendations
-  POST   /api/v1/demand/scenario
 
 AI Chat:
   GET    /api/v1/chat/sessions
@@ -511,19 +509,17 @@ ARQ_REDIS_URL=<redis-url>
 
 | Module | Status | Notes |
 |---|---|---|
-| Project Setup & Structure | In Progress | Folder structure initialized |
-| Landing & Login Page | Not Started | |
-| Dashboard | Not Started | |
-| Invoice Matching | Not Started | |
-| Demand Intelligence | Not Started | |
-| AI Chat (RAG + Text-to-SQL) | Not Started | |
-| Agent Logging | Not Started | |
-| Explainability Panel | Not Started | |
-| Data Connections Monitor | Not Started | |
-| Data Models & ERD | Not Started | To be added |
-| Dummy Datasets | Not Started | |
+| Project Setup & Shell | ✅ Completed | Next.js 15, FastAPI, Tailwind CSS, Dark Theme layout |
+| Quick Win Datasets (18 CSVs) | ✅ Completed | 18 tabel di `datasets/quickwin_manufacturing/` |
+| OLAP Database & Views | ✅ Completed | MotherDuck schema & analytical OEE views |
+| Dashboard (Control Tower) | 🔄 In Progress | Metric cards, Risk radar, AI insight panels |
+| Demand & Spare Part Intelligence | 🔄 In Progress | Forecasting, safety stock & reorder recommendations |
+| AI Chat Copilot (RAG + Text-to-SQL) | 🔄 In Progress | LangGraph + Groq + SQLGlot integration |
+| Invoice Matching | 🔄 Planned | 3-way matching & discrepancy engine |
+| Agent Logging & Explainability | 🔄 In Progress | Audit trail and reasoning trace |
+| Data Connections Monitor | 🔄 In Progress | Connection health metrics |
 
 ---
 
-*Last Updated: 2026-08-04*
+*Last Updated: 2026-08-16*
 *Author: Development Team -- PT Indoprima SCIC Project*

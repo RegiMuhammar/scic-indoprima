@@ -1,0 +1,12 @@
+log_id,module,original_ai_proposal,human_decision,decision_role,note,timestamp
+AUD-001,Dashboard,Reroute 3 orders via Jakarta port,Approved,Supply Chain Manager,Approved — Jakarta queue confirmed at 12hr. Cost difference acceptable.,2026-07-26T18:30:00
+AUD-002,Invoice Matching,Auto-match INV-2025-1042 with RESI-IND-88265 (confidence 96%),Approved,Finance Controller,Confirmed auto-match. Variance within acceptable threshold.,2026-07-25T14:00:00
+AUD-003,Demand & Inventory,"Emergency PO for 5,000 Brake Pads with 10-day delivery",Approved,Procurement Lead,Supplier confirmed capacity. Expedited delivery agreed.,2026-07-27T15:00:00
+AUD-004,Dashboard,Schedule preventive maintenance on Line 3 Stamping Press,Approved,Operations Director,Maintenance window secured for 27 Jul 06:00-18:00. Backup Line 5 activated.,2026-07-25T09:30:00
+AUD-005,Invoice Matching,Flag 12 high-severity discrepancies for manual review,Approved,Finance Controller,Review session scheduled for 28 Jul with top 3 suppliers.,2026-07-26T11:00:00
+AUD-006,Demand & Inventory,"STOCK BALANCING: Transfer 5,000 units Fastener M10 from Karawang to Surabaya (INS-005)",Approved,Supply Chain Manager,"Approved — KRW confirmed excess stock. SBY demand validated. Transport arranged via internal fleet, ETA 30 Jul.",2026-07-28T09:15:00
+AUD-007,Demand & Inventory,"URGENT: Emergency transfer 1,500 units Shock Absorber FR-22 KRW → SBY (INS-006)",Approved,Operations Director,URGENT approved. Express transport dispatched immediately. ETA SBY: 29 Jul 08:00. Override normal approval SLA.,2026-07-28T08:00:00
+AUD-008,Demand & Inventory,"STOCK BALANCING: Transfer 2,500 units Brake Pad 08 Aluminum KRW → SBY (INS-007)",Approved,Supply Chain Manager,"Approved. Standard transport, ETA 1 Aug. Combined with Fastener transfer to optimize logistics.",2026-07-28T10:30:00
+AUD-009,Demand & Inventory,"STOCK BALANCING: Transfer 3,000 units Ball Bearing 6205 KRW → SBY (INS-008)",Approved,Warehouse Supervisor,"Approved. Scheduled with batch transfer on 31 Jul. Transport cost $8,500 within budget.",2026-07-28T11:00:00
+AUD-010,Demand & Inventory,Increase safety stock buffer for Spark Plug MS-06 by 20%,Modified,Procurement Lead,Approved 15% increase instead of 20%. Budget constraint.,2026-07-24T16:00:00
+AUD-011,Invoice Matching,Reject auto-match for INV-2025-1089 — amount variance 7.2%,Rejected,Finance Controller,Amount variance exceeds 5% threshold. Escalated to supplier for clarification.,2026-07-27T09:00:00

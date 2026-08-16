@@ -1,0 +1,151 @@
+resi_number,shipment_date,po_number,supplier_id,product_id,received_qty,warehouse_dock_id,receiving_note,damage_flag,wms_supplier_name_raw
+RESI-IND-88219,2025-09-28,PO-77820-PT,SUP-001,PRD-001,1425,DOCK-SBY-B,short shipment — 5% variance,false,PT Steelindo
+RESI-IND-88220,2025-08-16,PO-77821-PT,SUP-002,PRD-002,2500,DOCK-KRW-A,"received early, no issues",false,Bina Karya
+RESI-IND-88221,2026-07-01,PO-77822-PT,SUP-003,PRD-003,500,DOCK-KRW-B,partial pallet received,false,PT Indoprimatama
+RESI-IND-88222,2026-07-02,PO-77823-PT,SUP-004,PRD-004,2000,DOCK-SBY-B,,false,PT Gajah Tunggal
+RESI-IND-88223,2025-08-23,PO-77824-PT,SUP-005,PRD-005,1500,DOCK-SBY-A,wet packaging due to rain,false,PT Astra Otoparts
+RESI-IND-88224,2025-12-02,PO-77825-PT,SUP-006,PRD-006,2500,DOCK-KRW-B,damaged pallet on arrival,false,Mitra Teknik
+RESI-IND-88225,2026-02-09,PO-77826-PT,SUP-007,PRD-007,3000,DOCK-BKS-A,partial pallet received,false,PT Surya Cipta
+RESI-IND-88226,2026-05-31,PO-77827-PT,SUP-008,PRD-008,3000,DOCK-SBY-B,partial pallet received,false,Cakra Sentosa
+RESI-IND-88227,2026-07-05,PO-77828-PT,SUP-009,PRD-009,500,DOCK-BKS-A,wet packaging due to rain,false,Waskita Beton
+RESI-IND-88228,2025-12-25,PO-77829-PT,SUP-010,PRD-010,500,DOCK-KRW-A,partial pallet received,false,Delta Prima
+RESI-IND-88229,2026-03-19,PO-77830-PT,SUP-001,PRD-011,2000,DOCK-KRW-A,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88230,2026-07-21,PO-77831-PT,SUP-002,PRD-012,1500,DOCK-KRW-A,"received early, no issues",false,Bina Karya
+RESI-IND-88231,2026-02-23,PO-77832-PT,SUP-003,PRD-013,1500,DOCK-SBY-A,damaged pallet on arrival,false,PT Indoprimatama
+RESI-IND-88232,2025-09-19,PO-77833-PT,SUP-004,PRD-014,3000,DOCK-BKS-A,damaged pallet on arrival,false,PT Gajah Tunggal
+RESI-IND-88233,2025-08-29,PO-77834-PT,SUP-005,PRD-015,1500,DOCK-SBY-B,damaged pallet on arrival,false,PT Astra Otoparts
+RESI-IND-88234,2025-09-08,PO-77835-PT,SUP-006,PRD-001,2500,DOCK-BKS-A,damaged pallet on arrival,false,Mitra Teknik
+RESI-IND-88235,2025-12-01,PO-77836-PT,SUP-007,PRD-002,1500,DOCK-BKS-A,damaged pallet on arrival,false,PT Surya Cipta
+RESI-IND-88236,2025-12-23,PO-77837-PT,SUP-008,PRD-003,1000,DOCK-BKS-A,damaged pallet on arrival,false,Cakra Sentosa
+RESI-IND-88237,2025-11-01,PO-77838-PT,SUP-009,PRD-004,500,DOCK-SBY-A,partial pallet received,false,Waskita Beton
+RESI-IND-88238,2025-08-11,PO-77839-PT,SUP-010,PRD-005,1500,DOCK-BKS-A,damaged pallet on arrival,false,Delta Prima
+RESI-IND-88239,2025-08-12,PO-77840-PT,SUP-001,PRD-006,1000,DOCK-SBY-A,minor packaging damage,false,PT Steelindo
+RESI-IND-88240,2026-03-07,PO-77841-PT,SUP-002,PRD-007,2500,DOCK-SBY-A,,false,Bina Karya
+RESI-IND-88241,2026-03-21,PO-77842-PT,SUP-003,PRD-008,1500,DOCK-BKS-A,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88242,2026-03-23,PO-77843-PT,SUP-004,PRD-009,2500,DOCK-BKS-A,damaged pallet on arrival,false,PT Gajah Tunggal
+RESI-IND-88243,2026-07-07,PO-77844-PT,SUP-005,PRD-010,2500,DOCK-KRW-B,minor packaging damage,false,PT Astra Otoparts
+RESI-IND-88244,2025-09-04,PO-77845-PT,SUP-006,PRD-011,950,DOCK-KRW-B,short shipment — 5% variance,false,Mitra Teknik
+RESI-IND-88245,2026-07-21,PO-77846-PT,SUP-007,PRD-012,500,DOCK-KRW-B,wet packaging due to rain,false,PT Surya Cipta
+RESI-IND-88246,2025-09-14,PO-77847-PT,SUP-008,PRD-013,1500,DOCK-SBY-B,"received early, no issues",false,Cakra Sentosa
+RESI-IND-88247,2025-10-07,PO-77848-PT,SUP-009,PRD-014,1500,DOCK-BKS-A,"received early, no issues",true,Waskita Beton
+RESI-IND-88248,2026-08-03,PO-77849-PT,SUP-010,PRD-015,1500,DOCK-BKS-A,wet packaging due to rain,false,Delta Prima
+RESI-IND-88249,2026-01-01,PO-77850-PT,SUP-001,PRD-001,920,DOCK-BKS-A,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88250,2025-09-23,PO-77851-PT,SUP-002,PRD-002,3000,DOCK-BKS-A,,false,Bina Karya
+RESI-IND-88251,2026-03-12,PO-77852-PT,SUP-003,PRD-003,2000,DOCK-KRW-B,damaged pallet on arrival,false,PT Indoprimatama
+RESI-IND-88252,2026-03-24,PO-77853-PT,SUP-004,PRD-004,2000,DOCK-SBY-A,wet packaging due to rain,false,PT Gajah Tunggal
+RESI-IND-88253,2026-03-10,PO-77854-PT,SUP-005,PRD-005,1500,DOCK-KRW-A,partial pallet received,false,PT Astra Otoparts
+RESI-IND-88254,2025-10-21,PO-77855-PT,SUP-006,PRD-006,3000,DOCK-SBY-A,wet packaging due to rain,false,Mitra Teknik
+RESI-IND-88255,2025-09-16,PO-77856-PT,SUP-007,PRD-007,500,DOCK-SBY-A,wet packaging due to rain,false,PT Surya Cipta
+RESI-IND-88256,2025-10-09,PO-77857-PT,SUP-008,PRD-008,2500,DOCK-BKS-A,,true,Cakra Sentosa
+RESI-IND-88257,2026-05-18,PO-77858-PT,SUP-009,PRD-009,1500,DOCK-SBY-A,partial pallet received,false,Waskita Beton
+RESI-IND-88258,2026-02-01,PO-77859-PT,SUP-010,PRD-010,3000,DOCK-SBY-A,wet packaging due to rain,false,Delta Prima
+RESI-IND-88259,2026-06-07,PO-77860-PT,SUP-001,PRD-011,1500,DOCK-SBY-A,minor packaging damage,false,PT Steelindo
+RESI-IND-88260,2025-11-20,PO-77861-PT,SUP-002,PRD-012,1000,DOCK-KRW-B,partial pallet received,false,Bina Karya
+RESI-IND-88261,2025-09-28,PO-77862-PT,SUP-003,PRD-013,1500,DOCK-KRW-A,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88262,2025-12-24,PO-77863-PT,SUP-004,PRD-014,2500,DOCK-KRW-B,damaged pallet on arrival,true,PT Gajah Tunggal
+RESI-IND-88263,2026-06-18,PO-77864-PT,SUP-005,PRD-015,2500,DOCK-BKS-A,partial pallet received,false,PT Astra Otoparts
+RESI-IND-88264,2026-06-11,PO-77865-PT,SUP-006,PRD-001,3000,DOCK-KRW-A,partial pallet received,false,Mitra Teknik
+RESI-IND-88265,2025-11-04,PO-77866-PT,SUP-007,PRD-002,1500,DOCK-KRW-A,partial pallet received,false,PT Surya Cipta
+RESI-IND-88266,2026-01-30,PO-77867-PT,SUP-008,PRD-003,500,DOCK-SBY-B,damaged pallet on arrival,false,Cakra Sentosa
+RESI-IND-88267,2025-09-08,PO-77868-PT,SUP-009,PRD-004,1000,DOCK-SBY-A,partial pallet received,false,Waskita Beton
+RESI-IND-88268,2026-05-02,PO-77869-PT,SUP-010,PRD-005,1000,DOCK-KRW-B,wet packaging due to rain,false,Delta Prima
+RESI-IND-88269,2026-01-25,PO-77870-PT,SUP-001,PRD-006,475,DOCK-KRW-A,short shipment — 5% variance,false,PT Steelindo
+RESI-IND-88270,2026-01-17,PO-77871-PT,SUP-002,PRD-007,2500,DOCK-SBY-A,"received early, no issues",false,Bina Karya
+RESI-IND-88271,2025-10-22,PO-77872-PT,SUP-003,PRD-008,1000,DOCK-SBY-A,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88272,2025-12-21,PO-77873-PT,SUP-004,PRD-009,2000,DOCK-KRW-B,partial pallet received,false,PT Gajah Tunggal
+RESI-IND-88273,2026-06-10,PO-77874-PT,SUP-005,PRD-010,2000,DOCK-KRW-A,wet packaging due to rain,false,PT Astra Otoparts
+RESI-IND-88274,2026-04-23,PO-77875-PT,SUP-006,PRD-011,500,DOCK-KRW-B,minor packaging damage,false,Mitra Teknik
+RESI-IND-88275,2025-12-27,PO-77876-PT,SUP-007,PRD-012,3000,DOCK-BKS-A,partial pallet received,false,PT Surya Cipta
+RESI-IND-88276,2026-04-30,PO-77877-PT,SUP-008,PRD-013,3000,DOCK-SBY-A,minor packaging damage,false,Cakra Sentosa
+RESI-IND-88277,2026-02-22,PO-77878-PT,SUP-009,PRD-014,2500,DOCK-SBY-A,,false,Waskita Beton
+RESI-IND-88278,2026-01-05,PO-77879-PT,SUP-010,PRD-015,1000,DOCK-KRW-A,damaged pallet on arrival,false,Delta Prima
+RESI-IND-88279,2026-01-18,PO-77880-PT,SUP-001,PRD-001,460,DOCK-SBY-A,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88280,2026-03-12,PO-77881-PT,SUP-002,PRD-002,1000,DOCK-KRW-B,damaged pallet on arrival,true,Bina Karya
+RESI-IND-88281,2026-07-30,PO-77882-PT,SUP-003,PRD-003,1000,DOCK-BKS-A,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88282,2025-09-09,PO-77883-PT,SUP-004,PRD-004,2000,DOCK-SBY-A,partial pallet received,false,PT Gajah Tunggal
+RESI-IND-88283,2025-08-13,PO-77884-PT,SUP-005,PRD-005,2000,DOCK-KRW-A,,false,PT Astra Otoparts
+RESI-IND-88284,2026-05-24,PO-77885-PT,SUP-006,PRD-006,2000,DOCK-KRW-B,partial pallet received,false,Mitra Teknik
+RESI-IND-88285,2025-10-01,PO-77886-PT,SUP-007,PRD-007,2000,DOCK-KRW-A,,false,PT Surya Cipta
+RESI-IND-88286,2026-06-16,PO-77887-PT,SUP-008,PRD-008,2000,DOCK-KRW-A,partial pallet received,false,Cakra Sentosa
+RESI-IND-88287,2026-03-15,PO-77888-PT,SUP-009,PRD-009,500,DOCK-KRW-B,damaged pallet on arrival,false,Waskita Beton
+RESI-IND-88288,2026-04-29,PO-77889-PT,SUP-010,PRD-010,500,DOCK-KRW-A,wet packaging due to rain,false,Delta Prima
+RESI-IND-88289,2025-11-25,PO-77890-PT,SUP-001,PRD-011,1500,DOCK-SBY-A,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88290,2026-06-24,PO-77891-PT,SUP-002,PRD-012,500,DOCK-BKS-A,"received early, no issues",false,Bina Karya
+RESI-IND-88291,2026-01-29,PO-77892-PT,SUP-003,PRD-013,1500,DOCK-SBY-B,partial pallet received,false,PT Indoprimatama
+RESI-IND-88292,2025-09-25,PO-77893-PT,SUP-004,PRD-014,1000,DOCK-SBY-B,minor packaging damage,false,PT Gajah Tunggal
+RESI-IND-88293,2026-06-08,PO-77894-PT,SUP-005,PRD-015,1000,DOCK-SBY-A,partial pallet received,false,PT Astra Otoparts
+RESI-IND-88294,2026-06-21,PO-77895-PT,SUP-006,PRD-001,950,DOCK-KRW-B,short shipment — 5% variance,false,Mitra Teknik
+RESI-IND-88295,2026-07-18,PO-77896-PT,SUP-007,PRD-002,2500,DOCK-BKS-A,partial pallet received,false,PT Surya Cipta
+RESI-IND-88296,2026-06-21,PO-77897-PT,SUP-008,PRD-003,1500,DOCK-KRW-B,damaged pallet on arrival,false,Cakra Sentosa
+RESI-IND-88297,2026-04-01,PO-77898-PT,SUP-009,PRD-004,2000,DOCK-KRW-A,partial pallet received,false,Waskita Beton
+RESI-IND-88298,2026-06-02,PO-77899-PT,SUP-010,PRD-005,500,DOCK-BKS-A,minor packaging damage,false,Delta Prima
+RESI-IND-88299,2026-01-09,PO-77900-PT,SUP-001,PRD-006,2000,DOCK-SBY-A,wet packaging due to rain,false,PT Steelindo
+RESI-IND-88300,2026-02-08,PO-77901-PT,SUP-002,PRD-007,1500,DOCK-SBY-A,,false,Bina Karya
+RESI-IND-88301,2026-02-16,PO-77902-PT,SUP-003,PRD-008,2000,DOCK-BKS-A,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88302,2026-03-22,PO-77903-PT,SUP-004,PRD-009,2500,DOCK-SBY-B,partial pallet received,false,PT Gajah Tunggal
+RESI-IND-88303,2026-06-09,PO-77904-PT,SUP-005,PRD-010,2000,DOCK-SBY-B,"received early, no issues",false,PT Astra Otoparts
+RESI-IND-88304,2026-03-22,PO-77905-PT,SUP-006,PRD-011,500,DOCK-SBY-A,minor packaging damage,false,Mitra Teknik
+RESI-IND-88305,2026-06-30,PO-77906-PT,SUP-007,PRD-012,1000,DOCK-SBY-B,,false,PT Surya Cipta
+RESI-IND-88306,2026-03-16,PO-77907-PT,SUP-008,PRD-013,2500,DOCK-BKS-A,"received early, no issues",false,Cakra Sentosa
+RESI-IND-88307,2026-02-06,PO-77908-PT,SUP-009,PRD-014,1500,DOCK-KRW-B,minor packaging damage,false,Waskita Beton
+RESI-IND-88308,2026-01-24,PO-77909-PT,SUP-010,PRD-015,3000,DOCK-SBY-A,"received early, no issues",false,Delta Prima
+RESI-IND-88309,2025-09-06,PO-77910-PT,SUP-001,PRD-001,920,DOCK-SBY-A,damaged pallet on arrival,true,PT Steelindo
+RESI-IND-88310,2026-07-17,PO-77911-PT,SUP-002,PRD-002,2000,DOCK-KRW-A,minor packaging damage,false,Bina Karya
+RESI-IND-88311,2026-01-21,PO-77912-PT,SUP-003,PRD-003,500,DOCK-SBY-B,"received early, no issues",false,PT Indoprimatama
+RESI-IND-88312,2026-01-09,PO-77913-PT,SUP-004,PRD-004,3000,DOCK-KRW-B,partial pallet received,false,PT Gajah Tunggal
+RESI-IND-88313,2026-06-04,PO-77914-PT,SUP-005,PRD-005,3000,DOCK-KRW-A,,true,PT Astra Otoparts
+RESI-IND-88314,2026-02-12,PO-77915-PT,SUP-006,PRD-006,3000,DOCK-SBY-B,minor packaging damage,false,Mitra Teknik
+RESI-IND-88315,2025-09-20,PO-77916-PT,SUP-007,PRD-007,3000,DOCK-KRW-B,partial pallet received,false,PT Surya Cipta
+RESI-IND-88316,2026-02-05,PO-77917-PT,SUP-008,PRD-008,500,DOCK-KRW-A,minor packaging damage,false,Cakra Sentosa
+RESI-IND-88317,2025-11-21,PO-77918-PT,SUP-009,PRD-009,1500,DOCK-SBY-B,wet packaging due to rain,false,Waskita Beton
+RESI-IND-88318,2025-10-13,PO-77919-PT,SUP-010,PRD-010,1000,DOCK-KRW-A,,false,Delta Prima
+RESI-IND-88319,2026-04-20,PO-77920-PT,SUP-001,PRD-011,1425,DOCK-BKS-A,short shipment — 5% variance,false,PT Steelindo
+RESI-IND-88320,2026-07-08,PO-77921-PT,SUP-002,PRD-012,1500,DOCK-SBY-B,"received early, no issues",false,Bina Karya
+RESI-IND-88321,2025-10-21,PO-77922-PT,SUP-003,PRD-013,1000,DOCK-BKS-A,damaged pallet on arrival,false,PT Indoprimatama
+RESI-IND-88322,2026-03-16,PO-77923-PT,SUP-004,PRD-014,500,DOCK-KRW-A,wet packaging due to rain,false,PT Gajah Tunggal
+RESI-IND-88323,2026-03-19,PO-77924-PT,SUP-005,PRD-015,2500,DOCK-KRW-B,minor packaging damage,false,PT Astra Otoparts
+RESI-IND-88324,2026-05-04,PO-77925-PT,SUP-006,PRD-001,1000,DOCK-KRW-B,minor packaging damage,false,Mitra Teknik
+RESI-IND-88325,2026-02-08,PO-77926-PT,SUP-007,PRD-002,3000,DOCK-KRW-B,"received early, no issues",false,PT Surya Cipta
+RESI-IND-88326,2025-12-26,PO-77927-PT,SUP-008,PRD-003,2000,DOCK-BKS-A,"received early, no issues",false,Cakra Sentosa
+RESI-IND-88327,2025-10-25,PO-77928-PT,SUP-009,PRD-004,1000,DOCK-SBY-B,"received early, no issues",false,Waskita Beton
+RESI-IND-88328,2025-08-30,PO-77929-PT,SUP-010,PRD-005,3000,DOCK-KRW-A,wet packaging due to rain,true,Delta Prima
+RESI-IND-88329,2025-09-25,PO-77930-PT,SUP-001,PRD-006,3000,DOCK-SBY-A,"received early, no issues",false,PT Steelindo
+RESI-IND-88330,2025-09-15,PO-77931-PT,SUP-002,PRD-007,1000,DOCK-KRW-B,minor packaging damage,false,Bina Karya
+RESI-IND-88331,2025-10-18,PO-77932-PT,SUP-003,PRD-008,2000,DOCK-SBY-B,,false,PT Indoprimatama
+RESI-IND-88332,2026-01-29,PO-77933-PT,SUP-004,PRD-009,500,DOCK-SBY-A,wet packaging due to rain,false,PT Gajah Tunggal
+RESI-IND-88333,2026-04-18,PO-77934-PT,SUP-005,PRD-010,1500,DOCK-KRW-B,damaged pallet on arrival,false,PT Astra Otoparts
+RESI-IND-88334,2026-02-11,PO-77935-PT,SUP-006,PRD-011,1000,DOCK-KRW-A,,false,Mitra Teknik
+RESI-IND-88335,2026-08-04,PO-77936-PT,SUP-007,PRD-012,3000,DOCK-SBY-B,minor packaging damage,false,PT Surya Cipta
+RESI-IND-88336,2025-08-23,PO-77937-PT,SUP-008,PRD-013,1500,DOCK-SBY-B,wet packaging due to rain,false,Cakra Sentosa
+RESI-IND-88337,2026-03-21,PO-77938-PT,SUP-009,PRD-014,2500,DOCK-SBY-A,,false,Waskita Beton
+RESI-IND-88338,2025-12-13,PO-77939-PT,SUP-010,PRD-015,1000,DOCK-BKS-A,damaged pallet on arrival,false,Delta Prima
+RESI-IND-88339,2026-03-08,PO-77940-PT,SUP-001,PRD-001,460,DOCK-KRW-A,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88340,2026-01-05,PO-77941-PT,SUP-002,PRD-002,500,DOCK-SBY-B,,false,Bina Karya
+RESI-IND-88341,2026-06-27,PO-77942-PT,SUP-003,PRD-003,2500,DOCK-SBY-A,wet packaging due to rain,false,PT Indoprimatama
+RESI-IND-88342,2026-04-16,PO-77943-PT,SUP-004,PRD-004,2500,DOCK-SBY-A,"received early, no issues",false,PT Gajah Tunggal
+RESI-IND-88343,2026-05-25,PO-77944-PT,SUP-005,PRD-005,1000,DOCK-SBY-B,partial pallet received,false,PT Astra Otoparts
+RESI-IND-88344,2026-03-11,PO-77945-PT,SUP-006,PRD-006,475,DOCK-BKS-A,short shipment — 5% variance,false,Mitra Teknik
+RESI-IND-88345,2025-12-05,PO-77946-PT,SUP-007,PRD-007,2500,DOCK-SBY-B,wet packaging due to rain,false,PT Surya Cipta
+RESI-IND-88346,2026-04-29,PO-77947-PT,SUP-008,PRD-008,1500,DOCK-BKS-A,,true,Cakra Sentosa
+RESI-IND-88347,2026-04-20,PO-77948-PT,SUP-009,PRD-009,2500,DOCK-SBY-A,"received early, no issues",false,Waskita Beton
+RESI-IND-88348,2026-04-01,PO-77949-PT,SUP-010,PRD-010,500,DOCK-KRW-B,partial pallet received,false,Delta Prima
+RESI-IND-88349,2025-12-11,PO-77950-PT,SUP-001,PRD-011,3000,DOCK-KRW-A,,false,PT Steelindo
+RESI-IND-88350,2026-01-27,PO-77951-PT,SUP-002,PRD-012,1000,DOCK-SBY-A,partial pallet received,false,Bina Karya
+RESI-IND-88351,2025-10-11,PO-77952-PT,SUP-003,PRD-013,500,DOCK-BKS-A,minor packaging damage,false,PT Indoprimatama
+RESI-IND-88352,2026-06-29,PO-77953-PT,SUP-004,PRD-014,1000,DOCK-KRW-B,partial pallet received,false,PT Gajah Tunggal
+RESI-IND-88353,2026-06-23,PO-77954-PT,SUP-005,PRD-015,1000,DOCK-SBY-A,damaged pallet on arrival,false,PT Astra Otoparts
+RESI-IND-88354,2025-08-22,PO-77955-PT,SUP-006,PRD-001,1500,DOCK-SBY-A,damaged pallet on arrival,false,Mitra Teknik
+RESI-IND-88355,2025-08-25,PO-77956-PT,SUP-007,PRD-002,1500,DOCK-BKS-A,minor packaging damage,false,PT Surya Cipta
+RESI-IND-88356,2026-05-09,PO-77957-PT,SUP-008,PRD-003,2000,DOCK-SBY-A,minor packaging damage,false,Cakra Sentosa
+RESI-IND-88357,2025-12-28,PO-77958-PT,SUP-009,PRD-004,1500,DOCK-KRW-A,,false,Waskita Beton
+RESI-IND-88358,2025-10-06,PO-77959-PT,SUP-010,PRD-005,1500,DOCK-KRW-B,wet packaging due to rain,false,Delta Prima
+RESI-IND-88359,2026-02-17,PO-77960-PT,SUP-001,PRD-006,1500,DOCK-KRW-B,damaged pallet on arrival,false,PT Steelindo
+RESI-IND-88360,2026-02-08,PO-77961-PT,SUP-002,PRD-007,2500,DOCK-SBY-A,minor packaging damage,false,Bina Karya
+RESI-IND-88361,2025-09-13,PO-77962-PT,SUP-003,PRD-008,2000,DOCK-SBY-B,"received early, no issues",true,PT Indoprimatama
+RESI-IND-88362,2026-01-01,PO-77963-PT,SUP-004,PRD-009,1500,DOCK-SBY-A,,false,PT Gajah Tunggal
+RESI-IND-88363,2026-07-08,PO-77964-PT,SUP-005,PRD-010,1500,DOCK-KRW-B,minor packaging damage,false,PT Astra Otoparts
+RESI-IND-88364,2025-10-28,PO-77965-PT,SUP-006,PRD-011,3000,DOCK-KRW-A,wet packaging due to rain,false,Mitra Teknik
+RESI-IND-88365,2025-08-25,PO-77966-PT,SUP-007,PRD-012,3000,DOCK-BKS-A,minor packaging damage,false,PT Surya Cipta
+RESI-IND-88366,2025-12-22,PO-77967-PT,SUP-008,PRD-013,3000,DOCK-SBY-A,,false,Cakra Sentosa
+RESI-IND-88367,2026-02-06,PO-77968-PT,SUP-009,PRD-014,2500,DOCK-SBY-B,partial pallet received,false,Waskita Beton
+RESI-IND-88368,2025-10-16,PO-77969-PT,SUP-010,PRD-015,2500,DOCK-KRW-B,partial pallet received,false,Delta Prima

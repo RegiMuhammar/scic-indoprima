@@ -1,0 +1,33 @@
+erDiagram
+
+    supplier_master ||--o{ purchase_order : supplier_id
+    product_master ||--o{ purchase_order : product_id
+    plant_master ||--o{ purchase_order : plant_id
+
+    supplier_master ||--o{ invoice : supplier_id
+    product_master ||--o{ invoice : product_id
+    purchase_order ||--|| invoice : po_number
+
+    supplier_master ||--o{ shipment_resi : supplier_id
+    product_master ||--o{ shipment_resi : product_id
+    purchase_order ||--|| shipment_resi : po_number
+
+    plant_master ||--o{ production_order : plant_id
+    product_master ||--o{ production_order : product_id
+
+    product_master ||--o{ delivery_order : product_id
+    plant_master ||--o{ delivery_order : plant_id
+
+    product_master ||--o{ demand_history : sku_id
+
+    product_master ||--o{ inventory_snapshot : sku_id
+    plant_master ||--o{ inventory_snapshot : warehouse_id
+
+    logistics_telemetry }o--o{ delivery_order : shipment_context
+
+    risk_event }o--o{ production_order : related_entities
+    risk_event }o--o{ delivery_order : related_entities
+    risk_event }o--o{ supplier_master : related_entities
+
+    ai_insight_log }o--o{ risk_event : contributing_factors
+    audit_log }o--o{ ai_insight_log : original_proposal

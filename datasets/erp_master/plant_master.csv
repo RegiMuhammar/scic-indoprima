@@ -1,0 +1,6 @@
+plant_id,plant_name,location_code,facility_type
+PLT-SBY-01,Surabaya Plant,SBY-SOUTH,Manufacturing
+PLT-KRW-02,Karawang Plant,KRW-WEST,Manufacturing
+PLT-BKS-03,Bekasi Assembly,BKS-EAST,Assembly
+WHS-SBY-01,Surabaya Warehouse,SBY-DOCK,Warehouse
+WHS-KRW-01,Karawang Warehouse,KRW-DOCK,Warehouse

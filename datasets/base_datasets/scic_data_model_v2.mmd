@@ -1,0 +1,260 @@
+erDiagram
+
+    %% ============================================================
+    %% MASTER DATA — Core Reference Tables
+    %% ============================================================
+    supplier_master {
+        string supplier_id PK
+        string supplier_name_raw "raw name per source system"
+        string source_system "ERP/WMS/Portal"
+        string tax_id "universal matching key"
+        string harmonized_supplier_id
+        string harmonized_supplier_name
+    }
+
+    product_master {
+        string product_id PK
+        string product_code_raw
+        string product_description_raw
+        string uom_raw
+        string source_system "ERP/WMS/Portal"
+        string harmonized_product_id
+        string harmonized_product_name
+        string harmonized_uom
+    }
+
+    plant_master {
+        string plant_id PK
+        string plant_name
+        string location_code
+        string facility_type "plant/warehouse"
+    }
+
+    %% ============================================================
+    %% INVOICE MATCHING MODULE
+    %% ============================================================
+    purchase_order {
+        string po_number PK
+        date po_date
+        string supplier_id FK
+        string product_id FK
+        int po_qty
+        float unit_price
+        float po_amount
+        string plant_id FK
+        string po_status
+    }
+
+    invoice {
+        string invoice_id PK
+        date invoice_date
+        string po_number FK
+        string supplier_id FK
+        string product_id FK
+        int invoiced_qty
+        float unit_price
+        float invoice_amount
+        string currency
+        string erp_supplier_name_raw
+    }
+
+    shipment_resi {
+        string resi_number PK
+        date shipment_date
+        string po_number FK
+        string supplier_id FK
+        string product_id FK
+        int received_qty
+        string warehouse_dock_id
+        string receiving_note
+        bool damage_flag
+        string wms_supplier_name_raw
+    }
+
+    %% ============================================================
+    %% PRODUCTION & DELIVERY MODULE (Dashboard)
+    %% ============================================================
+    production_order {
+        string production_order_id PK
+        string plant_id FK
+        string line_id
+        string product_id FK
+        int planned_qty
+        int actual_qty
+        date planned_start
+        date planned_end
+        date actual_start
+        date actual_end
+        float downtime_hours
+        string downtime_reason
+    }
+
+    delivery_order {
+        string delivery_order_id PK
+        string customer_id
+        string product_id FK
+        date promised_delivery_date
+        date actual_delivery_date
+        int qty
+        float order_value
+        string plant_id FK
+        string delivery_status
+    }
+
+    logistics_telemetry {
+        string shipment_export_id PK
+        string port_code
+        string customs_status
+        float queue_time_hours
+        date expected_ship_date
+        date actual_ship_date
+    }
+
+    %% ============================================================
+    %% DEMAND & INVENTORY MODULE
+    %% ============================================================
+    demand_history {
+        string sku_id FK
+        string period "YYYY-MM"
+        int actual_demand_qty
+        string customer_segment
+    }
+
+    demand_history_per_branch {
+        string sku_id FK
+        string warehouse_id FK
+        string period "YYYY-MM"
+        int actual_consumption_qty
+        float avg_daily_consumption
+        string trend_direction
+        float demand_variability
+    }
+
+    inventory_snapshot {
+        string sku_id FK
+        string warehouse_id FK
+        string warehouse_name
+        date snapshot_date
+        int on_hand_qty
+        int safety_stock_qty
+        int reorder_point
+        int lead_time_days
+        float unit_cost_usd "NEW for valuation"
+        float inventory_value_usd "NEW"
+        float holding_cost_month_usd "NEW"
+        int avg_monthly_consumption "NEW"
+        float days_of_supply "NEW"
+        string velocity_category "NEW: fast/normal/slow/dead-moving"
+        date last_movement_date "NEW"
+        int aging_days "NEW"
+        string stock_status "NEW: healthy/low/critical/overstock"
+    }
+
+    %% ============================================================
+    %% STOCK BALANCING MODULE (NEW)
+    %% ============================================================
+    branch_transfer_log {
+        string transfer_id PK
+        string sku_id FK
+        string product_name
+        string source_warehouse
+        string destination_warehouse
+        int transfer_qty
+        float unit_cost_usd
+        float transfer_value_usd
+        string reason
+        string requested_by
+        date requested_date
+        date approved_date
+        date completed_date
+        string status
+        int transport_days
+        float transport_cost_usd
+        string trigger_type "AI/Manual"
+        string ai_recommendation_id FK
+    }
+
+    %% ============================================================
+    %% AI GENERATED DATA CHAIN
+    %% ============================================================
+    risk_event {
+        string event_id PK
+        string risk_category
+        string risk_level
+        float confidence_prob
+        string description
+        string potential_impact
+        date detected_at
+        string status
+        string related_entity_ids
+    }
+
+    ai_insight_log {
+        string insight_id PK
+        string module
+        string priority
+        string title
+        string summary
+        string contributing_factors
+        float confidence_score
+        string business_impact
+        string recommended_action
+        datetime created_at
+    }
+
+    audit_log {
+        string log_id PK
+        string module
+        string original_ai_proposal
+        string human_decision
+        string decision_role
+        string note
+        datetime timestamp
+    }
+
+    %% ============================================================
+    %% RELATIONSHIPS
+    %% ============================================================
+
+    %% --- Master to Transactional ---
+    supplier_master ||--o{ purchase_order : supplier_id
+    product_master ||--o{ purchase_order : product_id
+    plant_master ||--o{ purchase_order : plant_id
+
+    supplier_master ||--o{ invoice : supplier_id
+    product_master ||--o{ invoice : product_id
+    purchase_order ||--|| invoice : po_number
+
+    supplier_master ||--o{ shipment_resi : supplier_id
+    product_master ||--o{ shipment_resi : product_id
+    purchase_order ||--|| shipment_resi : po_number
+
+    plant_master ||--o{ production_order : plant_id
+    product_master ||--o{ production_order : product_id
+
+    product_master ||--o{ delivery_order : product_id
+    plant_master ||--o{ delivery_order : plant_id
+
+    product_master ||--o{ demand_history : sku_id
+
+    product_master ||--o{ demand_history_per_branch : sku_id
+    plant_master ||--o{ demand_history_per_branch : warehouse_id
+
+    product_master ||--o{ inventory_snapshot : sku_id
+    plant_master ||--o{ inventory_snapshot : warehouse_id
+
+    %% --- Stock Balancing Relationships ---
+    product_master ||--o{ branch_transfer_log : sku_id
+    ai_insight_log }o--|| branch_transfer_log : ai_recommendation_id
+    audit_log }o--o| branch_transfer_log : transfer_approval
+
+    logistics_telemetry }o--o{ delivery_order : shipment_context
+
+    %% --- AI Chain ---
+    risk_event }o--o{ production_order : related_entities
+    risk_event }o--o{ delivery_order : related_entities
+    risk_event }o--o{ supplier_master : related_entities
+    risk_event }o--o{ inventory_snapshot : related_entities
+
+    ai_insight_log }o--o{ risk_event : contributing_factors
+    audit_log }o--o{ ai_insight_log : original_proposal

@@ -1,7 +1,8 @@
 """
 MotherDuck Batch Uploader — SCIC PT Indoprima
-Uploads all 18 CSV files from datasets/quickwin_manufacturing/ into separate tables
-inside the 'manufacturing' schema of MotherDuck database 'indoprima'.
+Uploads all 34 CSV files into MotherDuck database:
+- 16 tables into 'supply_chain' / main schema
+- 18 tables into 'manufacturing' schema
 """
 
 import os
@@ -11,9 +12,21 @@ import duckdb
 # Path setup
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ENV_PATH = os.path.join(BASE_DIR, "backend", ".env")
-DATASET_DIR = os.path.join(BASE_DIR, "datasets", "quickwin_manufacturing")
 
-# Parse backend/.env manually if python-dotenv is not installed
+DATASET_GROUPS = {
+    "supply_chain": [
+        os.path.join(BASE_DIR, "datasets", "inventory"),
+        os.path.join(BASE_DIR, "datasets", "invoices"),
+        os.path.join(BASE_DIR, "datasets", "demand_history"),
+        os.path.join(BASE_DIR, "datasets", "procurement"),
+        os.path.join(BASE_DIR, "datasets", "erp_master"),
+        os.path.join(BASE_DIR, "datasets", "ai_governance"),
+    ],
+    "manufacturing": [
+        os.path.join(BASE_DIR, "datasets", "quickwin_manufacturing"),
+    ]
+}
+
 def load_env(env_path):
     env_vars = {}
     if os.path.exists(env_path):
@@ -27,8 +40,7 @@ def load_env(env_path):
 
 env = load_env(ENV_PATH)
 TOKEN = os.environ.get("MOTHERDUCK_TOKEN") or env.get("MOTHERDUCK_TOKEN")
-DB_NAME = os.environ.get("MOTHERDUCK_DB") or env.get("MOTHERDUCK_DB", "indoprima")
-SCHEMA_NAME = "manufacturing"
+DB_NAME = os.environ.get("MOTHERDUCK_DB") or env.get("MOTHERDUCK_DB", "scic_analytics")
 
 def main():
     if not TOKEN:
@@ -36,42 +48,48 @@ def main():
         return
 
     print(f"Connecting to MotherDuck Cloud...")
-    print(f"  Database : {DB_NAME}")
-    print(f"  Schema   : {SCHEMA_NAME}\n")
+    print(f"  Database : {DB_NAME}\n")
 
     connection_str = f"md:{DB_NAME}?token={TOKEN}"
     con = duckdb.connect(connection_str)
 
-    # Create schema 'manufacturing' to keep domain data clean & organized like a folder
-    con.execute(f"CREATE SCHEMA IF NOT EXISTS {SCHEMA_NAME};")
-    con.execute(f"USE {DB_NAME}.{SCHEMA_NAME};")
+    total_uploaded = 0
 
-    csv_files = glob.glob(os.path.join(DATASET_DIR, "*.csv"))
-    if not csv_files:
-        print(f"No CSV files found in {DATASET_DIR}!")
-        return
+    for schema_name, directories in DATASET_GROUPS.items():
+        print(f"==================================================")
+        print(f"  SCHEMA: {schema_name}")
+        print(f"==================================================")
+        con.execute(f"CREATE SCHEMA IF NOT EXISTS {schema_name};")
+        con.execute(f"USE {DB_NAME}.{schema_name};")
 
-    print(f"Found {len(csv_files)} CSV files. Creating separate tables under schema '{SCHEMA_NAME}'...\n")
+        schema_csvs = []
+        for d in directories:
+            schema_csvs.extend(glob.glob(os.path.join(d, "*.csv")))
 
-    for file_path in sorted(csv_files):
-        filename = os.path.basename(file_path)
-        table_name = os.path.splitext(filename)[0]
-        full_table_ref = f"{SCHEMA_NAME}.{table_name}"
-        normalized_path = file_path.replace("\\", "/")
+        print(f"Found {len(schema_csvs)} CSV files for schema '{schema_name}'...\n")
 
-        print(f"Uploading {filename} -> Table: {full_table_ref}...", end=" ", flush=True)
-        
-        # Sort telemetry table for block pruning optimization
-        if table_name == "fact_machine_telemetry":
-            query = f"CREATE OR REPLACE TABLE {full_table_ref} AS SELECT * FROM read_csv_auto('{normalized_path}') ORDER BY machine_id, timestamp;"
-        else:
-            query = f"CREATE OR REPLACE TABLE {full_table_ref} AS SELECT * FROM read_csv_auto('{normalized_path}');"
-        
-        con.execute(query)
-        row_count = con.execute(f"SELECT COUNT(*) FROM {full_table_ref};").fetchone()[0]
-        print(f"DONE ({row_count:,} rows)")
+        for file_path in sorted(schema_csvs):
+            filename = os.path.basename(file_path)
+            table_name = os.path.splitext(filename)[0]
+            full_table_ref = f"{schema_name}.{table_name}"
+            normalized_path = file_path.replace("\\", "/")
 
-    print(f"\nSuccessfully created all 18 tables in MotherDuck database '{DB_NAME}', schema '{SCHEMA_NAME}'!")
+            print(f"Uploading {filename} -> Table: {full_table_ref}...", end=" ", flush=True)
+            
+            # Sort telemetry table for block pruning optimization
+            if table_name == "fact_machine_telemetry":
+                query = f"CREATE OR REPLACE TABLE {full_table_ref} AS SELECT * FROM read_csv_auto('{normalized_path}') ORDER BY machine_id, timestamp;"
+            else:
+                query = f"CREATE OR REPLACE TABLE {full_table_ref} AS SELECT * FROM read_csv_auto('{normalized_path}');"
+            
+            con.execute(query)
+            row_count = con.execute(f"SELECT COUNT(*) FROM {full_table_ref};").fetchone()[0]
+            print(f"DONE ({row_count:,} rows)")
+            total_uploaded += 1
+
+    print(f"\n==================================================")
+    print(f" Successfully created all {total_uploaded} tables in MotherDuck DB '{DB_NAME}'!")
+    print(f"==================================================")
 
 if __name__ == "__main__":
     main()
