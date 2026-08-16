@@ -1,19 +1,23 @@
 "use client";
 
 /**
- * Topbar Navigation Component
- * Reference-inspired dark minimal topbar with white initial avatar and exact dropdown structure
+ * Topbar Navigation Component — SCIC Pitch-Black Design System
+ * Features:
+ * - Sidebar collapse toggle
+ * - Page Title
+ * - Live Sync Data notification indicator
+ * - "Ask AI Copilot" quick button directly beside user profile
+ * - User Profile Avatar & Dropdown Menu
  */
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
-  Bell,
-  Send,
   PanelLeft,
   User,
   Settings,
-  CreditCard,
   LogOut,
+  Sparkles,
+  CheckCircle2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -23,7 +27,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/auth-context";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface TopbarProps {
@@ -32,11 +35,13 @@ interface TopbarProps {
 }
 
 const pageTitles: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/invoice-matching": "Invoice Matching",
-  "/demand-intelligence": "Demand Intelligence",
-  "/chat": "AI Assistant",
-  "/data-connections": "Data Connections",
+  "/dashboard": "Supply Chain & Manufacturing Control Tower",
+  "/invoice-matching": "Invoice Matching Intelligence",
+  "/demand-intelligence": "Demand & Inventory Decision Intelligence",
+  "/chat": "AI Assistant Copilot",
+  "/agent-logs": "AI Agent Logs & Audit Trail",
+  "/explainability": "AI Explainability Panel",
+  "/data-connections": "Data Connections & IoT Health",
   "/settings": "Settings",
 };
 
@@ -57,7 +62,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
     router.push("/login");
   };
 
-  const userEmail = user?.email ?? "shaban@efferd.com";
+  const userEmail = user?.email ?? "regimr@gmail.com";
   const userInitial = userEmail.charAt(0).toUpperCase();
 
   return (
@@ -72,35 +77,72 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
           <PanelLeft className="w-4 h-4" />
         </button>
 
-        <h1 className="text-white text-xs font-medium font-poppins tracking-tight">
+        <h1 className="text-white text-xs font-semibold font-poppins tracking-tight">
           {title}
         </h1>
       </div>
 
-      {/* ── Right: Utilities & User Avatar ──────────────────────────── */}
+      {/* ── Right: Live Sync Dropdown, Ask AI Copilot & User Avatar ───── */}
       <div className="flex items-center gap-3">
-        {/* Send / Paperplane icon */}
-        <button className="text-white/40 hover:text-white transition-colors p-1">
-          <Send className="w-4 h-4" />
-        </button>
+        {/* Live Data Sync Notification Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-medium text-white/70 hover:text-white bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors outline-none cursor-pointer">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[10px] font-mono text-emerald-400">Live Sync</span>
+          </DropdownMenuTrigger>
 
-        {/* Bell notification icon */}
-        <button className="text-white/40 hover:text-white transition-colors p-1 relative">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-white" />
+          <DropdownMenuContent
+            align="end"
+            className="w-72 bg-[#0a0a0a] border border-white/20 rounded-none text-white p-3 shadow-2xl font-poppins"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
+              <div className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-xs font-semibold">Data Pipeline Active</span>
+              </div>
+              <span className="text-[10px] text-white/40">Updated 2m ago</span>
+            </div>
+            <div className="space-y-1.5 text-[11px] text-white/70">
+              <div className="flex justify-between">
+                <span>SAP S/4HANA ERP:</span>
+                <span className="text-emerald-400 font-mono">Synced</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Indoprima WMS:</span>
+                <span className="text-emerald-400 font-mono">Stream (Active)</span>
+              </div>
+              <div className="flex justify-between">
+                <span>E-Procurement:</span>
+                <span className="text-emerald-400 font-mono">Synced</span>
+              </div>
+              <div className="flex justify-between">
+                <span>IoT SCADA (8 Mesin):</span>
+                <span className="text-emerald-400 font-mono">5.040 Pts/day</span>
+              </div>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Ask AI Copilot Button (Directly beside profile) */}
+        <button
+          onClick={() => router.push("/chat")}
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-colors"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+          <span>Ask AI Copilot</span>
         </button>
 
         {/* User Dropdown */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center justify-center w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white font-poppins text-xs font-semibold transition-all outline-none border border-white/20 cursor-pointer">
+          <DropdownMenuTrigger className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-poppins text-xs font-semibold transition-all outline-none border border-white/20 cursor-pointer">
             {userInitial}
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="end"
-            className="w-56 bg-[#121212] border border-white/10 rounded-none text-white p-1.5 shadow-2xl font-poppins"
+            className="w-56 bg-[#0a0a0a] border border-white/20 rounded-none text-white p-1.5 shadow-2xl font-poppins"
           >
-            {/* Profile Info Header matching reference */}
+            {/* Profile Info Header */}
             <div className="flex items-center gap-3 p-2">
               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 text-white font-semibold text-xs border border-white/20">
                 {userInitial}
@@ -117,19 +159,20 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
 
             <DropdownMenuSeparator className="bg-white/10 my-1" />
 
-            <DropdownMenuItem className="flex items-center gap-2.5 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-none px-2.5 py-1.5 cursor-pointer font-poppins">
+            <DropdownMenuItem
+              onClick={() => router.push("/settings")}
+              className="flex items-center gap-2.5 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-none px-2.5 py-1.5 cursor-pointer font-poppins"
+            >
               <User className="w-3.5 h-3.5 text-white/60" />
-              <span>Account</span>
+              <span>Account Profile</span>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="flex items-center gap-2.5 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-none px-2.5 py-1.5 cursor-pointer font-poppins">
+            <DropdownMenuItem
+              onClick={() => router.push("/settings")}
+              className="flex items-center gap-2.5 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-none px-2.5 py-1.5 cursor-pointer font-poppins"
+            >
               <Settings className="w-3.5 h-3.5 text-white/60" />
-              <span>Settings</span>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="flex items-center gap-2.5 text-xs text-white/70 hover:text-white hover:bg-white/10 rounded-none px-2.5 py-1.5 cursor-pointer font-poppins">
-              <CreditCard className="w-3.5 h-3.5 text-white/60" />
-              <span>Plan & Billing</span>
+              <span>System Settings</span>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator className="bg-white/10 my-1" />
