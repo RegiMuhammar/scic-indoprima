@@ -1,24 +1,34 @@
-﻿"""Dashboard API — Health Score, KPIs, AI Insights, Alerts"""
-from fastapi import APIRouter, Depends
+"""Dashboard API — Health Score, KPIs, AI Insights, Alerts & MotherDuck Summary"""
+from fastapi import APIRouter, HTTPException
+from app.services.dashboard_service import get_dashboard_summary
 
 router = APIRouter()
 
+@router.get("/summary")
+async def get_summary():
+    """Returns complete real-time dashboard summary metrics from MotherDuck Cloud."""
+    try:
+        data = get_dashboard_summary()
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch dashboard metrics: {str(e)}")
+
 @router.get("/health-score")
 async def get_health_score():
-    # TODO: Implement composite health score calculation
-    return {"score": 0, "trend": "stable", "components": []}
+    data = get_dashboard_summary()
+    return data.get("health_index", {})
 
 @router.get("/kpis")
 async def get_kpis():
-    # TODO: Implement KPI monitoring
-    return {"kpis": []}
+    data = get_dashboard_summary()
+    return data.get("scorecards", {})
 
 @router.get("/insights")
 async def get_ai_insights():
-    # TODO: Implement AI priority insights (LangGraph agent)
-    return {"insights": []}
+    data = get_dashboard_summary()
+    return data.get("active_risks", [])
 
 @router.get("/alerts")
 async def get_alerts():
-    # TODO: Implement early warning alerts
-    return {"alerts": []}
+    data = get_dashboard_summary()
+    return data.get("active_risks", [])

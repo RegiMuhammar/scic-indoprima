@@ -43,6 +43,8 @@ desktop.ini
 datasets/*.parquet
 datasets/*.csv
 datasets/*.json
+*.duckdb
+*.duckdb.wal
 *.pdf
 *.xlsx
 

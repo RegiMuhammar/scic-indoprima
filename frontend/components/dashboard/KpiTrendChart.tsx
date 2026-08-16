@@ -18,16 +18,6 @@ export interface TrendDataPoint {
   anomaly_event?: string;
 }
 
-const defaultTrendData: TrendDataPoint[] = [
-  { period: "10 Aug", otd_rate: 93.5, production_achievement: 96.0 },
-  { period: "11 Aug", otd_rate: 91.8, production_achievement: 95.2 },
-  { period: "12 Aug", otd_rate: 89.4, production_achievement: 92.0 },
-  { period: "13 Aug", otd_rate: 82.0, production_achievement: 78.5, anomaly_event: "Line 3 Stamping Hydraulic Calibration (14h)" },
-  { period: "14 Aug", otd_rate: 84.1, production_achievement: 85.0 },
-  { period: "15 Aug", otd_rate: 83.8, production_achievement: 88.5, anomaly_event: "Tanjung Perak Port Customs Backlog (+42h)" },
-  { period: "16 Aug", otd_rate: 84.2, production_achievement: 88.5 },
-];
-
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{
@@ -37,12 +27,13 @@ interface TooltipProps {
     color: string;
   }>;
   label?: string;
+  trendItems?: TrendDataPoint[];
 }
 
-function CustomTooltip({ active, payload, label }: TooltipProps) {
+function CustomTooltip({ active, payload, label, trendItems }: TooltipProps) {
   if (!active || !payload?.length) return null;
 
-  const currentItem = defaultTrendData.find((d) => d.period === label);
+  const currentItem = trendItems?.find((d) => d.period === label);
 
   return (
     <div className="bg-[#000711] border border-white/20 p-3 text-xs font-poppins text-white shadow-2xl rounded-none min-w-[200px]">
@@ -72,11 +63,13 @@ interface KpiTrendChartProps {
 }
 
 export function KpiTrendChart({
-  data = defaultTrendData,
+  data = [],
   title = "Operational Performance Trend vs Targets",
   subtitle = "Tracking harian On-Time Delivery % & Produksi vs Target (92% & 95%).",
 }: KpiTrendChartProps) {
   const [metricFilter, setMetricFilter] = useState<"all" | "otd" | "production">("all");
+
+  const anomalyCount = data.filter((d) => Boolean(d.anomaly_event)).length;
 
   return (
     <div className="flex flex-col h-full bg-[#000000] border border-white/10 p-6 rounded-none font-poppins">
@@ -87,9 +80,11 @@ export function KpiTrendChart({
             <h3 className="text-white text-sm font-semibold font-poppins">
               {title}
             </h3>
-            <span className="text-xs text-white/40 font-mono">
-              (2 Anomalies Logged)
-            </span>
+            {anomalyCount > 0 && (
+              <span className="text-xs text-white/40 font-mono">
+                ({anomalyCount} Anomalies Logged)
+              </span>
+            )}
           </div>
           <p className="text-white/40 text-xs mt-1">
             {subtitle}
@@ -120,73 +115,109 @@ export function KpiTrendChart({
               metricFilter === "production" ? "bg-[#0555E0] text-white font-semibold" : "text-white/60 hover:text-white"
             }`}
           >
-            Production
+            Production Ach.
           </button>
         </div>
       </div>
 
-      {/* Recharts Line Chart (Full-Width Expansive) */}
-      <div className="w-full h-[280px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-            <XAxis
-              dataKey="period"
-              tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Poppins, sans-serif" }}
-              axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
-              tickLine={false}
-            />
-            <YAxis
-              domain={[60, 100]}
-              tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11, fontFamily: "Poppins, sans-serif" }}
-              axisLine={false}
-              tickLine={false}
-              tickFormatter={(v) => `${v}%`}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <ReferenceLine y={92} stroke="rgba(255,255,255,0.2)" strokeDasharray="3 3" label={{ value: "Target OTD 92%", fill: "rgba(255,255,255,0.3)", fontSize: 10, position: "insideTopRight" }} />
-
-            {(metricFilter === "all" || metricFilter === "otd") && (
-              <Line
-                type="monotone"
-                dataKey="otd_rate"
-                name="On-Time Delivery"
-                stroke="#38bdf8"
-                strokeWidth={2}
-                dot={{ r: 3, fill: "#38bdf8" }}
-                activeDot={{ r: 5 }}
+      {/* Chart Container / Blank Fallback */}
+      {data.length === 0 ? (
+        <div className="py-16 text-center text-white/40 text-xs font-mono">
+          Belum ada data trend operasional dari MotherDuck
+        </div>
+      ) : (
+        <div className="h-[280px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={data}
+              margin={{ top: 15, right: 30, left: -10, bottom: 5 }}
+            >
+              <XAxis
+                dataKey="period"
+                tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11 }}
+                axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+                tickLine={false}
               />
-            )}
-
-            {(metricFilter === "all" || metricFilter === "production") && (
-              <Line
-                type="monotone"
-                dataKey="production_achievement"
-                name="Production Achievement"
-                stroke="#ffffff"
-                strokeWidth={2}
-                dot={{ r: 3, fill: "#ffffff" }}
-                activeDot={{ r: 5 }}
+              <YAxis
+                domain={[70, 100]}
+                tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 11 }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `${v}%`}
               />
-            )}
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+              <Tooltip content={<CustomTooltip trendItems={data} />} />
 
-      {/* Legend & Summary (Monochrome text with bold value) */}
-      <div className="flex items-center justify-between text-[11px] text-white/40 pt-4 border-t border-white/5 mt-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#38bdf8]" />
-            <span className="text-white/70">OTD Rate (Current: 84.2%)</span>
+              {/* Target Reference Lines */}
+              {(metricFilter === "all" || metricFilter === "production") && (
+                <ReferenceLine
+                  y={95}
+                  stroke="#10b981"
+                  strokeDasharray="4 4"
+                  strokeOpacity={0.6}
+                  label={{
+                    value: "Prod Target: 95%",
+                    fill: "#10b981",
+                    fontSize: 10,
+                    position: "insideTopRight",
+                  }}
+                />
+              )}
+              {(metricFilter === "all" || metricFilter === "otd") && (
+                <ReferenceLine
+                  y={92}
+                  stroke="#0555E0"
+                  strokeDasharray="4 4"
+                  strokeOpacity={0.6}
+                  label={{
+                    value: "OTD Target: 92%",
+                    fill: "#0555E0",
+                    fontSize: 10,
+                    position: "insideBottomRight",
+                  }}
+                />
+              )}
+
+              {/* Metric Lines */}
+              {(metricFilter === "all" || metricFilter === "otd") && (
+                <Line
+                  type="monotone"
+                  dataKey="otd_rate"
+                  name="On-Time Delivery (OTD)"
+                  stroke="#0555E0"
+                  strokeWidth={2}
+                  dot={{ r: 4, fill: "#0555E0", stroke: "#000000", strokeWidth: 2 }}
+                  activeDot={{ r: 6 }}
+                />
+              )}
+              {(metricFilter === "all" || metricFilter === "production") && (
+                <Line
+                  type="monotone"
+                  dataKey="production_achievement"
+                  name="Production Achievement"
+                  stroke="#10b981"
+                  strokeWidth={2}
+                  dot={{ r: 4, fill: "#10b981", stroke: "#000000", strokeWidth: 2 }}
+                  activeDot={{ r: 6 }}
+                />
+              )}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* Legend Footer */}
+      <div className="flex items-center justify-between text-[11px] text-white/40 pt-4 border-t border-white/5 mt-auto">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-0.5 bg-[#0555E0]" />
+            <span className="text-white/60">OTD Rate</span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-white" />
-            <span className="text-white/70">Production (Current: 88.5%)</span>
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-0.5 bg-[#10b981]" />
+            <span className="text-white/60">Production Achievement</span>
           </div>
         </div>
-        <span className="text-white/60">
-          Gap to OTD Target: <b className="text-white font-medium">-7.8%</b>
-        </span>
+        <span>Target: OTD ≥ 92% | Prod ≥ 95%</span>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 """
 MotherDuck Batch Uploader — SCIC PT Indoprima
-Uploads all 34 CSV files into MotherDuck database:
-- 16 tables into 'supply_chain' / main schema
-- 18 tables into 'manufacturing' schema
+Uploads all CSV files into MotherDuck database:
+- 16 tables into 'supply_chain' schema
+- 18 tables into 'manufacturing' schema (skips if already exists unless forced)
 """
 
 import os
@@ -40,7 +40,7 @@ def load_env(env_path):
 
 env = load_env(ENV_PATH)
 TOKEN = os.environ.get("MOTHERDUCK_TOKEN") or env.get("MOTHERDUCK_TOKEN")
-DB_NAME = os.environ.get("MOTHERDUCK_DB") or env.get("MOTHERDUCK_DB", "scic_analytics")
+DB_NAME = os.environ.get("MOTHERDUCK_DB") or env.get("MOTHERDUCK_DB", "indoprima")
 
 def main():
     if not TOKEN:
@@ -53,7 +53,17 @@ def main():
     connection_str = f"md:{DB_NAME}?token={TOKEN}"
     con = duckdb.connect(connection_str)
 
+    # Get existing tables
+    existing_tables = set()
+    try:
+        tables_res = con.execute("SELECT schema_name, table_name FROM duckdb_tables();").fetchall()
+        for r in tables_res:
+            existing_tables.add(f"{r[0]}.{r[1]}")
+    except Exception as e:
+        print(f"Notice: Could not fetch existing tables: {e}")
+
     total_uploaded = 0
+    total_skipped = 0
 
     for schema_name, directories in DATASET_GROUPS.items():
         print(f"==================================================")
@@ -74,7 +84,13 @@ def main():
             full_table_ref = f"{schema_name}.{table_name}"
             normalized_path = file_path.replace("\\", "/")
 
-            print(f"Uploading {filename} -> Table: {full_table_ref}...", end=" ", flush=True)
+            if full_table_ref in existing_tables:
+                row_count = con.execute(f"SELECT COUNT(*) FROM {full_table_ref};").fetchone()[0]
+                print(f"[EXISTS] {filename:<36} -> Table: {full_table_ref} ({row_count:,} rows - SKIPPED)")
+                total_skipped += 1
+                continue
+
+            print(f"[UPLOADING] {filename:<32} -> Table: {full_table_ref}...", end=" ", flush=True)
             
             # Sort telemetry table for block pruning optimization
             if table_name == "fact_machine_telemetry":
@@ -88,7 +104,7 @@ def main():
             total_uploaded += 1
 
     print(f"\n==================================================")
-    print(f" Successfully created all {total_uploaded} tables in MotherDuck DB '{DB_NAME}'!")
+    print(f" Successfully processed: {total_uploaded} uploaded, {total_skipped} already existing!")
     print(f"==================================================")
 
 if __name__ == "__main__":

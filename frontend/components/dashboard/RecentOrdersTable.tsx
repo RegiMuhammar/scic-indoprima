@@ -6,111 +6,23 @@ import { Package } from "lucide-react";
 export interface DeliveryOrder {
   id: string;
   customer: string;
-  product: string;
-  promisedDate: string;
-  actualDate: string;
-  qty: number;
-  value: number;
-  plant: string;
+  product?: string;
+  partName?: string;
+  promisedDate?: string;
+  actualDate?: string;
+  etd?: string;
+  qty?: number;
+  quantity?: number;
+  value: string | number;
+  plant?: string;
   status: "Completed" | "In Transit" | "Delayed";
 }
-
-const defaultRecentOrders: DeliveryOrder[] = [
-  {
-    id: "DO-202500",
-    customer: "CUST-0005 (PT Astra Honda Motor)",
-    product: "PRD-005 (Leaf Spring Assembly Heavy)",
-    promisedDate: "2025-11-10",
-    actualDate: "2025-11-10",
-    qty: 100,
-    value: 15000,
-    plant: "PLT-BKS-03",
-    status: "Completed",
-  },
-  {
-    id: "DO-202501",
-    customer: "CUST-0001 (Toyota Motor Mfg)",
-    product: "PRD-004 (Stabilizer Bar 28mm OEM)",
-    promisedDate: "2025-11-19",
-    actualDate: "-",
-    qty: 1000,
-    value: 2500,
-    plant: "PLT-KRW-02",
-    status: "Delayed",
-  },
-  {
-    id: "DO-202502",
-    customer: "CUST-0020 (PT Suzuki Indomobil)",
-    product: "PRD-011 (Coil Spring Heavy Duty)",
-    promisedDate: "2026-08-01",
-    actualDate: "2026-07-31",
-    qty: 100,
-    value: 15000,
-    plant: "PLT-KRW-02",
-    status: "Completed",
-  },
-  {
-    id: "DO-202506",
-    customer: "CUST-0014 (PT Isuzu Astra Motor)",
-    product: "PRD-009 (Brake Pad Assembly Semi-Met)",
-    promisedDate: "2026-04-16",
-    actualDate: "-",
-    qty: 500,
-    value: 25000,
-    plant: "PLT-KRW-02",
-    status: "Delayed",
-  },
-  {
-    id: "DO-202507",
-    customer: "CUST-0017 (PT Hino Motors Mfg)",
-    product: "PRD-006 (Parabolic Leaf Spring)",
-    promisedDate: "2026-07-28",
-    actualDate: "2026-07-27",
-    qty: 500,
-    value: 75000,
-    plant: "PLT-SBY-01",
-    status: "Completed",
-  },
-  {
-    id: "DO-202510",
-    customer: "CUST-0007 (PT Mitsubishi Motors)",
-    product: "PRD-006 (Parabolic Leaf Spring)",
-    promisedDate: "2026-07-03",
-    actualDate: "-",
-    qty: 800,
-    value: 42000,
-    plant: "PLT-KRW-02",
-    status: "In Transit",
-  },
-  {
-    id: "DO-202511",
-    customer: "CUST-0003 (PT Hyundai Motor ID)",
-    product: "PRD-009 (Brake Pad Assembly Semi-Met)",
-    promisedDate: "2025-11-11",
-    actualDate: "-",
-    qty: 800,
-    value: 25000,
-    plant: "PLT-SBY-01",
-    status: "Delayed",
-  },
-  {
-    id: "DO-202512",
-    customer: "CUST-0003 (PT Hyundai Motor ID)",
-    product: "PRD-004 (Stabilizer Bar 28mm OEM)",
-    promisedDate: "2026-06-02",
-    actualDate: "2026-06-01",
-    qty: 800,
-    value: 40000,
-    plant: "PLT-KRW-02",
-    status: "Completed",
-  },
-];
 
 interface RecentOrdersTableProps {
   orders?: DeliveryOrder[];
 }
 
-export function RecentOrdersTable({ orders = defaultRecentOrders }: RecentOrdersTableProps) {
+export function RecentOrdersTable({ orders = [] }: RecentOrdersTableProps) {
   const [filter, setFilter] = useState<"All" | "Completed" | "In Transit" | "Delayed">("All");
 
   const filteredOrders = filter === "All"
@@ -138,84 +50,103 @@ export function RecentOrdersTable({ orders = defaultRecentOrders }: RecentOrders
             </span>
           </div>
           <p className="text-white/40 text-xs mt-1">
-            Status pengiriman langsung dari SAP S/4HANA ERP & Indoprima Logistics.
+            Status pengiriman DO real-time terhadap SLA komitmen OEM.
           </p>
         </div>
 
-        {/* Filter Buttons */}
-        <div className="flex items-center gap-1 bg-[#000711] border border-white/10 p-0.5">
-          {(["All", "Completed", "In Transit", "Delayed"] as const).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setFilter(tab)}
-              className={`px-3 py-1 text-xs font-medium transition-colors ${
-                filter === tab
-                  ? "bg-[#0555E0] text-white font-semibold"
-                  : "text-white/50 hover:text-white"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+        {/* Minimalist Filter Tabs with #0555E0 active highlight */}
+        <div className="flex items-center gap-1.5 p-1 bg-[#000711] border border-white/10 text-xs self-start sm:self-auto">
+          {(["All", "Completed", "In Transit", "Delayed"] as const).map((status) => {
+            const count = status === "All" 
+              ? orders.length 
+              : orders.filter((o) => o.status === status).length;
+            const isActive = filter === status;
+
+            return (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-3 py-1 text-xs transition-colors flex items-center gap-1.5 ${
+                  isActive
+                    ? "bg-[#0555E0] text-white font-medium shadow-sm"
+                    : "text-white/40 hover:text-white hover:bg-white/5"
+                }`}
+              >
+                <span>{status}</span>
+                <span
+                  className={`text-[10px] px-1 font-mono ${
+                    isActive ? "bg-white/20 text-white" : "bg-white/5 text-white/40"
+                  }`}
+                >
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs border-collapse">
-          <thead>
-            <tr className="border-b border-white/10 text-white/40 text-[11px] uppercase tracking-wider">
-              <th className="py-3 px-3">Order ID</th>
-              <th className="py-3 px-3">Customer & OEM</th>
-              <th className="py-3 px-3">Product SKU</th>
-              <th className="py-3 px-3">Promised Date</th>
-              <th className="py-3 px-3">Actual Date</th>
-              <th className="py-3 px-3 text-right">Qty</th>
-              <th className="py-3 px-3 text-right">Value ($)</th>
-              <th className="py-3 px-3">Plant Origin</th>
-              <th className="py-3 px-3">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {filteredOrders.map((order) => (
-              <tr
-                key={order.id}
-                className="hover:bg-white/[0.02] transition-colors"
-              >
-                <td className="py-3.5 px-3 text-white font-mono font-medium">
-                  {order.id}
-                </td>
-                <td className="py-3.5 px-3 text-white/80 truncate max-w-[200px]">
-                  {order.customer}
-                </td>
-                <td className="py-3.5 px-3 text-white/70 truncate max-w-[220px]">
-                  {order.product}
-                </td>
-                <td className="py-3.5 px-3 text-white/60 font-mono">
-                  {order.promisedDate}
-                </td>
-                <td className="py-3.5 px-3 text-white/60 font-mono">
-                  {order.actualDate}
-                </td>
-                <td suppressHydrationWarning className="py-3.5 px-3 text-white/90 text-right font-mono font-medium">
-                  {order.qty.toLocaleString("en-US")} pcs
-                </td>
-                <td suppressHydrationWarning className="py-3.5 px-3 text-white text-right font-mono font-semibold">
-                  ${order.value.toLocaleString("en-US")}
-                </td>
-                <td className="py-3.5 px-3 text-white/50 font-mono text-[11px]">
-                  {order.plant}
-                </td>
-                <td className="py-3.5 px-3">
-                  <span className={`text-[11px] ${statusColorMap[order.status]}`}>
-                    {order.status}
-                  </span>
-                </td>
+      {/* Table / Empty State */}
+      {filteredOrders.length === 0 ? (
+        <div className="py-16 text-center text-white/40 text-xs font-mono">
+          Belum ada data pesanan pengiriman dari MotherDuck
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="border-b border-white/10 text-white/40 font-mono text-[11px]">
+                <th className="pb-3 font-normal">DO NUMBER</th>
+                <th className="pb-3 font-normal">CUSTOMER</th>
+                <th className="pb-3 font-normal">PART NAME</th>
+                <th className="pb-3 font-normal text-right">QTY (PCS)</th>
+                <th className="pb-3 font-normal text-right">VALUE</th>
+                <th className="pb-3 font-normal text-center">ETD / PROMISED</th>
+                <th className="pb-3 font-normal text-right">STATUS</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-white/5">
+              {filteredOrders.map((order, index) => {
+                const qtyVal = order.quantity ?? order.qty ?? 0;
+                const valueStr = typeof order.value === "number" ? `$${order.value.toLocaleString()}` : order.value;
+                const etdStr = order.etd || order.promisedDate || "-";
+                const partStr = order.partName || order.product || "-";
+
+                return (
+                  <tr
+                    key={`${order.id}-${partStr}-${index}`}
+                    className="hover:bg-white/[0.02] transition-colors group cursor-default"
+                  >
+                    <td className="py-3 font-mono font-medium text-white group-hover:text-white">
+                      {order.id}
+                    </td>
+                    <td className="py-3 text-white/70">
+                      {order.customer}
+                    </td>
+                    <td className="py-3 text-white/60">
+                      {partStr}
+                    </td>
+                    <td className="py-3 text-right font-mono text-white/80">
+                      {qtyVal.toLocaleString()}
+                    </td>
+                    <td className="py-3 text-right font-mono text-white/80">
+                      {valueStr}
+                    </td>
+                    <td className="py-3 text-center font-mono text-white/50">
+                      {etdStr}
+                    </td>
+                    <td className="py-3 text-right">
+                      <span className={statusColorMap[order.status] || "text-white/60"}>
+                        {order.status}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

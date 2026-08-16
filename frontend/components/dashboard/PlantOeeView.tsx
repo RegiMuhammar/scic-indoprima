@@ -2,85 +2,65 @@
 
 import React, { useState } from "react";
 import {
-  BarChart,
+  ComposedChart,
   Bar,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  Cell,
+  ReferenceLine,
+  LabelList,
 } from "recharts";
 import { Factory, Cpu } from "lucide-react";
 import { ScoreCard } from "@/components/dashboard/ScoreCard";
 
-const lineOeeData = [
-  {
-    line_id: "LINE-LS-01",
-    line_name: "Leaf Spring Line 01 (Gresik)",
-    target_oee: 85.0,
-    availability: 89.2,
-    performance: 94.1,
-    quality: 98.6,
-    overall_oee: 82.8,
-    status: "Warning",
-    statusColor: "text-amber-400",
-  },
-  {
-    line_id: "LINE-LS-02",
-    line_name: "Leaf Spring Line 02 (Gresik)",
-    target_oee: 85.0,
-    availability: 91.5,
-    performance: 95.0,
-    quality: 97.2,
-    overall_oee: 84.5,
-    status: "On Track",
-    statusColor: "text-emerald-400",
-  },
-  {
-    line_id: "LINE-CS-01",
-    line_name: "Coil Spring Line 01 (Nganjuk)",
-    target_oee: 85.0,
-    availability: 94.0,
-    performance: 96.2,
-    quality: 96.5,
-    overall_oee: 87.2,
-    status: "Healthy",
-    statusColor: "text-emerald-400",
-  },
-  {
-    line_id: "LINE-SB-01",
-    line_name: "Stabilizer Bar Line 01 (Gresik)",
-    target_oee: 85.0,
-    availability: 86.4,
-    performance: 93.8,
-    quality: 99.1,
-    overall_oee: 80.3,
-    status: "Warning",
-    statusColor: "text-amber-400",
-  },
-];
+export interface LineOeeItem {
+  line_id: string;
+  line_name: string;
+  plant: string;
+  target_oee: number;
+  availability: number;
+  performance: number;
+  quality: number;
+  overall_oee: number;
+  status: string;
+  statusColor: string;
+  barColor: string;
+}
 
-const paretoLosses = [
-  { category: "Unplanned Breakdown", minutes: 840, pct: 42.5, fill: "#ef4444" },
-  { category: "Changeover & Setup", minutes: 480, pct: 24.3, fill: "#f59e0b" },
-  { category: "Planned Maintenance", minutes: 320, pct: 16.2, fill: "#3b82f6" },
-  { category: "Tooling / Die Adjust", minutes: 210, pct: 10.6, fill: "#8b5cf6" },
-  { category: "Speed Loss / Idle", minutes: 125, pct: 6.4, fill: "#64748b" },
-];
+export interface ParetoLossItem {
+  category: string;
+  fullCategory?: string;
+  minutes: number;
+  pct: number;
+  cumulativePct: number;
+}
 
-const shiftData = [
-  { shift: "Shift 1 (Pagi)", output: 2450, defect_pct: 1.2, utilization: 94.5 },
-  { shift: "Shift 2 (Sore)", output: 2310, defect_pct: 1.8, utilization: 91.2 },
-  { shift: "Shift 3 (Malam)", output: 1980, defect_pct: 4.8, utilization: 82.0 },
-];
+export interface ShiftManpowerItem {
+  shift: string;
+  output: number;
+  defect_pct: number;
+  utilization: number;
+}
 
-export function PlantOeeView() {
+interface PlantOeeViewProps {
+  lines?: LineOeeItem[];
+  pareto?: ParetoLossItem[];
+  shifts?: ShiftManpowerItem[];
+}
+
+export function PlantOeeView({ lines, pareto, shifts }: PlantOeeViewProps) {
   const [selectedLine, setSelectedLine] = useState<string>("LINE-LS-01");
+
+  const lineOeeData = lines || [];
+  const paretoLosses = pareto || [];
+  const activeShifts = shifts || [];
 
   const oeeScorecards = [
     {
       title: "Availability Rate",
-      value: "89.2%",
+      value: lineOeeData.length > 0 ? `${(lineOeeData.reduce((acc, curr) => acc + curr.availability, 0) / lineOeeData.length).toFixed(1)}%` : "0%",
       target: "90.0%",
       change: -1.2,
       changePeriod: "vs last month",
@@ -99,7 +79,7 @@ export function PlantOeeView() {
     },
     {
       title: "Performance Rate",
-      value: "94.1%",
+      value: lineOeeData.length > 0 ? `${(lineOeeData.reduce((acc, curr) => acc + curr.performance, 0) / lineOeeData.length).toFixed(1)}%` : "0%",
       target: "95.0%",
       change: 0.5,
       changePeriod: "vs last month",
@@ -118,7 +98,7 @@ export function PlantOeeView() {
     },
     {
       title: "Quality Rate (Good Count %)",
-      value: "98.6%",
+      value: lineOeeData.length > 0 ? `${(lineOeeData.reduce((acc, curr) => acc + curr.quality, 0) / lineOeeData.length).toFixed(1)}%` : "0%",
       target: "99.0%",
       change: -0.4,
       changePeriod: "vs last month",
@@ -129,15 +109,15 @@ export function PlantOeeView() {
         formula: "Quality = Good Units Produced / Total Units Inspected × 100",
         sourceTables: ["fact_quality_inspections"],
         underlyingCauses: [
-          "Lonjakan defect 4.8% pada Shift 3 (malam) akibat operator fatigue",
-          "Total reject 180 unit dari 12.800 unit yang diinspeksi",
+          "Lonjakan defect pada Shift 3 malam akibat operator fatigue",
+          "Total reject tercatat pada lini perakitan",
         ],
         recommendedAction: "Terapkan rotasi shift berkala dan double-check kalibrasi suhu furnace shift malam.",
       },
     },
     {
       title: "Composite Plant OEE",
-      value: "82.8%",
+      value: lineOeeData.length > 0 ? `${(lineOeeData.reduce((acc, curr) => acc + curr.overall_oee, 0) / lineOeeData.length).toFixed(1)}%` : "0%",
       target: "85.0%",
       change: 0.8,
       changePeriod: "vs last month",
@@ -148,8 +128,8 @@ export function PlantOeeView() {
         formula: "OEE = Availability × Performance × Quality",
         sourceTables: ["view_line_oee_summary", "dim_production_lines"],
         underlyingCauses: [
-          "Line 1 (82.8%) dan Line 4 (80.3%) menarik turun rata-rata keseluruhan pabrik",
-          "Line 3 Coil Spring mencatatkan performa terbaik di 87.2%",
+          "Line 1 dan Line 4 menarik turun rata-rata keseluruhan pabrik",
+          "Line 3 Coil Spring mencatatkan performa terbaik",
         ],
         recommendedAction: "Fokuskan perbaikan OEE pada reduksi downtime hidrolik Line 1 dan Line 4.",
       },
@@ -166,11 +146,11 @@ export function PlantOeeView() {
         ))}
       </div>
 
-      {/* ── Middle Row: Line Breakdown & 6 Big Losses Pareto ───────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* ── Middle Row: Enhanced Visual Line Breakdown & Standard 80:20 Pareto ───────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         
-        {/* Left: Lines OEE Matrix */}
-        <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
+        {/* Left: Visual Bullet Bar OEE Breakdown (~50% / 6 Cols) */}
+        <div className="lg:col-span-6 p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between min-h-[420px]">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -179,84 +159,200 @@ export function PlantOeeView() {
                   Production Lines OEE Breakdown
                 </h3>
               </div>
-              <span className="text-white/40 text-xs">Gresik & Nganjuk Plants</span>
+              <span className="text-white/40 text-xs font-mono">Target: 85.0%</span>
             </div>
 
-            <div className="divide-y divide-white/10 border-t border-b border-white/10">
-              {lineOeeData.map((line) => (
-                <div
-                  key={line.line_id}
-                  onClick={() => setSelectedLine(line.line_id)}
-                  className={`p-3 flex items-center justify-between cursor-pointer transition-colors ${
-                    selectedLine === line.line_id ? "bg-white/5" : "hover:bg-white/[0.02]"
-                  }`}
-                >
-                  <div>
-                    <span className="text-white font-medium text-xs block">{line.line_name}</span>
-                    <span className="text-white/40 text-[11px]">
-                      Avail: {line.availability}% • Perf: {line.performance}% • Qual: {line.quality}%
-                    </span>
-                  </div>
+            {/* Visual Micro-Bullet Bar Cards or Blank Fallback */}
+            {lineOeeData.length === 0 ? (
+              <div className="py-16 text-center text-white/40 text-xs font-mono">
+                Belum ada data lini produksi dari MotherDuck
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {lineOeeData.map((line) => (
+                  <div
+                    key={line.line_id}
+                    className="p-3.5 bg-white/[0.02] border border-white/10 hover:border-white/20 transition-colors"
+                  >
+                    {/* Header: Line Title + Status + Big OEE Value */}
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-white font-semibold text-xs">{line.line_name}</span>
+                          <span className="text-white/40 text-[10px] font-mono">({line.plant})</span>
+                        </div>
+                      </div>
 
-                  <div className="text-right">
-                    <span className="text-white text-sm font-bold block">{line.overall_oee}%</span>
-                    <span className={`text-[11px] font-medium ${line.statusColor}`}>
-                      {line.status}
-                    </span>
+                      <div className="flex items-center gap-2.5">
+                        <span className={`text-[11px] font-medium ${line.statusColor}`}>
+                          {line.status}
+                        </span>
+                        <span className="text-white text-sm font-bold font-mono">
+                          {line.overall_oee}%
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Progress Bar with Target 85% Marker */}
+                    <div className="relative w-full h-2 bg-white/10 my-2 overflow-hidden">
+                      <div
+                        className={`h-full ${line.barColor} transition-all duration-500`}
+                        style={{ width: `${line.overall_oee}%` }}
+                      />
+                      {/* Target 85% Dashed Marker */}
+                      <div
+                        className="absolute top-0 bottom-0 w-0.5 bg-white z-10"
+                        style={{ left: "85%" }}
+                        title="Target OEE 85%"
+                      />
+                    </div>
+
+                    {/* 3-Factor Micro Breakdown (A × P × Q) */}
+                    <div className="flex items-center justify-between pt-1.5 text-[10px] font-mono text-white/50">
+                      <span>
+                        A (Avail): <b className={`font-semibold ${line.availability < 90 ? "text-amber-400" : "text-white/80"}`}>{line.availability}%</b>
+                      </span>
+                      <span>
+                        P (Perf): <b className="font-semibold text-white/80">{line.performance}%</b>
+                      </span>
+                      <span>
+                        Q (Qual): <b className="font-semibold text-white/80">{line.quality}%</b>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-white/40">
-            <span>Selected Line: <b className="text-white">{selectedLine}</b></span>
-            <span>Target OEE: 85.0%</span>
+            <span>Benchmark Standar OEE: <b className="text-white">World Class &ge;85.0%</b></span>
+            <span>Cakupan: {lineOeeData.length} Lini Aktif</span>
           </div>
         </div>
 
-        {/* Right: 6 Big Losses Pareto Chart */}
-        <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
+        {/* Right: Standard Looker/BI 80:20 Pareto Chart (~50% / 6 Cols) */}
+        <div className="lg:col-span-6 p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between min-h-[420px]">
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-1">
               <h3 className="text-white text-sm font-semibold">
-                6 Big Losses & Downtime Pareto
+                6 Big Losses & Downtime Pareto (80:20 Rule)
               </h3>
-              <span className="text-red-400 text-xs font-semibold">Total: 1.975 Min</span>
+              <span className="text-red-400 text-xs font-semibold font-mono">
+                Total: {paretoLosses.reduce((acc, curr) => acc + curr.minutes, 0).toLocaleString()} Min
+              </span>
             </div>
-            <p className="text-white/40 text-xs mb-4">
-              Distribusi akar penyebab waktu henti mesin (30 hari terakhir).
+            <p className="text-white/40 text-xs mb-2">
+              Bar (Menit Downtime) & Garis Kumulatif % dengan garis batas 80% Pareto.
             </p>
+          </div>
 
-            <div className="h-[200px]">
+          {/* Pareto Chart Container or Blank Fallback */}
+          {paretoLosses.length === 0 ? (
+            <div className="py-16 text-center text-white/40 text-xs font-mono">
+              Belum ada data downtime pareto dari MotherDuck
+            </div>
+          ) : (
+            <div className="w-full h-[330px] my-1">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={paretoLosses} layout="vertical" margin={{ top: 0, right: 20, left: 40, bottom: 0 }}>
-                  <XAxis type="number" tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }} axisLine={false} tickLine={false} />
-                  <YAxis type="category" dataKey="category" tick={{ fill: "rgba(255,255,255,0.7)", fontSize: 11 }} axisLine={false} tickLine={false} />
+                <ComposedChart
+                  data={paretoLosses}
+                  barCategoryGap="14%"
+                  margin={{ top: 25, right: 5, left: -22, bottom: 15 }}
+                >
+                  <XAxis
+                    dataKey="category"
+                    interval={0}
+                    tick={{ fill: "rgba(255,255,255,0.7)", fontSize: 10, fontFamily: "Poppins, sans-serif" }}
+                    axisLine={{ stroke: "rgba(255,255,255,0.1)" }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    yAxisId="left"
+                    orientation="left"
+                    tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `${v}m`}
+                  />
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    domain={[0, 100]}
+                    tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(v) => `${v}%`}
+                  />
                   <Tooltip
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-[#000711] border border-white/20 p-2 text-xs text-white">
-                          <p className="font-semibold">{d.category}</p>
-                          <p className="text-white/70">{d.minutes} menit ({d.pct}%)</p>
+                        <div className="bg-[#000711] border border-white/20 p-2.5 text-xs text-white shadow-2xl">
+                          <p className="font-semibold text-white text-xs border-b border-white/10 pb-1 mb-1">
+                            {d.fullCategory || d.category}
+                          </p>
+                          <div className="space-y-0.5 text-[11px]">
+                            <p className="text-white/70">Downtime: <b className="text-white">{d.minutes} menit</b> ({d.pct}%)</p>
+                            <p className="text-[#0555E0] font-mono font-semibold">Kumulatif Pareto: {d.cumulativePct}%</p>
+                          </div>
                         </div>
                       );
                     }}
                   />
-                  <Bar dataKey="minutes" radius={[0, 0, 0, 0]}>
-                    {paretoLosses.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.fill} />
-                    ))}
+                  {/* 80% Pareto Cutoff Reference Line */}
+                  <ReferenceLine
+                    y={80}
+                    yAxisId="right"
+                    stroke="#ef4444"
+                    strokeDasharray="3 3"
+                    label={{
+                      value: "80% Pareto Cutoff",
+                      fill: "#ef4444",
+                      fontSize: 10,
+                      position: "insideTopLeft",
+                    }}
+                  />
+                  {/* Tall Bars with Uniform Primary Color #0555E0 & Individual % Labels */}
+                  <Bar yAxisId="left" dataKey="minutes" fill="#0555E0" radius={[0, 0, 0, 0]}>
+                    <LabelList
+                      dataKey="pct"
+                      position="top"
+                      formatter={(v) => `${v}%`}
+                      fill="#ffffff"
+                      fontSize={11}
+                      fontWeight="600"
+                      fontFamily="monospace"
+                    />
                   </Bar>
-                </BarChart>
+                  {/* Cumulative % Line (Rising Left-to-Right) */}
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="cumulativePct"
+                    stroke="#ffffff"
+                    strokeWidth={2}
+                    dot={{ r: 4, fill: "#0555E0", stroke: "#ffffff", strokeWidth: 1.5 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
-          </div>
+          )}
 
           <div className="flex items-center justify-between text-[11px] text-white/40 pt-3 border-t border-white/5">
-            <span>Primary Loss Driver: <b className="text-red-400">Unplanned Hydraulic Breakdown (42.5%)</b></span>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 bg-[#0555E0]" />
+                <span className="text-white/60">Downtime (Menit)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-white" />
+                <span className="text-white/60">Kumulatif %</span>
+              </div>
+            </div>
+            <span>80% Masalah: <b className="text-red-400">Breakdown & Setup</b></span>
           </div>
         </div>
 
@@ -281,67 +377,72 @@ export function PlantOeeView() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {shiftData.map((s) => (
-              <div key={s.shift} className="p-4 bg-[#000711] border border-white/10">
-                <span className="text-white/70 text-xs font-semibold block mb-2">{s.shift}</span>
-                <div className="space-y-1.5 text-xs">
-                  <div className="flex justify-between text-white/50">
-                    <span>Output:</span>
-                    <span className="text-white font-medium">{s.output} unit</span>
-                  </div>
-                  <div className="flex justify-between text-white/50">
-                    <span>Defect Rate:</span>
-                    <span className={`font-semibold ${s.defect_pct > 3 ? "text-red-400" : "text-emerald-400"}`}>
-                      {s.defect_pct}%
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-white/50">
-                    <span>Labor Utilization:</span>
-                    <span className="text-white font-medium">{s.utilization}%</span>
+          {activeShifts.length === 0 ? (
+            <div className="py-8 text-center text-white/40 text-xs font-mono">
+              Belum ada data shift manpower dari MotherDuck
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {activeShifts.map((s) => (
+                <div key={s.shift} className="p-4 bg-[#000711] border border-white/10">
+                  <span className="text-white/70 text-xs font-semibold block mb-2">{s.shift}</span>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between text-white/50">
+                      <span>Output:</span>
+                      <span className="text-white font-medium">{s.output} unit</span>
+                    </div>
+                    <div className="flex justify-between text-white/50">
+                      <span>Defect Rate:</span>
+                      <span className={`font-semibold ${s.defect_pct > 3 ? "text-red-400" : "text-emerald-400"}`}>
+                        {s.defect_pct}%
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-white/50">
+                      <span>Labor Utilization:</span>
+                      <span className="text-white font-medium">{s.utilization}%</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Machine IoT Waveform Mini-Viewer */}
         <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Cpu className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-white text-sm font-semibold">
-                IoT Sensor Telemetry Live
-              </h3>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <Cpu className="w-4 h-4 text-emerald-400" />
+                <h3 className="text-white text-sm font-semibold">Live Machine Telemetry</h3>
+              </div>
+              <span className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                ONLINE
+              </span>
             </div>
             <p className="text-white/40 text-xs mb-4">
-              Real-time feed MCH-LS-01 Stamping Press.
+              Real-time vibration sensor (SCADA IoT Stream).
             </p>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
-                <span className="text-white/70">Vibration:</span>
-                <span className="text-amber-400 font-mono font-semibold">4.82 mm/s (Warning)</span>
+              <div className="flex justify-between p-2 bg-[#000711] border border-white/5">
+                <span className="text-white/60">Vibration (mm/s):</span>
+                <span className="font-mono text-emerald-400 font-semibold">1.42 mm/s (Normal)</span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
-                <span className="text-white/70">Temperature:</span>
-                <span className="text-emerald-400 font-mono font-semibold">68.4 °C (Normal)</span>
+              <div className="flex justify-between p-2 bg-[#000711] border border-white/5">
+                <span className="text-white/60">Temperature (°C):</span>
+                <span className="font-mono text-white font-semibold">68.4 °C</span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
-                <span className="text-white/70">Motor Current:</span>
-                <span className="text-white font-mono font-semibold">142.5 Ampere</span>
-              </div>
-              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
-                <span className="text-white/70">Machine State:</span>
-                <span className="text-emerald-400 font-semibold uppercase text-[10px]">Running</span>
+              <div className="flex justify-between p-2 bg-[#000711] border border-white/5">
+                <span className="text-white/60">Pressure (bar):</span>
+                <span className="font-mono text-white font-semibold">142.8 bar</span>
               </div>
             </div>
           </div>
 
-          <div className="pt-3 border-t border-white/10 text-[10px] text-white/30 flex justify-between">
-            <span>Sampling: Edge SCADA 10s</span>
-            <span>Sensor Status: Synced</span>
+          <div className="mt-4 pt-3 border-t border-white/5 text-[10px] text-white/40 font-mono">
+            Sensor ID: <b className="text-white">SCADA-VIB-092 (Line 1)</b>
           </div>
         </div>
 
