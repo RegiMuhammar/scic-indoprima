@@ -66,7 +66,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
   const userInitial = userEmail.charAt(0).toUpperCase();
 
   return (
-    <header className="flex items-center justify-between h-14 px-5 bg-[#000000] border-b border-white/10 shrink-0 select-none font-poppins">
+    <header className="flex items-center justify-between h-14 px-5 bg-[#000711] border-b border-white/10 shrink-0 select-none font-poppins">
       {/* ── Left: Sidebar Toggle & Page Title ──────────────────────── */}
       <div className="flex items-center gap-4">
         <button
@@ -93,7 +93,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
 
           <DropdownMenuContent
             align="end"
-            className="w-72 bg-[#0a0a0a] border border-white/20 rounded-none text-white p-3 shadow-2xl font-poppins"
+            className="w-72 bg-[#000711] border border-white/20 rounded-none text-white p-3 shadow-2xl font-poppins"
           >
             <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-2">
               <div className="flex items-center gap-1.5">
@@ -126,7 +126,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
         {/* Ask AI Copilot Button (Directly beside profile) */}
         <button
           onClick={() => router.push("/chat")}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-white/5 border border-white/20 hover:bg-[#0555E0] hover:border-[#0555E0] transition-colors"
         >
           <Sparkles className="w-3.5 h-3.5 text-white/70" />
           <span>Ask AI Copilot</span>
@@ -134,13 +134,13 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
 
         {/* User Dropdown */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white font-poppins text-xs font-semibold transition-all outline-none border border-white/20 cursor-pointer">
+          <DropdownMenuTrigger className="flex items-center justify-center w-8 h-8 rounded-full bg-white/10 hover:bg-[#0555E0] text-white font-poppins text-xs font-semibold transition-all outline-none border border-white/20 cursor-pointer">
             {userInitial}
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
             align="end"
-            className="w-56 bg-[#0a0a0a] border border-white/20 rounded-none text-white p-1.5 shadow-2xl font-poppins"
+            className="w-56 bg-[#000711] border border-white/20 rounded-none text-white p-1.5 shadow-2xl font-poppins"
           >
             {/* Profile Info Header */}
             <div className="flex items-center gap-3 p-2">

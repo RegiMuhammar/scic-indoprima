@@ -143,14 +143,14 @@ export function RecentOrdersTable({ orders = defaultRecentOrders }: RecentOrders
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex items-center gap-1 bg-[#0a0a0a] border border-white/10 p-0.5">
+        <div className="flex items-center gap-1 bg-[#000711] border border-white/10 p-0.5">
           {(["All", "Completed", "In Transit", "Delayed"] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setFilter(tab)}
               className={`px-3 py-1 text-xs font-medium transition-colors ${
                 filter === tab
-                  ? "bg-white text-black font-semibold"
+                  ? "bg-[#0555E0] text-white font-semibold"
                   : "text-white/50 hover:text-white"
               }`}
             >

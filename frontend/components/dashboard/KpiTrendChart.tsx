@@ -45,7 +45,7 @@ function CustomTooltip({ active, payload, label }: TooltipProps) {
   const currentItem = defaultTrendData.find((d) => d.period === label);
 
   return (
-    <div className="bg-[#0a0a0a] border border-white/20 p-3 text-xs font-poppins text-white shadow-2xl rounded-none min-w-[200px]">
+    <div className="bg-[#000711] border border-white/20 p-3 text-xs font-poppins text-white shadow-2xl rounded-none min-w-[200px]">
       <p className="text-white/40 text-[11px] font-medium mb-1.5 border-b border-white/10 pb-1">
         Periode: {label} 2026
       </p>
@@ -97,11 +97,11 @@ export function KpiTrendChart({
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex items-center gap-1 bg-[#0a0a0a] border border-white/10 p-0.5 self-start sm:self-auto">
+        <div className="flex items-center gap-1 bg-[#000711] border border-white/10 p-0.5 self-start sm:self-auto">
           <button
             onClick={() => setMetricFilter("all")}
             className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              metricFilter === "all" ? "bg-white text-black font-semibold" : "text-white/60 hover:text-white"
+              metricFilter === "all" ? "bg-[#0555E0] text-white font-semibold" : "text-white/60 hover:text-white"
             }`}
           >
             All Metrics
@@ -109,7 +109,7 @@ export function KpiTrendChart({
           <button
             onClick={() => setMetricFilter("otd")}
             className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              metricFilter === "otd" ? "bg-white text-black font-semibold" : "text-white/60 hover:text-white"
+              metricFilter === "otd" ? "bg-[#0555E0] text-white font-semibold" : "text-white/60 hover:text-white"
             }`}
           >
             OTD Rate
@@ -117,7 +117,7 @@ export function KpiTrendChart({
           <button
             onClick={() => setMetricFilter("production")}
             className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
-              metricFilter === "production" ? "bg-white text-black font-semibold" : "text-white/60 hover:text-white"
+              metricFilter === "production" ? "bg-[#0555E0] text-white font-semibold" : "text-white/60 hover:text-white"
             }`}
           >
             Production
@@ -125,8 +125,8 @@ export function KpiTrendChart({
         </div>
       </div>
 
-      {/* Recharts Line Chart */}
-      <div className="flex-1 min-h-[220px]">
+      {/* Recharts Line Chart (Full-Width Expansive) */}
+      <div className="w-full h-[280px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
             <XAxis

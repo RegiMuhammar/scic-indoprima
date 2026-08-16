@@ -100,38 +100,39 @@ export function RiskRadarChart({
         </button>
       </div>
 
-      {/* Risk Event List */}
-      <div className="flex-1 divide-y divide-white/10 overflow-y-auto">
+      {/* Risk Event List (Full-Width Responsive) */}
+      <div className="divide-y divide-white/10">
         {items.map((risk) => {
           const Icon = categoryIconMap[risk.category];
           return (
             <div
               key={risk.id}
-              className="py-3.5 flex flex-col gap-1.5 hover:bg-white/[0.02] px-2 -mx-2 transition-colors cursor-pointer"
+              className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-white/[0.02] px-3 -mx-3 transition-colors cursor-pointer"
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Icon className="w-3.5 h-3.5 text-white/50" />
-                  <span className="text-white font-medium text-xs truncate max-w-[240px]">
-                    {risk.description}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-white/40 text-[10px] font-mono">
-                    Conf: {risk.confidence}%
-                  </span>
-                  <span className={`text-[11px] ${levelColorMap[risk.level]}`}>
-                    {risk.level}
-                  </span>
+              <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                <Icon className="w-4 h-4 text-white/50 shrink-0 mt-0.5 sm:mt-0" />
+                <div className="space-y-0.5 flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-white font-medium text-xs">
+                      {risk.description}
+                    </span>
+                  </div>
+                  <p className="text-white/60 text-[11px]">
+                    Impact: <span className="text-white/90 font-medium">{risk.impact}</span>
+                  </p>
                 </div>
               </div>
 
-              {/* Clean monochrome impact text with bold numbers */}
-              <div className="flex items-center justify-between text-[11px] text-white/50">
-                <span className="text-white/70 truncate max-w-[320px]">
-                  Impact: <span className="text-white/90 font-medium">{risk.impact}</span>
+              <div className="flex items-center gap-4 shrink-0 sm:self-center pl-7 sm:pl-0">
+                <span className="text-white/40 text-[11px] font-mono">
+                  Confidence: {risk.confidence}%
                 </span>
-                <span className="text-white/30 text-[10px]">{risk.detectedAt}</span>
+                <span className={`text-xs ${levelColorMap[risk.level]}`}>
+                  {risk.level}
+                </span>
+                <span className="text-white/30 text-[10px] w-12 text-right">
+                  {risk.detectedAt}
+                </span>
               </div>
             </div>
           );

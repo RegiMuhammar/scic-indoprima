@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#000000] text-white">
+    <div className="flex h-screen w-full overflow-hidden bg-[#000711] text-white">
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={toggleSidebar}
@@ -27,7 +27,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           isSidebarCollapsed={isSidebarCollapsed}
           onToggleSidebar={toggleSidebar}
         />
-        <main className="flex-1 overflow-y-auto bg-[#000000]">
+        <main className="flex-1 overflow-y-auto bg-[#000711]">
           {children}
         </main>
       </div>

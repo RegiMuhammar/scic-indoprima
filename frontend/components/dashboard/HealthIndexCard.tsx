@@ -308,7 +308,7 @@ export function HealthIndexCard({
       {/* ── Modal Pop-up Komposisi Bobot Health Score ────────────────── */}
       {isExplainModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0a0a0a] border border-white/20 p-6 max-w-lg w-full rounded-none shadow-2xl font-poppins text-white space-y-4 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-[#000711] border border-white/20 p-6 max-w-lg w-full rounded-none shadow-2xl font-poppins text-white space-y-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div>
                 <span className="text-[10px] text-white/40 uppercase tracking-wider font-semibold">

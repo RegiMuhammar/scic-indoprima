@@ -69,7 +69,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "flex flex-col min-h-screen bg-[#000000] border-r border-white/10 shrink-0 transition-all duration-300 select-none font-poppins",
+        "flex flex-col min-h-screen bg-[#000711] border-r border-white/10 shrink-0 transition-all duration-300 select-none font-poppins",
         isCollapsed ? "w-14" : "w-56"
       )}
     >
@@ -82,7 +82,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
             </span>
           </div>
         ) : (
-          <div className="w-5 h-5 mx-auto rounded-none bg-white flex items-center justify-center text-black font-bold text-xs font-poppins">
+          <div className="w-5 h-5 mx-auto rounded-none bg-[#0555E0] flex items-center justify-center text-white font-bold text-xs font-poppins">
             P
           </div>
         )}
@@ -102,7 +102,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
       <div className="flex-1 px-2 py-3 space-y-6 overflow-y-auto">
         {/* Main Section */}
         <div>
-          <nav className="space-y-0.5">
+          <nav className="space-y-1">
             {mainNavItems.map((item) => {
               const isActive =
                 pathname === item.href || pathname.startsWith(item.href + "/");
@@ -116,12 +116,12 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 text-xs font-poppins transition-colors rounded-none",
                     isActive
-                      ? "bg-white/10 text-white font-medium"
-                      : "text-white/50 hover:text-white hover:bg-white/5",
+                      ? "bg-[#0555E0] text-white font-semibold shadow-sm"
+                      : "text-white/60 hover:text-white hover:bg-white/5",
                     isCollapsed && "justify-center px-0"
                   )}
                 >
-                  <Icon className="w-4 h-4 shrink-0 text-white/80" />
+                  <Icon className={cn("w-4 h-4 shrink-0", isActive ? "text-white" : "text-white/70")} />
                   {!isCollapsed && <span>{item.label}</span>}
                 </Link>
               );
@@ -136,7 +136,7 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
               Workspace
             </p>
           )}
-          <nav className="space-y-0.5">
+          <nav className="space-y-1">
             {secondaryNavItems.map((item) => {
               const isActive =
                 pathname === item.href || pathname.startsWith(item.href + "/");
@@ -150,12 +150,12 @@ export function Sidebar({ isCollapsed, onToggleCollapse }: SidebarProps) {
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 text-xs font-poppins transition-colors rounded-none",
                     isActive
-                      ? "bg-white/10 text-white font-medium"
-                      : "text-white/50 hover:text-white hover:bg-white/5",
+                      ? "bg-[#0555E0] text-white font-semibold shadow-sm"
+                      : "text-white/60 hover:text-white hover:bg-white/5",
                     isCollapsed && "justify-center px-0"
                   )}
                 >
-                  <Icon className="w-4 h-4 shrink-0 text-white/80" />
+                  <Icon className={cn("w-4 h-4 shrink-0", isActive ? "text-white" : "text-white/70")} />
                   {!isCollapsed && <span>{item.label}</span>}
                 </Link>
               );

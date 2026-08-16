@@ -94,7 +94,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-full bg-[#000000] text-white font-poppins p-6 lg:p-8 space-y-6 pb-24">
+    <div className="min-h-full bg-[#000711] text-white font-poppins p-6 lg:p-8 space-y-6 pb-24">
       
       {/* ── 1. Page Header (Judul Resmi SCIC) ────────────────────────── */}
       <div>
@@ -106,11 +106,11 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      {/* ── 2. Health Index Card (Atas Sendiri, Prominent Gauge di Kiri) ─ */}
+      {/* ── 2. Health Index Card (Atas Sendiri, Sesuai Wireframe) ────── */}
       <HealthIndexCard
         score={78.4}
         status="Needs Attention"
-        summaryText="Operasional pabrik & pengiriman terindikasi risiko moderat. Terdeteksi 8 delivery orders ($184.000) berpotensi terlambat akibat 14 jam downtime kalibrasi hidrolik Line 3 di Pabrik Karawang."
+        summaryText="Operasional pabrik & pengiriman terindikasi risiko moderat akibat 14.5 jam downtime kalibrasi hidrolik Line 3 di Pabrik Karawang serta antrian kepabeanan di Pelabuhan Tanjung Perak (+42 jam)."
         otdScore={84.2}
         prodScore={88.5}
         atRiskPenalty={12.0}
@@ -123,7 +123,7 @@ export default function DashboardPage() {
           onClick={() => setActiveTab("control-tower")}
           className={`flex items-center gap-2 pb-2.5 text-xs font-semibold transition-colors border-b-2 ${
             activeTab === "control-tower"
-              ? "text-white border-white"
+              ? "text-white border-[#0555E0]"
               : "text-white/40 hover:text-white/70 border-transparent"
           }`}
         >
@@ -135,7 +135,7 @@ export default function DashboardPage() {
           onClick={() => setActiveTab("plant-oee")}
           className={`flex items-center gap-2 pb-2.5 text-xs font-semibold transition-colors border-b-2 ${
             activeTab === "plant-oee"
-              ? "text-white border-white"
+              ? "text-white border-[#0555E0]"
               : "text-white/40 hover:text-white/70 border-transparent"
           }`}
         >
@@ -148,25 +148,27 @@ export default function DashboardPage() {
       {activeTab === "control-tower" ? (
         <div className="space-y-6">
           
-          {/* Top Row: 4 KPI Scorecards Grid (Di Bawah Tab Supply Chain) */}
+          {/* ── 4. KPI Scorecards (4 Kolom Teratur) ────────────────────── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {controlTowerScorecards.map((card) => (
               <ScoreCard key={card.title} {...card} />
             ))}
           </div>
 
-          {/* Middle Row: Operational Trend & Risk Radar (gap-4) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div className="min-h-[360px]">
-              <KpiTrendChart />
-            </div>
-            <div className="min-h-[360px]">
-              <RiskRadarChart />
-            </div>
+          {/* ── 5. Main Performance Trend Chart (100% Full Width) ──────── */}
+          <div className="w-full">
+            <KpiTrendChart />
           </div>
 
-          {/* Bottom Row: Recent Delivery & Fulfillment Orders Table */}
-          <RecentOrdersTable />
+          {/* ── 6. Early Warning Risk Radar (Full Width) ───────────────── */}
+          <div className="w-full">
+            <RiskRadarChart />
+          </div>
+
+          {/* ── 7. Live Delivery Orders Table ───────────────────────────── */}
+          <div className="w-full">
+            <RecentOrdersTable />
+          </div>
 
         </div>
       ) : (

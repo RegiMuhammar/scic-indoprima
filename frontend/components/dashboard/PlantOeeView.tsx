@@ -238,7 +238,7 @@ export function PlantOeeView() {
                       if (!active || !payload?.length) return null;
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-[#0a0a0a] border border-white/20 p-2 text-xs text-white">
+                        <div className="bg-[#000711] border border-white/20 p-2 text-xs text-white">
                           <p className="font-semibold">{d.category}</p>
                           <p className="text-white/70">{d.minutes} menit ({d.pct}%)</p>
                         </div>
@@ -283,7 +283,7 @@ export function PlantOeeView() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {shiftData.map((s) => (
-              <div key={s.shift} className="p-4 bg-[#0a0a0a] border border-white/10">
+              <div key={s.shift} className="p-4 bg-[#000711] border border-white/10">
                 <span className="text-white/70 text-xs font-semibold block mb-2">{s.shift}</span>
                 <div className="space-y-1.5 text-xs">
                   <div className="flex justify-between text-white/50">
@@ -320,19 +320,19 @@ export function PlantOeeView() {
             </p>
 
             <div className="space-y-2 text-xs">
-              <div className="flex items-center justify-between p-2 bg-[#0a0a0a] border border-white/5">
+              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
                 <span className="text-white/70">Vibration:</span>
                 <span className="text-amber-400 font-mono font-semibold">4.82 mm/s (Warning)</span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-[#0a0a0a] border border-white/5">
+              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
                 <span className="text-white/70">Temperature:</span>
                 <span className="text-emerald-400 font-mono font-semibold">68.4 °C (Normal)</span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-[#0a0a0a] border border-white/5">
+              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
                 <span className="text-white/70">Motor Current:</span>
                 <span className="text-white font-mono font-semibold">142.5 Ampere</span>
               </div>
-              <div className="flex items-center justify-between p-2 bg-[#0a0a0a] border border-white/5">
+              <div className="flex items-center justify-between p-2 bg-[#000711] border border-white/5">
                 <span className="text-white/70">Machine State:</span>
                 <span className="text-emerald-400 font-semibold uppercase text-[10px]">Running</span>
               </div>
