@@ -1,0 +1,465 @@
+erDiagram
+
+    %% ============================================================
+    %% 1. CORE SUPPLY CHAIN MASTER & DIMENSION TABLES
+    %% ============================================================
+    supplier_master {
+        string supplier_id PK "Unique raw representation"
+        string supplier_name_raw "Raw name in ERP/WMS/Portal"
+        string source_system "SAP_S4HANA_ERP/INDOPRIMA_WMS/PROCUREMENT_PORTAL"
+        string tax_id "Universal matching key (NPWP)"
+        string harmonized_supplier_id "Golden record ID"
+        string harmonized_supplier_name "Standardized supplier name"
+    }
+
+    product_master {
+        string product_id PK "Unique raw representation"
+        string product_code_raw "Part code in source system"
+        string product_description_raw "Raw description"
+        string uom_raw "Raw unit of measure"
+        string source_system "Source system identifier"
+        string harmonized_product_id "Golden product SKU ID"
+        string harmonized_product_name "Standardized product name"
+        string harmonized_uom "Standardized UOM (PCS/SET)"
+    }
+
+    plant_master {
+        string plant_id PK "Facility ID (e.g., PLANT-SBY-01, WHS-KRW-01)"
+        string plant_name "Facility description"
+        string location_code "Location code (SBY/KRW)"
+        string facility_type "Manufacturing Plant / Distribution Center"
+    }
+
+    %% ============================================================
+    %% 2. MANUFACTURING & SHOPFLOOR MASTER DIMENSIONS
+    %% ============================================================
+    dim_factories {
+        string factory_id PK "Pabrik ID (FB-GRS, FB-NGJ)"
+        string factory_name "Nama pabrik"
+        string location "Lokasi kota"
+        datetime created_at "Timestamp pembuatan"
+    }
+
+    dim_production_lines {
+        string line_id PK "Lini ID (LINE-LS-01, LINE-CS-01)"
+        string factory_id FK "FK to dim_factories"
+        string line_name "Nama lini produksi"
+        float target_oee_pct "Target OEE (%)"
+    }
+
+    dim_machines {
+        string machine_id PK "Mesin ID (MCH-LS-01, MCH-CS-01)"
+        string line_id FK "FK to dim_production_lines"
+        string machine_name "Nama mesin"
+        string machine_type "Furnace, Stamping, Coiler"
+        bool is_critical "Critical path bottleneck flag"
+        string instrumentation_status "IoT sensor status"
+        int rated_capacity_per_hour "Standard capacity per hour"
+    }
+
+    dim_skus {
+        string sku_id PK "Manufacturing SKU ID (SKU-LS-001)"
+        string sku_name "Nama produk manufaktur"
+        string category "Leaf Spring, Coil Spring, Stabilizer"
+        float ideal_cycle_time_seconds "Standard cycle time (s)"
+    }
+
+    dim_spare_parts {
+        string part_id PK "Part ID (PRT-BRG-01, PRT-HYD-01)"
+        string part_name "Nama suku cadang"
+        string category "Bearing, Seal, Sensor, Electrical"
+        string criticality_level "High/Medium/Low"
+        float unit_cost "Harga satuan part"
+        int default_supplier_lead_time_days "Lead time supplier (hari)"
+        int min_stock_level "Batas stok minimum"
+        int max_stock_level "Batas stok maksimum"
+        int existing_reorder_point "ROP eksisting"
+    }
+
+    dim_bom_compatibility {
+        string bom_id PK "BOM Record ID"
+        string machine_id FK "FK to dim_machines"
+        string part_id FK "FK to dim_spare_parts"
+        int qty_required_per_machine "Jumlah part terpasang"
+        int replacement_freq_days "Interval pergantian (hari)"
+    }
+
+    %% ============================================================
+    %% 3. INVOICE MATCHING 3-WAY RECONCILIATION
+    %% ============================================================
+    purchase_order {
+        string po_number PK "Nomor Purchase Order"
+        date po_date "Tanggal PO"
+        string supplier_id FK "FK to supplier_master"
+        string product_id FK "FK to product_master"
+        int po_qty "Kuantitas dipesan"
+        float unit_price "Harga satuan PO"
+        float po_amount "Total nilai PO"
+        string plant_id FK "FK to plant_master"
+        string po_status "Open / Closed / Partial"
+    }
+
+    invoice {
+        string invoice_id PK "Nomor Invoice SAP ERP"
+        date invoice_date "Tanggal faktur"
+        string po_number FK "FK to purchase_order"
+        string supplier_id FK "FK to supplier_master"
+        string product_id FK "FK to product_master"
+        int invoiced_qty "Kuantitas ditagihkan"
+        float unit_price "Harga satuan invoice"
+        float invoice_amount "Total tagihan"
+        string currency "Mata uang (USD/IDR)"
+        string erp_supplier_name_raw "Nama raw supplier di ERP"
+    }
+
+    shipment_resi {
+        string resi_number PK "Nomor Resi / Surat Jalan WMS"
+        date shipment_date "Tanggal penerimaan dock"
+        string po_number FK "FK to purchase_order"
+        string supplier_id FK "FK to supplier_master"
+        string product_id FK "FK to product_master"
+        int received_qty "Kuantitas fisik diterima"
+        string warehouse_dock_id "ID dock gudang"
+        string receiving_note "Catatan penerimaan / kerusakan"
+        bool damage_flag "Flag barang rusak"
+        string wms_supplier_name_raw "Nama raw supplier di WMS"
+    }
+
+    %% ============================================================
+    %% 4. MANUFACTURING PRODUCTIVITY & OEE FACTS
+    %% ============================================================
+    fact_production_schedules {
+        string schedule_id PK "Schedule ID"
+        date schedule_date "Tanggal jadwal"
+        int shift_number "Shift 1, 2, 3"
+        string line_id FK "FK to dim_production_lines"
+        string machine_id FK "FK to dim_machines"
+        string sku_id FK "FK to dim_skus"
+        datetime planned_start_time "Waktu mulai rencana"
+        datetime planned_end_time "Waktu selesai rencana"
+        int planned_qty "Kuantitas rencana"
+    }
+
+    fact_downtime_logs {
+        string downtime_id PK "Downtime Log ID"
+        string machine_id FK "FK to dim_machines"
+        int shift_number "Shift 1, 2, 3"
+        datetime start_time "Waktu mulai henti"
+        datetime end_time "Waktu selesai henti"
+        int duration_minutes "Durasi downtime (menit)"
+        string downtime_category "Breakdown, Changeover, PM"
+        string reason_description "Deskripsi akar penyebab"
+        bool is_unplanned "Flag unplanned downtime"
+    }
+
+    fact_production_outputs {
+        string output_id PK "Output Log ID"
+        string machine_id FK "FK to dim_machines"
+        string sku_id FK "FK to dim_skus"
+        int shift_number "Shift 1, 2, 3"
+        datetime timestamp "Waktu pencatatan"
+        int actual_qty_produced "Output aktual (unit)"
+        float actual_avg_cycle_time_seconds "Cycle time rata-rata aktual"
+        float speed_loss_duration_minutes "Durasi speed loss (menit)"
+    }
+
+    fact_quality_inspections {
+        string inspection_id PK "Inspection Log ID"
+        string machine_id FK "FK to dim_machines"
+        string sku_id FK "FK to dim_skus"
+        datetime inspection_time "Waktu inspeksi QC"
+        int total_inspected_qty "Total unit diuji"
+        int good_qty "Unit lolos QC"
+        int reject_qty "Unit reject/cacat"
+        int rework_qty "Unit rework"
+        string defect_reason_category "Kategori cacat (Crack, Dimension)"
+    }
+
+    fact_shift_manpower {
+        string manpower_log_id PK "Log Manpower ID"
+        date log_date "Tanggal kerja"
+        int shift_number "Shift 1, 2, 3"
+        string line_id FK "FK to dim_production_lines"
+        int operator_headcount "Jumlah operator"
+        float total_working_hours "Total jam kerja shift"
+        float effective_working_hours "Jam kerja efektif"
+    }
+
+    %% ============================================================
+    %% 5. SUPPLY CHAIN DELIVERY & LOGISTICS
+    %% ============================================================
+    production_order {
+        string production_order_id PK "Production Order ID"
+        string plant_id FK "FK to plant_master"
+        string line_id "Line code"
+        string product_id FK "FK to product_master"
+        int planned_qty "Kuantitas target"
+        int actual_qty "Kuantitas tercapai"
+        datetime planned_start "Rencana mulai"
+        datetime planned_end "Rencana selesai"
+        datetime actual_start "Aktual mulai"
+        datetime actual_end "Aktual selesai"
+        float downtime_hours "Total downtime (jam)"
+        string downtime_reason "Alasan downtime"
+    }
+
+    delivery_order {
+        string delivery_order_id PK "Delivery Order ID"
+        string customer_id "Customer ID (e.g., Toyota, Astra)"
+        string product_id FK "FK to product_master"
+        date promised_delivery_date "Tanggal janji kirim"
+        date actual_delivery_date "Tanggal aktual kirim"
+        int qty "Kuantitas kirim"
+        float order_value "Nilai order ($)"
+        string plant_id FK "FK to plant_master"
+        string delivery_status "Delivered / In Transit / Delayed"
+    }
+
+    logistics_telemetry {
+        string shipment_export_id PK "Export Shipment ID"
+        string port_code "Port code (ID-SUB-PRK)"
+        string customs_status "Cleared / Inspection Queue / Detained"
+        float queue_time_hours "Waktu antrian kepabeanan (jam)"
+        date expected_ship_date "Target kapal berangkat"
+        date actual_ship_date "Aktual kapal berangkat"
+    }
+
+    %% ============================================================
+    %% 6. DEMAND FORECASTING & STOCK BALANCING
+    %% ============================================================
+    demand_history {
+        string sku_id FK "FK to product_master"
+        string period "Period (YYYY-MM)"
+        int actual_demand_qty "Total permintaan aktual"
+        string customer_segment "OEM Automotive / Aftermarket"
+    }
+
+    demand_history_per_branch {
+        string sku_id FK "FK to product_master"
+        string warehouse_id FK "FK to plant_master"
+        string period "Period (YYYY-MM)"
+        int actual_consumption_qty "Konsumsi cabang (unit)"
+        float avg_daily_consumption "Rata-rata konsumsi harian"
+        string trend_direction "increasing / decreasing / stable"
+        float demand_variability "Variabilitas demand (CV)"
+    }
+
+    inventory_snapshot {
+        string sku_id FK "FK to product_master"
+        string warehouse_id FK "FK to plant_master"
+        string warehouse_name "Nama gudang"
+        date snapshot_date "Tanggal snapshot"
+        int on_hand_qty "Stok fisik saat ini"
+        int safety_stock_qty "Safety stock target"
+        int reorder_point "Reorder point (ROP)"
+        int lead_time_days "Lead time supplier (hari)"
+        float unit_cost_usd "Harga per unit ($)"
+        float inventory_value_usd "Total nilai stok ($)"
+        float holding_cost_month_usd "Biaya simpan per bulan ($)"
+        int avg_monthly_consumption "Konsumsi bulanan rata-rata"
+        float days_of_supply "Days of Supply (DOS)"
+        string velocity_category "fast/normal/slow/dead-moving"
+        date last_movement_date "Tanggal transaksi terakhir"
+        int aging_days "Usia stok mengendap (hari)"
+        string stock_status "healthy/low/critical_low/overstock"
+    }
+
+    branch_transfer_log {
+        string transfer_id PK "Transfer ID (TRF-2026-0026)"
+        string sku_id FK "FK to product_master"
+        string product_name "Nama produk"
+        string source_warehouse "Gudang asal (WHS-KRW-01)"
+        string destination_warehouse "Gudang tujuan (WHS-SBY-01)"
+        int transfer_qty "Jumlah unit relokasi"
+        float unit_cost_usd "Harga per unit ($)"
+        float transfer_value_usd "Nilai total transfer ($)"
+        string reason "Alasan relokasi"
+        string requested_by "Inisiator (AI System / Manual)"
+        date requested_date "Tanggal usulan"
+        date approved_date "Tanggal approval human"
+        date completed_date "Tanggal selesai transfer"
+        string status "Pending Approval / In Transit / Completed"
+        int transport_days "Estimasi lama perjalanan (hari)"
+        float transport_cost_usd "Biaya logistik transfer ($)"
+        string trigger_type "AI Recommendation / Manual Request"
+        string ai_recommendation_id "FK to ai_insight_log"
+    }
+
+    %% ============================================================
+    %% 7. SPARE PART READINESS & WORK ORDERS
+    %% ============================================================
+    fact_part_consumptions {
+        string consumption_id PK "Consumption Log ID"
+        string part_id FK "FK to dim_spare_parts"
+        string machine_id FK "FK to dim_machines"
+        string work_order_id "Work Order ID"
+        date consumption_date "Tanggal pemakaian part"
+        int qty_consumed "Jumlah part terpakai"
+        float total_cost "Total biaya part ($)"
+    }
+
+    fact_inventory_snapshots {
+        string snapshot_id PK "Part Snapshot ID"
+        date snapshot_date "Tanggal snapshot"
+        string part_id FK "FK to dim_spare_parts"
+        int current_stock_qty "Stok fisik di rak"
+        int reserved_stock_qty "Stok teralokasi WO"
+        int available_stock_qty "Stok bebas tersedia"
+        int smart_reorder_point_ai "ROP adaptif hasil kalkulasi AI"
+        bool is_reorder_triggered "Flag picu rekomendasi PO"
+    }
+
+    fact_purchase_orders {
+        string po_id PK "PO Spare Part ID"
+        date po_date "Tanggal PO part"
+        string part_id FK "FK to dim_spare_parts"
+        string supplier_name "Nama vendor part"
+        int ordered_qty "Jumlah dipesan"
+        int received_qty "Jumlah diterima"
+        date received_date "Tanggal terima"
+        int actual_lead_time_days "Lead time aktual (hari)"
+        float unit_price "Harga per unit ($)"
+    }
+
+    fact_work_orders {
+        string work_order_id PK "Work Order ID"
+        string machine_id FK "FK to dim_machines"
+        string downtime_id "Downtime event ID"
+        string maintenance_type "Corrective / Preventive / Predictive-AI"
+        string failure_code "Kode kerusakan mesin"
+        datetime work_start_time "Waktu mulai perbaikan"
+        datetime work_end_time "Waktu selesai perbaikan"
+        float duration_hours "Durasi pengerjaan (jam)"
+        string technician_notes "Catatan teknisi"
+    }
+
+    fact_work_order_parts {
+        string wo_part_id PK "WO Part Usage ID"
+        string work_order_id FK "FK to fact_work_orders"
+        string part_id FK "FK to dim_spare_parts"
+        int qty_used "Kuantitas part dipakai"
+    }
+
+    %% ============================================================
+    %% 8. IOT TELEMETRY & CONDITION MONITORING
+    %% ============================================================
+    fact_machine_telemetry {
+        string telemetry_id PK "Telemetry Record ID"
+        string machine_id FK "FK to dim_machines"
+        datetime timestamp "Waktu sinyal sensor"
+        float vibration_mm_s "Getaran mekanis (mm/s)"
+        float temperature_celsius "Suhu bearing/motor (C)"
+        float current_ampere "Beban arus motor (A)"
+        float pressure_bar "Tekanan hidrolik (bar)"
+        float operating_rpm "Kecepatan putar (RPM)"
+        string machine_state "Running / Idle / Stopped"
+    }
+
+    fact_anomaly_events {
+        string anomaly_id PK "Anomaly Event ID"
+        string machine_id FK "FK to dim_machines"
+        datetime detected_at "Waktu deteksi anomali"
+        string severity_level "Critical / High / Medium"
+        float anomaly_score "Skor keparahan anomali (0.0-1.0)"
+        string suspected_failing_component "Komponen terindikasi rusak"
+        string recommended_action "Rekomendasi mitigasi AI"
+    }
+
+    %% ============================================================
+    %% 9. AI INTELLIGENCE & HUMAN-IN-THE-LOOP GOVERNANCE
+    %% ============================================================
+    risk_event {
+        string event_id PK "Risk Event ID"
+        string risk_category "Equipment / Delivery / Stockout / Supplier"
+        string risk_level "Critical / High / Medium / Low"
+        float confidence_prob "Probabilitas kepastian (%)"
+        string description "Deskripsi risiko"
+        string potential_impact "Estimasi dampak bisnis"
+        datetime detected_at "Waktu terdeteksi"
+        string status "Pending / Acknowledged / Resolved"
+        string related_entity_ids "Daftar ID entitas terkait"
+    }
+
+    ai_insight_log {
+        string insight_id PK "Insight ID"
+        string module "Dashboard / Invoice / Demand / OEE"
+        string priority "Critical / High / Medium"
+        string title "Judul insight prioritas"
+        string summary "Ringkasan analisis AI"
+        string contributing_factors "Faktor pemicu utama"
+        float confidence_score "Tingkat keyakinan AI (%)"
+        string business_impact "Potensi dampak finansial ($)"
+        string recommended_action "Langkah aksi yang disarankan"
+        datetime created_at "Waktu pembuatan"
+    }
+
+    audit_log {
+        string log_id PK "Audit Log ID"
+        string module "Modul asal rekomendasi"
+        string entity_type "Tipe entitas yang diputuskan"
+        string entity_id "ID entitas spesifik"
+        string original_ai_proposal "Proposal asli sistem AI"
+        string human_decision "Approved / Adjusted / Rejected"
+        string decision_role "Jabatan pengambil keputusan"
+        string note "Catatan / justifikasi human"
+        datetime timestamp "Waktu keputusan diambil"
+    }
+
+    %% ============================================================
+    %% RELATIONSHIP MAPPINGS (34 TABLES)
+    %% ============================================================
+    supplier_master ||--o{ purchase_order : "supplies"
+    supplier_master ||--o{ invoice : "bills"
+    supplier_master ||--o{ shipment_resi : "delivers"
+
+    product_master ||--o{ purchase_order : "item"
+    product_master ||--o{ invoice : "invoiced"
+    product_master ||--o{ shipment_resi : "shipped"
+    product_master ||--o{ production_order : "product"
+    product_master ||--o{ delivery_order : "shipped_item"
+    product_master ||--o{ demand_history : "demand_trend"
+    product_master ||--o{ demand_history_per_branch : "branch_demand"
+    product_master ||--o{ inventory_snapshot : "stock_level"
+    product_master ||--o{ branch_transfer_log : "transfer_item"
+
+    plant_master ||--o{ purchase_order : "destination_plant"
+    plant_master ||--o{ production_order : "production_plant"
+    plant_master ||--o{ delivery_order : "origin_plant"
+    plant_master ||--o{ inventory_snapshot : "warehouse_location"
+    plant_master ||--o{ demand_history_per_branch : "warehouse_consumption"
+
+    purchase_order ||--o{ invoice : "po_reference"
+    purchase_order ||--o{ shipment_resi : "po_reference"
+
+    dim_factories ||--o{ dim_production_lines : "contains"
+    dim_production_lines ||--o{ dim_machines : "houses"
+    dim_production_lines ||--o{ fact_shift_manpower : "allocated_to"
+
+    dim_machines ||--o{ dim_bom_compatibility : "has_bom"
+    dim_spare_parts ||--o{ dim_bom_compatibility : "used_in_bom"
+
+    dim_machines ||--o{ fact_production_schedules : "scheduled_machine"
+    dim_skus ||--o{ fact_production_schedules : "scheduled_sku"
+
+    dim_machines ||--o{ fact_downtime_logs : "experiences_downtime"
+    dim_machines ||--o{ fact_production_outputs : "produces_output"
+    dim_skus ||--o{ fact_production_outputs : "output_sku"
+
+    dim_machines ||--o{ fact_quality_inspections : "inspected_machine"
+    dim_skus ||--o{ fact_quality_inspections : "inspected_sku"
+
+    dim_spare_parts ||--o{ fact_part_consumptions : "consumed_part"
+    dim_machines ||--o{ fact_part_consumptions : "part_installed_on"
+
+    dim_spare_parts ||--o{ fact_inventory_snapshots : "monitored_stock"
+    dim_spare_parts ||--o{ fact_purchase_orders : "replenished_part"
+
+    dim_machines ||--o{ fact_work_orders : "serviced_machine"
+    fact_work_orders ||--o{ fact_work_order_parts : "uses_part"
+    dim_spare_parts ||--o{ fact_work_order_parts : "part_reference"
+
+    dim_machines ||--o{ fact_machine_telemetry : "telemetry_stream"
+    dim_machines ||--o{ fact_anomaly_events : "detected_anomaly"
+
+    ai_insight_log ||--o{ branch_transfer_log : "recommends_transfer"
+    ai_insight_log ||--o{ audit_log : "governance_audit"
