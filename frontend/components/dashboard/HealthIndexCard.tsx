@@ -30,8 +30,8 @@ export interface HealthIndexCardProps {
 export function HealthIndexCard({
   score = 78.4,
   status = "Needs Attention",
-  summaryText = "Terdeteksi 8 delivery orders berisiko terlambat akibat 14.5 jam downtime hidrolik Line 3 di Karawang.",
-  aiRecommendation = "Realokasi batch darurat DO-202501 ke rute darat & jadwalkan preventive maintenance die tooling sebelum shift pagi.",
+  summaryText = "Operasional pabrik & pengiriman terindikasi risiko moderat akibat 14.5 jam downtime kalibrasi hidrolik Line 3 di Pabrik Karawang serta antrian kepabeanan di Pelabuhan Tanjung Perak (+42 jam).",
+  aiRecommendation = "Realokasi batch darurat DO-202501 (1.000 pcs) via rute darat menuju OEM & jadwalkan preventive maintenance sistem hidrolik Line 3 sebelum shift pagi.",
   dataLineageFactors = [
     { factor: "Mesin Line 3 Karawang", sourceTable: "fact_downtime_logs", dataPoint: "14.5 jam kalibrasi hidrolik" },
     { factor: "Delivery Orders Terlambat", sourceTable: "delivery_order", dataPoint: "8 DO ($184.000 exposure)" },
@@ -45,37 +45,37 @@ export function HealthIndexCard({
   const [isExplainModalOpen, setIsExplainModalOpen] = useState(false);
 
   // Precision SVG Gauge calculations (180-degree semi-circle)
-  // Center cx=130, cy=132, radius=96, strokeWidth=16
-  const radius = 96;
-  const strokeWidth = 16;
+  // Canvas: width 240, height 140. Center cx=120, cy=122, radius=88, strokeWidth=15
+  const radius = 88;
+  const strokeWidth = 15;
   const circumference = Math.PI * radius;
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
-  // 4 Weight Compositions breakdown
+  // 4 Weight Compositions breakdown (arranged in 2x2 Grid)
   const weightCompositions: WeightComposition[] = [
     {
-      label: "On-Time Delivery",
+      label: "On-Time Delivery (OTD)",
       weightPct: 35,
       actualValue: otdScore,
       unit: "%",
       contributedScore: +(0.35 * otdScore).toFixed(1),
     },
     {
-      label: "Production Ach.",
+      label: "Production Achievement",
       weightPct: 30,
       actualValue: prodScore,
       unit: "%",
       contributedScore: +(0.30 * prodScore).toFixed(1),
     },
     {
-      label: "Risk Penalty",
+      label: "Risk Penalty Reduction",
       weightPct: 20,
       actualValue: atRiskPenalty,
       unit: "pts",
       contributedScore: +(0.20 * (100 - atRiskPenalty)).toFixed(1),
     },
     {
-      label: "Forecast Accuracy",
+      label: "Demand Forecast Accuracy",
       weightPct: 15,
       actualValue: forecastScore,
       unit: "%",
@@ -85,20 +85,27 @@ export function HealthIndexCard({
 
   return (
     <>
-      <div className="grid grid-cols-1 lg:grid-cols-10 gap-4 font-poppins">
+      <div className="space-y-4 font-poppins">
         
-        {/* ── LEFT PANEL (70% / 7 COLS): Health Index Gauge & 4 Weight Breakdown Cards ── */}
-        <div className="lg:col-span-7 bg-[#000000] border border-white/10 p-6 flex flex-col justify-between space-y-6">
+        {/* ── ROW 1: TOP SECTION (Gauge Kiri ~35% & Grid 2x2 Komposisi Bobot Kanan ~65%) ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           
-          {/* Top: Large Prominent Gauge + Concise Status */}
-          <div className="flex flex-col sm:flex-row items-center justify-start gap-8">
+          {/* Card Kiri: Composite Health Index (~35% / 4 Cols) */}
+          <div className="lg:col-span-4 bg-[#000000] border border-white/10 p-6 flex flex-col justify-between items-center text-center">
             
-            {/* Precision Centered SVG Gauge Chart */}
-            <div className="relative w-[260px] h-[150px] flex items-center justify-center shrink-0">
-              <svg width="260" height="150" viewBox="0 0 260 150" className="overflow-visible select-none">
+            {/* Header Title */}
+            <div className="w-full text-left">
+              <span className="text-white/50 text-xs font-semibold uppercase tracking-wider">
+                Composite Health Index
+              </span>
+            </div>
+
+            {/* Gauge Meter with Native SVG Centering */}
+            <div className="relative w-[240px] h-[140px] flex items-center justify-center my-3">
+              <svg width="240" height="140" viewBox="0 0 240 140" className="overflow-visible select-none">
                 {/* Background Arc */}
                 <path
-                  d="M 34 132 A 96 96 0 0 1 226 132"
+                  d="M 32 122 A 88 88 0 0 1 208 122"
                   fill="none"
                   stroke="rgba(255,255,255,0.1)"
                   strokeWidth={strokeWidth}
@@ -106,7 +113,7 @@ export function HealthIndexCard({
                 />
                 {/* Active Progress Arc (Amber) */}
                 <path
-                  d="M 34 132 A 96 96 0 0 1 226 132"
+                  d="M 32 122 A 88 88 0 0 1 208 122"
                   fill="none"
                   stroke="#f59e0b"
                   strokeWidth={strokeWidth}
@@ -116,10 +123,10 @@ export function HealthIndexCard({
                   className="transition-all duration-1000 ease-out"
                 />
 
-                {/* Score Number in Optical Center (y=102 provides >35px clear margin from top arc y=36) */}
+                {/* Score Number in True Optical Center */}
                 <text
-                  x="130"
-                  y="102"
+                  x="120"
+                  y="92"
                   textAnchor="middle"
                   fill="#ffffff"
                   fontSize="44"
@@ -132,8 +139,8 @@ export function HealthIndexCard({
 
                 {/* Subtitle SCORE / 100 */}
                 <text
-                  x="130"
-                  y="124"
+                  x="120"
+                  y="114"
                   textAnchor="middle"
                   fill="rgba(255,255,255,0.4)"
                   fontSize="10"
@@ -147,7 +154,7 @@ export function HealthIndexCard({
                 {/* Scale 0 indicator */}
                 <text
                   x="14"
-                  y="140"
+                  y="130"
                   textAnchor="middle"
                   fill="rgba(255,255,255,0.3)"
                   fontSize="11"
@@ -158,8 +165,8 @@ export function HealthIndexCard({
 
                 {/* Scale 100 indicator */}
                 <text
-                  x="246"
-                  y="140"
+                  x="226"
+                  y="130"
                   textAnchor="middle"
                   fill="rgba(255,255,255,0.3)"
                   fontSize="11"
@@ -170,32 +177,24 @@ export function HealthIndexCard({
               </svg>
             </div>
 
-            {/* Status Label & Concise Operational Summary */}
-            <div className="flex-1 space-y-2 text-center sm:text-left sm:pl-6 sm:border-l sm:border-white/10">
-              <div>
-                <span className="text-white/40 text-[10px] uppercase tracking-wider font-semibold block">
-                  Composite Health Index
-                </span>
-                <span className="text-lg font-bold text-amber-400">
-                  {status}
-                </span>
-                <p className="text-white/40 text-xs mt-0.5">
-                  Threshold: &lt;75 Critical, 75-89 Warning, &ge;90 Healthy.
-                </p>
-              </div>
-
-              <p className="text-white/70 text-xs leading-relaxed pt-1">
-                {summaryText}
+            {/* Bottom Status & Threshold */}
+            <div>
+              <span className="text-base font-bold text-amber-400 block">
+                {status}
+              </span>
+              <p className="text-white/40 text-[11px] mt-0.5">
+                Threshold: &lt;75 Critical, 75-89 Warning, &ge;90 Healthy
               </p>
             </div>
 
           </div>
 
-          {/* Bottom: 4 Composition Factor Cards */}
-          <div>
-            {/* Header: Title on Left, "Lihat Detail" Button on Right */}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-white/50 text-xs uppercase tracking-wider font-semibold">
+          {/* Card Kanan: Komposisi 4 Faktor Pembentuk Skor Grid 2x2 (~65% / 8 Cols) */}
+          <div className="lg:col-span-8 bg-[#000000] border border-white/10 p-6 flex flex-col justify-between">
+            
+            {/* Header Section */}
+            <div className="flex items-center justify-between pb-3 border-b border-white/10">
+              <span className="text-white/70 text-xs font-semibold uppercase tracking-wider">
                 Komposisi 4 Faktor Pembentuk Skor ({score} Pts)
               </span>
               <button
@@ -206,29 +205,29 @@ export function HealthIndexCard({
               </button>
             </div>
 
-            {/* 4 Factor Cards Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {/* 2x2 Grid Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-3.5">
               {weightCompositions.map((comp) => (
                 <div
                   key={comp.label}
-                  className="bg-white/[0.02] border border-white/10 p-3.5 flex flex-col justify-between"
+                  className="bg-white/[0.02] border border-white/10 p-4 flex flex-col justify-between"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-white/50 text-[11px] truncate max-w-[95px]">
+                    <span className="text-white/60 text-xs font-medium truncate max-w-[170px]">
                       {comp.label}
                     </span>
-                    <span className="text-white/40 text-[10px] font-mono">
-                      {comp.weightPct}%
+                    <span className="text-white/40 text-xs font-mono">
+                      Bobot {comp.weightPct}%
                     </span>
                   </div>
 
-                  <div className="my-2">
-                    <span className="text-white text-lg font-bold font-mono">
+                  <div className="my-2.5">
+                    <span className="text-white text-xl font-bold font-mono">
                       {comp.actualValue}{comp.unit}
                     </span>
                   </div>
 
-                  <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px]">
+                  <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs">
                     <span className="text-white/40">Kontribusi:</span>
                     <span className="text-white font-semibold font-mono">
                       +{comp.contributedScore} pts
@@ -237,58 +236,69 @@ export function HealthIndexCard({
                 </div>
               ))}
             </div>
+
           </div>
 
         </div>
 
-        {/* ── RIGHT PANEL (30% / 3 COLS): AI Prescriptive Recommendation & Data Lineage ── */}
-        <div className="lg:col-span-3 bg-[#000000] border border-white/10 p-6 flex flex-col justify-between space-y-4">
+        {/* ── ROW 2: FULL-WIDTH AI EXECUTIVE SUMMARY & PRESCRIPTIVE ACTION (100% Lebar) ── */}
+        <div className="bg-[#000000] border border-white/10 p-6 space-y-5">
           
-          <div>
-            {/* Header with Light Sparkles Icon */}
-            <div className="flex items-center gap-2 mb-2 pb-2 border-b border-white/10">
-              <Sparkles className="w-4 h-4 text-white/70" />
-              <h3 className="text-white text-xs font-semibold">
-                AI Prescriptive Action
-              </h3>
-            </div>
+          {/* Header with Light Sparkles Icon */}
+          <div className="flex items-center gap-2 pb-3 border-b border-white/10">
+            <Sparkles className="w-4 h-4 text-white/70" />
+            <h3 className="text-white text-xs font-semibold uppercase tracking-wider">
+              AI Executive Summary & Prescriptive Action
+            </h3>
+          </div>
 
-            {/* Prescriptive Recommendation Text */}
+          {/* 1. Text Penjelasan (Ringkasan Eksekutif) */}
+          <div className="space-y-1">
+            <span className="text-white/40 text-[10px] uppercase tracking-wider font-semibold block">
+              Ringkasan Kondisi Operasional
+            </span>
             <p className="text-white/80 text-xs leading-relaxed">
-              {aiRecommendation}
+              {summaryText}
             </p>
           </div>
 
-          {/* Explainability / Why AI Recommended This (Data Lineage) */}
-          <div className="pt-3 border-t border-white/10 space-y-2">
+          {/* 2. Action (Rekomendasi Tindakan Preskriptif) */}
+          <div className="space-y-1">
+            <span className="text-white/40 text-[10px] uppercase tracking-wider font-semibold block">
+              Rekomendasi Tindakan (Actionable Decision)
+            </span>
+            <div className="p-3.5 bg-white/[0.02] border border-white/10 text-xs">
+              <p className="text-white font-medium leading-relaxed">
+                {aiRecommendation}
+              </p>
+            </div>
+          </div>
+
+          {/* 3. Faktor Data (Explainability / Data Lineage) */}
+          <div className="space-y-2 pt-1">
             <div className="flex items-center gap-1.5 text-white/50 text-[11px] font-medium">
               <Info className="w-3.5 h-3.5" />
-              <span>Faktor Data Pemicu AI:</span>
+              <span>Faktor Data Pemicu Rekomendasi AI:</span>
             </div>
 
-            <div className="space-y-1.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {dataLineageFactors.map((item, idx) => (
                 <div
                   key={idx}
-                  className="p-2 bg-white/[0.02] border border-white/5 text-[11px] flex flex-col gap-0.5"
+                  className="p-3 bg-white/[0.02] border border-white/5 text-xs flex flex-col gap-1"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-white font-medium">{item.factor}</span>
-                    <span className="text-white/30 font-mono text-[9px]">
+                    <span className="text-white font-medium text-xs">{item.factor}</span>
+                    <span className="text-white/30 font-mono text-[10px]">
                       {item.sourceTable}
                     </span>
                   </div>
-                  <span className="text-white/60 text-[10px]">
+                  <span className="text-white/70 text-[11px]">
                     {item.dataPoint}
                   </span>
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-white/30">
-            <span>Model: SupplyChain-Reasoner v2.4</span>
-            <span>Confidence: 94.6%</span>
           </div>
 
         </div>
