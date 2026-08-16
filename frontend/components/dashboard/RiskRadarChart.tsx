@@ -3,7 +3,7 @@
 import React from "react";
 import { ArrowUpRight, Cpu, Truck, Package, ShieldAlert } from "lucide-react";
 
-interface RiskEventItem {
+export interface RiskEventItem {
   id: string;
   category: "Equipment" | "Logistics" | "Inventory" | "Quality";
   level: "Critical" | "High" | "Medium";
@@ -13,7 +13,7 @@ interface RiskEventItem {
   detectedAt: string;
 }
 
-const riskEvents: RiskEventItem[] = [
+const defaultRiskEvents: RiskEventItem[] = [
   {
     id: "RE-001",
     category: "Equipment",
@@ -52,7 +52,17 @@ const riskEvents: RiskEventItem[] = [
   },
 ];
 
-export function RiskRadarChart() {
+interface RiskRadarChartProps {
+  items?: RiskEventItem[];
+  title?: string;
+  subtitle?: string;
+}
+
+export function RiskRadarChart({
+  items = defaultRiskEvents,
+  title = "Early Warning Risk Radar",
+  subtitle = "Deteksi dini sinyal kegagalan mesin, logistik, & ketidakseimbangan stok.",
+}: RiskRadarChartProps) {
   const categoryIconMap = {
     Equipment: Cpu,
     Logistics: Truck,
@@ -67,20 +77,20 @@ export function RiskRadarChart() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#000000] border-b border-r border-white/10 p-6 rounded-none font-poppins">
+    <div className="flex flex-col h-full bg-[#000000] border border-white/10 p-6 rounded-none font-poppins">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <div className="flex items-center gap-2">
             <h3 className="text-white text-sm font-semibold font-poppins">
-              Early Warning Risk Radar
+              {title}
             </h3>
-            <span className="text-xs font-medium text-red-400">
-              4 Active Risks
+            <span className="text-xs text-white/40 font-mono">
+              ({items.length} Active Risks)
             </span>
           </div>
           <p className="text-white/40 text-xs mt-1">
-            Deteksi dini sinyal kegagalan mesin, logistik, & ketidakseimbangan stok.
+            {subtitle}
           </p>
         </div>
 
@@ -92,7 +102,7 @@ export function RiskRadarChart() {
 
       {/* Risk Event List */}
       <div className="flex-1 divide-y divide-white/10 overflow-y-auto">
-        {riskEvents.map((risk) => {
+        {items.map((risk) => {
           const Icon = categoryIconMap[risk.category];
           return (
             <div
@@ -116,9 +126,10 @@ export function RiskRadarChart() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] text-white/40">
-                <span className="text-amber-400/80 truncate max-w-[320px]">
-                  Impact: {risk.impact}
+              {/* Clean monochrome impact text with bold numbers */}
+              <div className="flex items-center justify-between text-[11px] text-white/50">
+                <span className="text-white/70 truncate max-w-[320px]">
+                  Impact: <span className="text-white/90 font-medium">{risk.impact}</span>
                 </span>
                 <span className="text-white/30 text-[10px]">{risk.detectedAt}</span>
               </div>

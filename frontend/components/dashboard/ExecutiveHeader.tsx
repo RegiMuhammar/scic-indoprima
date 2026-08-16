@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Activity, Sparkles, RefreshCw, Layers, Factory } from "lucide-react";
+import { Sparkles, RefreshCw, Layers, Factory } from "lucide-react";
 
 interface ExecutiveHeaderProps {
   activeTab: "control-tower" | "plant-oee";

@@ -5,7 +5,7 @@ import { HealthIndexCard } from "@/components/dashboard/HealthIndexCard";
 import { ScoreCard } from "@/components/dashboard/ScoreCard";
 import { KpiTrendChart } from "@/components/dashboard/KpiTrendChart";
 import { RiskRadarChart } from "@/components/dashboard/RiskRadarChart";
-import { AiInsightsPanel } from "@/components/dashboard/AiInsightsPanel";
+import { RecentOrdersTable } from "@/components/dashboard/RecentOrdersTable";
 import { PlantOeeView } from "@/components/dashboard/PlantOeeView";
 import { Layers, Factory } from "lucide-react";
 
@@ -94,89 +94,83 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-full bg-[#000000] text-white font-poppins pb-16">
+    <div className="min-h-full bg-[#000000] text-white font-poppins p-6 lg:p-8 space-y-6 pb-24">
       
-      {/* ── 1. Page Header (Judul Paling Atas tanpa Badge Realtime) ──── */}
-      <div className="p-6 bg-[#000000] border-b border-white/10 font-poppins">
+      {/* ── 1. Page Header (Judul Resmi SCIC) ────────────────────────── */}
+      <div>
         <h1 className="text-white text-xl lg:text-2xl font-bold tracking-tight font-poppins">
-          Supply Chain & Manufacturing Control Tower
+          Supply Chain & Manufacturing Performance Control Tower
         </h1>
         <p className="text-white/40 text-xs mt-1 font-poppins">
           Enterprise Visibility & Decision Intelligence — PT Indoprima Group & PT Indospring Tbk
         </p>
       </div>
 
-      {/* ── 2. Health Index Card (Standalone Card with Gauge Chart) ───── */}
-      <div className="border-t border-l border-white/10">
-        <HealthIndexCard
-          score={78.4}
-          status="Needs Attention"
-          summaryText="Operasional pabrik & pengiriman terindikasi risiko moderat. Terdeteksi 8 delivery orders ($184.000) berpotensi terlambat akibat 14 jam downtime kalibrasi hidrolik Line 3 di Pabrik Karawang."
-          otdScore={84.2}
-          prodScore={88.5}
-          atRiskPenalty={12.0}
-          forecastScore={91.2}
-        />
-      </div>
+      {/* ── 2. Health Index Card (Atas Sendiri, Prominent Gauge di Kiri) ─ */}
+      <HealthIndexCard
+        score={78.4}
+        status="Needs Attention"
+        summaryText="Operasional pabrik & pengiriman terindikasi risiko moderat. Terdeteksi 8 delivery orders ($184.000) berpotensi terlambat akibat 14 jam downtime kalibrasi hidrolik Line 3 di Pabrik Karawang."
+        otdScore={84.2}
+        prodScore={88.5}
+        atRiskPenalty={12.0}
+        forecastScore={91.2}
+      />
 
-      {/* ── 3. Tab Switcher Full-Width Flex/Grid (50% per tab) ─────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 border-l border-white/10">
+      {/* ── 3. Minimalist Underline Tab Switcher ─────────────────────── */}
+      <div className="flex items-center gap-8 border-b border-white/10 pt-2 pb-0">
         <button
           onClick={() => setActiveTab("control-tower")}
-          className={`flex items-center justify-center gap-2.5 py-3.5 px-6 text-xs font-semibold transition-all border-b border-r border-white/10 ${
+          className={`flex items-center gap-2 pb-2.5 text-xs font-semibold transition-colors border-b-2 ${
             activeTab === "control-tower"
-              ? "bg-white text-black shadow-sm"
-              : "bg-[#000000] text-white/50 hover:text-white hover:bg-white/[0.02]"
+              ? "text-white border-white"
+              : "text-white/40 hover:text-white/70 border-transparent"
           }`}
         >
-          <Layers className="w-4 h-4" />
+          <Layers className="w-3.5 h-3.5" />
           Supply Chain Control Tower
         </button>
         
         <button
           onClick={() => setActiveTab("plant-oee")}
-          className={`flex items-center justify-center gap-2.5 py-3.5 px-6 text-xs font-semibold transition-all border-b border-r border-white/10 ${
+          className={`flex items-center gap-2 pb-2.5 text-xs font-semibold transition-colors border-b-2 ${
             activeTab === "plant-oee"
-              ? "bg-white text-black shadow-sm"
-              : "bg-[#000000] text-white/50 hover:text-white hover:bg-white/[0.02]"
+              ? "text-white border-white"
+              : "text-white/40 hover:text-white/70 border-transparent"
           }`}
         >
-          <Factory className="w-4 h-4" />
+          <Factory className="w-3.5 h-3.5" />
           Plant OEE & Shopfloor Lines
         </button>
       </div>
 
-      {/* ── 4. Main Content Switcher ─────────────────────────────────── */}
+      {/* ── 4. Main Content View ─────────────────────────────────────── */}
       {activeTab === "control-tower" ? (
-        <div className="space-y-0">
+        <div className="space-y-6">
           
-          {/* ── Top Row: 4 KPI Scorecards Grid ─────────────────────────── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-l border-white/10">
+          {/* Top Row: 4 KPI Scorecards Grid (Di Bawah Tab Supply Chain) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {controlTowerScorecards.map((card) => (
               <ScoreCard key={card.title} {...card} />
             ))}
           </div>
 
-          {/* ── Middle Row: Operational Trend & Risk Radar ──────────────── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border-l border-white/10">
-            <div className="min-h-[380px]">
+          {/* Middle Row: Operational Trend & Risk Radar (gap-4) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="min-h-[360px]">
               <KpiTrendChart />
             </div>
-            <div className="min-h-[380px]">
+            <div className="min-h-[360px]">
               <RiskRadarChart />
             </div>
           </div>
 
-          {/* ── Bottom Row: AI Priority Insights (Full-Width, Single Unit) ─ */}
-          <div className="border-l border-white/10">
-            <div className="min-h-[380px]">
-              <AiInsightsPanel />
-            </div>
-          </div>
+          {/* Bottom Row: Recent Delivery & Fulfillment Orders Table */}
+          <RecentOrdersTable />
 
         </div>
       ) : (
-        /* ── Plant OEE & Shopfloor Lines View ───────────────────────── */
+        /* Plant OEE & Shopfloor Lines View */
         <PlantOeeView />
       )}
 

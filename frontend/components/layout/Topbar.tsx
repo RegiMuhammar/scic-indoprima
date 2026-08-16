@@ -128,7 +128,7 @@ export function Topbar({ isSidebarCollapsed, onToggleSidebar }: TopbarProps) {
           onClick={() => router.push("/chat")}
           className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-white/5 border border-white/20 hover:bg-white/10 hover:border-white/40 transition-colors"
         >
-          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+          <Sparkles className="w-3.5 h-3.5 text-white/70" />
           <span>Ask AI Copilot</span>
         </button>
 

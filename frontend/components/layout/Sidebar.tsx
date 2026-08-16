@@ -12,7 +12,7 @@ import {
   LayoutDashboard,
   FileCheck2,
   TrendingUp,
-  Bot,
+  Sparkles,
   Settings,
   HelpCircle,
   FileText,
@@ -46,7 +46,7 @@ const mainNavItems = [
   {
     label: "AI Assistant",
     href: "/chat",
-    icon: Bot,
+    icon: Sparkles,
   },
 ];
 

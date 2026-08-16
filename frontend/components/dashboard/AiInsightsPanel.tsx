@@ -63,7 +63,7 @@ const initialInsights: InsightItem[] = [
 ];
 
 export function AiInsightsPanel() {
-  const [insights, setInsights] = useState<InsightItem[]>(initialInsights);
+  const [insights] = useState<InsightItem[]>(initialInsights);
   const [selectedInsight, setSelectedInsight] = useState<InsightItem | null>(null);
   const [decisionFeedback, setDecisionFeedback] = useState<{ id: string; status: string } | null>(null);
 

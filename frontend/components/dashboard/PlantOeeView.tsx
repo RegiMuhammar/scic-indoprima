@@ -157,20 +157,20 @@ export function PlantOeeView() {
   ];
 
   return (
-    <div className="space-y-0 font-poppins">
+    <div className="space-y-6 font-poppins">
       
-      {/* ── Top OEE Scorecards (3 Pillars + Overall) ──────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border-l border-white/10">
+      {/* ── Top OEE Scorecards (4 Columns Grid with gap-4) ──────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {oeeScorecards.map((card) => (
           <ScoreCard key={card.title} {...card} />
         ))}
       </div>
 
       {/* ── Middle Row: Line Breakdown & 6 Big Losses Pareto ───────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 border-l border-white/10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Left: Lines OEE Matrix */}
-        <div className="p-6 bg-[#000000] border-b border-r border-white/10 flex flex-col justify-between">
+        <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -216,7 +216,7 @@ export function PlantOeeView() {
         </div>
 
         {/* Right: 6 Big Losses Pareto Chart */}
-        <div className="p-6 bg-[#000000] border-b border-r border-white/10 flex flex-col justify-between">
+        <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-white text-sm font-semibold">
@@ -238,7 +238,7 @@ export function PlantOeeView() {
                       if (!active || !payload?.length) return null;
                       const d = payload[0].payload;
                       return (
-                        <div className="bg-[#121212] border border-white/10 p-2 text-xs text-white">
+                        <div className="bg-[#0a0a0a] border border-white/20 p-2 text-xs text-white">
                           <p className="font-semibold">{d.category}</p>
                           <p className="text-white/70">{d.minutes} menit ({d.pct}%)</p>
                         </div>
@@ -263,10 +263,10 @@ export function PlantOeeView() {
       </div>
 
       {/* ── Bottom Row: Shift Analysis & Machine IoT Waveform ──────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border-l border-white/10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         
         {/* Shift Manpower Analysis */}
-        <div className="p-6 bg-[#000000] border-b border-r border-white/10 lg:col-span-2">
+        <div className="p-6 bg-[#000000] border border-white/10 rounded-none lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-white text-sm font-semibold">
@@ -281,7 +281,7 @@ export function PlantOeeView() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {shiftData.map((s) => (
               <div key={s.shift} className="p-4 bg-[#0a0a0a] border border-white/10">
                 <span className="text-white/70 text-xs font-semibold block mb-2">{s.shift}</span>
@@ -307,7 +307,7 @@ export function PlantOeeView() {
         </div>
 
         {/* Machine IoT Waveform Mini-Viewer */}
-        <div className="p-6 bg-[#000000] border-b border-r border-white/10 flex flex-col justify-between">
+        <div className="p-6 bg-[#000000] border border-white/10 rounded-none flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Cpu className="w-4 h-4 text-emerald-400" />
@@ -319,7 +319,7 @@ export function PlantOeeView() {
               Real-time feed MCH-LS-01 Stamping Press.
             </p>
 
-            <div className="space-y-2.5 text-xs">
+            <div className="space-y-2 text-xs">
               <div className="flex items-center justify-between p-2 bg-[#0a0a0a] border border-white/5">
                 <span className="text-white/70">Vibration:</span>
                 <span className="text-amber-400 font-mono font-semibold">4.82 mm/s (Warning)</span>

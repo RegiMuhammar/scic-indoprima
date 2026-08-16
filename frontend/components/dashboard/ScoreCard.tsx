@@ -54,9 +54,9 @@ export function ScoreCard({
   return (
     <>
       <div
-        className={`flex flex-col justify-between p-6 bg-[#000000] border-b border-r border-white/10 rounded-none hover:bg-white/[0.02] transition-colors font-poppins ${className}`}
+        className={`flex flex-col justify-between p-5 lg:p-6 bg-[#000000] border border-white/10 rounded-none hover:border-white/20 transition-all font-poppins ${className}`}
       >
-        {/* 1. Header: Title + Status Text UNDER title (No dot, no background) */}
+        {/* 1. Header: Title + Status Text UNDER title */}
         <div>
           <p className="text-white/70 text-xs font-poppins font-medium tracking-tight">
             {title}
@@ -84,7 +84,7 @@ export function ScoreCard({
         </div>
 
         {/* 3. Footer: Trend + Detail Text Button */}
-        <div className="flex items-center justify-between text-xs font-poppins pt-2.5 border-t border-white/5">
+        <div className="flex items-center justify-between text-xs font-poppins pt-3 border-t border-white/5">
           <div className="flex items-center gap-1.5">
             <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />
             <span className={`${trendColor} font-semibold`}>
