@@ -1,24 +1,26 @@
-﻿"""Demand & Inventory Decision Intelligence API"""
-from fastapi import APIRouter
+"""Demand & Inventory Decision Intelligence API Endpoints"""
+from fastapi import APIRouter, Query
+from pydantic import BaseModel
+from app.services.demand_service import get_demand_summary, calculate_scenario
 
 router = APIRouter()
 
-@router.get("/forecast")
-async def get_demand_forecast():
-    # TODO: Return demand forecast (StatsForecast/Prophet)
-    return {"forecast": []}
 
-@router.get("/stockout-risk")
-async def get_stockout_risk():
-    # TODO: Return stockout/overstock projections per SKU
-    return {"risks": []}
+class ScenarioRequest(BaseModel):
+    demand_surge_pct: float = 0.0
+    lead_time_delay_days: int = 0
 
-@router.get("/recommendations")
-async def get_replenishment_recommendations():
-    # TODO: Return AI replenishment recommendations
-    return {"recommendations": []}
+
+@router.get("/summary")
+async def get_demand_intelligence_summary():
+    """Retrieve full analytics summary for Demand & Spare Part Decision Intelligence."""
+    return get_demand_summary()
+
 
 @router.post("/scenario")
-async def run_scenario():
-    # TODO: What-if scenario planning
-    return {"result": {}}
+async def run_demand_scenario(payload: ScenarioRequest):
+    """Run real-time scenario simulation for demand surge and lead time delay."""
+    return calculate_scenario(
+        demand_surge_pct=payload.demand_surge_pct,
+        lead_time_delay_days=payload.lead_time_delay_days,
+    )

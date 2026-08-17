@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IndoOptima · Quick Win Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A121E;
+    --bg-panel:#0F1A2B;
+    --bg-card:#142338;
+    --border:#223252;
+    --border-soft:#1A2740;
+    --navy:#2F5AC7;
+    --navy-dim:#1F3864;
+    --gold:#D2A227;
+    --gold-soft:rgba(210,162,39,0.14);
+    --text:#EAF0FA;
+    --text-dim:#8FA0C2;
+    --text-mute:#57678A;
+    --success:#33B27A;
+    --success-soft:rgba(51,178,122,0.14);
+    --amber:#E0A526;
+    --amber-soft:rgba(224,165,38,0.14);
+    --danger:#E5636B;
+    --danger-soft:rgba(229,99,107,0.14);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased; min-height:100vh;
+    background-image:
+      radial-gradient(circle at 12% 0%, rgba(47,90,199,0.10), transparent 40%),
+      radial-gradient(circle at 88% 10%, rgba(210,162,39,0.06), transparent 35%);
+  }
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px;}
+
+  .topbar{
+    display:flex;align-items:center;gap:16px;padding:14px 28px;
+    border-bottom:1px solid var(--border-soft);background:rgba(10,18,30,0.85);
+    backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:16px;white-space:nowrap;}
+  .brand .mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(145deg,var(--navy),var(--navy-dim));display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.08);}
+  .brand small{display:block;font-family:var(--font-body);font-weight:500;font-size:10.5px;color:var(--text-mute);letter-spacing:0.4px;text-transform:uppercase;margin-top:1px;}
+  .machine-tag{
+    display:flex;align-items:center;gap:8px;background:var(--bg-panel);border:1px solid var(--border-soft);
+    padding:6px 12px;border-radius:999px;font-size:12.5px;color:var(--text-dim);margin-left:8px;
+  }
+  .machine-tag b{color:var(--text);font-weight:600;}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+  .role-badge{display:flex;align-items:center;gap:7px;background:var(--bg-panel);border:1px solid var(--border-soft);padding:6px 12px 6px 8px;border-radius:999px;font-size:12px;color:var(--text-dim);}
+  .role-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 8px var(--success);}
+
+  .shell{max-width:1360px;margin:0 auto;padding:26px 28px 70px;}
+
+  /* ---------- Simulate control ---------- */
+  .simbar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:20px;
+  }
+  .simbar-label{font-size:13px;color:var(--text-dim);}
+  .simbar-label b{color:var(--text);}
+  .toggle-wrap{display:flex;align-items:center;gap:10px;}
+  .toggle{
+    position:relative;width:52px;height:28px;border-radius:999px;background:var(--success);cursor:pointer;
+    transition:background .25s ease;flex-shrink:0;border:none;padding:0;
+  }
+  .toggle.on{background:var(--danger);}
+  .toggle .knob{
+    position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;
+    transition:transform .25s ease;box-shadow:0 1px 3px rgba(0,0,0,0.3);
+  }
+  .toggle.on .knob{transform:translateX(24px);}
+  .sim-status{font-family:var(--font-mono);font-size:12px;font-weight:600;}
+  .sim-status.ok{color:var(--success);}
+  .sim-status.bad{color:var(--danger);}
+
+  /* ---------- Hero: condition monitoring ---------- */
+  .hero{
+    position:relative;border:1px solid var(--border-soft);border-radius:18px;
+    background:linear-gradient(180deg, #0D1830 0%, #0A1424 100%);
+    padding:26px 28px;margin-bottom:8px;overflow:hidden;
+    display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;
+  }
+  .health-ring{position:relative;width:132px;height:132px;flex-shrink:0;}
+  .health-ring svg{transform:rotate(-90deg);}
+  .health-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .health-val .num{font-family:var(--font-mono);font-size:30px;font-weight:600;transition:color .3s ease;}
+  .health-val .lbl{font-size:10px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+  .sensors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .sensor{background:rgba(255,255,255,0.02);border:1px solid var(--border-soft);border-radius:12px;padding:12px 14px;}
+  .sensor .slabel{font-size:11px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
+  .sensor .sval{font-family:var(--font-mono);font-size:19px;font-weight:600;color:var(--text);transition:color .3s ease;}
+  .sensor .sunit{font-size:11px;color:var(--text-dim);margin-left:3px;}
+  .sensor .sbar{height:4px;border-radius:3px;background:var(--border-soft);margin-top:8px;overflow:hidden;}
+  .sensor .sbar-fill{height:100%;border-radius:3px;background:var(--success);width:35%;transition:width .4s ease, background .4s ease;}
+
+  .status-box{min-width:220px;padding:14px 16px;border-radius:12px;transition:all .3s ease;border:1px solid var(--border-soft);background:rgba(255,255,255,0.02);}
+  .status-box .stitle{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;transition:color .3s ease;}
+  .status-box .sdesc{font-size:12.5px;color:var(--text-dim);line-height:1.5;}
+
+  /* ---------- Signal flow ---------- */
+  .signal-flow{display:flex;flex-direction:column;align-items:center;margin:18px 0 22px;}
+  .signal-caption{font-family:var(--font-mono);font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+  .signal-svg{width:100%;max-width:900px;height:auto;}
+  .sig-dot{opacity:0;transition:opacity .3s ease;}
+  .sig-dot.show{opacity:1;}
+  .sig-line{stroke-dasharray:4 4;opacity:0.35;transition:opacity .3s ease, stroke .3s ease;}
+  .sig-line.active{opacity:1;}
+
+  /* ---------- Two-column outcomes ---------- */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .panel{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:20px;}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .panel-head h3{font-family:var(--font-display);font-size:16px;font-weight:600;margin:0;color:var(--text);}
+  .panel-tag{font-family:var(--font-mono);font-size:10px;padding:3px 8px;border-radius:6px;letter-spacing:0.5px;font-weight:600;}
+  .panel-tag.blue{background:var(--navy-dim);color:#B9CBFA;}
+  .panel-tag.gold{background:var(--gold-soft);color:var(--gold);}
+  .panel-sub{font-size:12px;color:var(--text-mute);margin:0 0 16px;}
+
+  /* OEE score row */
+  .oee-score-row{display:flex;align-items:center;gap:18px;margin-bottom:16px;}
+  .oee-big{font-family:var(--font-mono);font-size:44px;font-weight:600;color:var(--text);transition:color .3s ease;}
+  .oee-delta{font-size:12px;font-weight:600;transition:color .3s ease;}
+  .oee-components{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;}
+  .comp-row{display:flex;align-items:center;gap:10px;}
+  .comp-row .clabel{font-size:12px;color:var(--text-dim);width:90px;flex-shrink:0;}
+  .comp-track{flex:1;height:7px;background:var(--bg-panel);border-radius:4px;overflow:hidden;}
+  .comp-fill{height:100%;border-radius:4px;background:var(--navy);transition:width .4s ease, background .4s ease;}
+  .comp-row .cval{font-family:var(--font-mono);font-size:12px;color:var(--text-dim);width:38px;text-align:right;flex-shrink:0;}
+
+  .alert-card{border-radius:10px;padding:12px 14px;font-size:12.5px;line-height:1.55;margin-top:6px;border:1px solid transparent;transition:all .3s ease;}
+  .alert-card.hidden-state{display:none;}
+
+  .util-block{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-soft);}
+  .util-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+  .util-title{font-family:var(--font-mono);font-size:10.5px;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.5px;}
+  .util-note{font-size:11px;color:var(--success);font-weight:600;transition:color .3s ease;}
+  .util-rows{display:flex;flex-direction:column;gap:8px;}
+  .util-row{display:flex;align-items:center;gap:10px;}
+  .util-row .ulabel{font-size:11.5px;color:var(--text-dim);width:88px;flex-shrink:0;display:flex;align-items:center;gap:5px;}
+  .util-row .utag{font-family:var(--font-mono);font-size:9px;padding:1px 5px;border-radius:4px;font-weight:600;display:none;}
+  .utrack{flex:1;height:6px;background:var(--bg-panel);border-radius:3px;overflow:hidden;}
+  .ufill{height:100%;border-radius:3px;transition:width .4s ease, background .4s ease;}
+  .util-row .uval{font-family:var(--font-mono);font-size:11px;color:var(--text-dim);width:34px;text-align:right;flex-shrink:0;}
+  .util-detail-btn{background:none;border:none;font-family:var(--font-mono);font-size:10.5px;color:var(--navy);cursor:pointer;padding:2px 0;text-decoration:underline;text-underline-offset:2px;}
+  .util-detail-btn:hover{color:var(--gold);}
+  .util-detail{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .util-detail.open{max-height:340px;margin-top:12px;}
+  .util-detail-inner{background:var(--bg-panel);border:1px solid var(--border-soft);border-radius:10px;padding:14px;}
+  .shift-table{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .shift-table th{text-align:left;color:var(--text-mute);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.4px;padding-bottom:8px;border-bottom:1px solid var(--border-soft);}
+  .shift-table td{padding:7px 0;color:var(--text-dim);border-bottom:1px solid var(--border-soft);}
+  .shift-table td:first-child{color:var(--text);font-weight:500;}
+  .shift-table tr:last-child td{border-bottom:none;}
+  .quality-alert{margin-top:12px;border-radius:8px;padding:10px 12px;font-size:11.5px;line-height:1.55;border:1px solid transparent;transition:all .3s ease;}
+  .quality-alert.hidden-state{display:none;}
+  .privacy-note{display:flex;align-items:flex-start;gap:7px;margin-top:10px;font-size:10.5px;color:var(--text-mute);line-height:1.5;}
+
+  .kpi-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{font-family:var(--font-mono);font-size:11px;padding:5px 10px;border-radius:999px;background:var(--bg-panel);border:1px solid var(--border-soft);color:var(--text-dim);}
+
+  /* Spare part list */
+  .part-list{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+  .part-row{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--border-soft);transition:all .3s ease;}
+  .part-row .pname{flex:1;min-width:0;}
+  .part-row .pname .t1{font-size:13px;font-weight:600;color:var(--text);}
+  .part-row .pname .t2{font-size:11px;color:var(--text-mute);margin-top:1px;}
+  .part-stock{width:70px;flex-shrink:0;}
+  .part-stock .strack{height:6px;background:var(--bg-panel);border-radius:3px;overflow:hidden;}
+  .part-stock .sfill{height:100%;border-radius:3px;background:var(--success);transition:width .4s ease, background .4s ease;}
+  .part-status{font-family:var(--font-mono);font-size:10.5px;padding:3px 8px;border-radius:999px;font-weight:600;flex-shrink:0;white-space:nowrap;transition:all .3s ease;}
+  .part-status.ok{background:var(--success-soft);color:var(--success);}
+  .part-status.watch{background:var(--danger-soft);color:var(--danger);}
+
+  footer.note{margin-top:26px;font-size:11.5px;color:var(--text-mute);text-align:center;}
+
+  .nla-section{
+    background:linear-gradient(180deg, #0D1830 0%, #0A1424 100%);border:1px solid var(--border-soft);
+    border-radius:18px;padding:24px 26px;margin-top:20px;
+  }
+  .nla-head h3{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--text);margin:0 0 4px;}
+  .nla-head p{font-size:12.5px;color:var(--text-dim);margin:0 0 16px;max-width:640px;line-height:1.5;}
+  .nla-box{
+    position:relative;max-width:640px;background:var(--bg-card);border:1px solid var(--border);
+    border-radius:14px;padding:4px;display:flex;align-items:center;gap:8px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .nla-box:focus-within{border-color:var(--navy);box-shadow:0 0 0 3px rgba(47,90,199,0.18);}
+  .nla-icon{padding:0 4px 0 10px;color:var(--gold);flex-shrink:0;}
+  .nla-box input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:var(--font-body);font-size:14px;padding:12px 4px;min-width:0;}
+  .nla-box input::placeholder{color:var(--text-mute);}
+  .nla-box button{background:var(--gold);color:#1A1305;border:none;border-radius:10px;font-family:var(--font-body);font-weight:700;font-size:12.5px;padding:11px 16px;cursor:pointer;flex-shrink:0;transition:filter .15s ease;}
+  .nla-box button:hover{filter:brightness(1.08);}
+  .nla-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;max-width:640px;}
+  .nla-chip{background:var(--bg-panel);border:1px solid var(--border-soft);color:var(--text-dim);font-size:12px;padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .15s ease;}
+  .nla-chip:hover{color:var(--text);border-color:var(--navy);background:rgba(47,90,199,0.10);}
+  .nla-answer{max-width:640px;margin-top:14px;background:var(--gold-soft);border:1px solid rgba(210,162,39,0.35);border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.6;color:#F5E7C4;display:none;}
+  .nla-answer.show{display:block;animation:fadein .3s ease;}
+  @keyframes fadein{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:translateY(0);}}
+
+  @media (max-width:980px){
+    .grid-2{grid-template-columns:1fr;}
+    .hero{grid-template-columns:1fr;text-align:center;}
+    .sensors{grid-template-columns:1fr 1fr;}
+    .status-box{margin:0 auto;}
+  }
+  @media (max-width:560px){
+    .shell{padding:18px 14px 50px;}
+    .sensors{grid-template-columns:1fr;}
+  }
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){
+    .toggle .knob, .comp-fill, .sfill, .sbar-fill, .sig-line, .sig-dot{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 18L10 8L14 14L20 4" stroke="#EAF0FA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div>IndoOptima<small>Quick Win Console</small></div>
+  </div>
+  <div class="machine-tag">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M14 3v4a1 1 0 0 0 1 1h4M6 3h8l6 6v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.6"/></svg>
+    Mesin kritis terpilih: <b>Coiling Machine CM-04</b> · Indospring
+  </div>
+  <div class="topbar-right">
+    <div class="role-badge"><span class="dot"></span> Mode Demo · Data Simulasi</div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div class="simbar">
+    <div class="simbar-label">Simulasikan sinyal dari <b>Condition Monitoring</b> untuk melihat bagaimana satu sinyal menggerakkan dua panel di bawah</div>
+    <div class="toggle-wrap">
+      <span class="sim-status ok" id="simStatusText">NORMAL</span>
+      <button class="toggle" id="simToggle" onclick="toggleAnomaly()" aria-label="Simulasikan deteksi anomali">
+        <span class="knob"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- HERO: shared condition monitoring -->
+  <div class="hero">
+    <div class="health-ring">
+      <svg width="132" height="132" viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="56" fill="none" stroke="#1A2740" stroke-width="10"/>
+        <circle id="healthArc" cx="66" cy="66" r="56" fill="none" stroke="#33B27A" stroke-width="10" stroke-dasharray="352" stroke-dashoffset="30" stroke-linecap="round" style="transition:stroke-dashoffset .4s ease, stroke .4s ease;"/>
+      </svg>
+      <div class="health-val">
+        <div class="num" id="healthNum" style="color:#33B27A;">92</div>
+        <div class="lbl">Health score</div>
+      </div>
+    </div>
+
+    <div class="sensors">
+      <div class="sensor">
+        <div class="slabel">Getaran</div>
+        <div class="sval"><span id="sVib">2.1</span><span class="sunit">mm/s</span></div>
+        <div class="sbar"><div class="sbar-fill" id="sVibBar" style="width:28%"></div></div>
+      </div>
+      <div class="sensor">
+        <div class="slabel">Suhu Bearing</div>
+        <div class="sval"><span id="sTemp">54</span><span class="sunit">°C</span></div>
+        <div class="sbar"><div class="sbar-fill" id="sTempBar" style="width:40%"></div></div>
+      </div>
+      <div class="sensor">
+        <div class="slabel">Arus Motor</div>
+        <div class="sval"><span id="sCurr">11.4</span><span class="sunit">A</span></div>
+        <div class="sbar"><div class="sbar-fill" id="sCurrBar" style="width:32%"></div></div>
+      </div>
+    </div>
+
+    <div class="status-box" id="statusBox">
+      <div class="stitle" id="statusTitle" style="color:#33B27A;">KONDISI NORMAL</div>
+      <div class="sdesc" id="statusDesc">Seluruh parameter dalam rentang aman. Tidak ada tindakan diperlukan.</div>
+    </div>
+  </div>
+
+  <!-- Signal flow -->
+  <div class="signal-flow">
+    <div class="signal-caption">1 sinyal condition monitoring &middot; 2 aksi otomatis</div>
+    <svg class="signal-svg" viewBox="0 0 900 90" preserveAspectRatio="xMidYMid meet">
+      <line x1="450" y1="6" x2="450" y2="30" class="sig-line" id="stemLine" stroke="#8FA0C2" stroke-width="2"/>
+      <line x1="220" y1="30" x2="680" y2="30" class="sig-line" id="barLine" stroke="#8FA0C2" stroke-width="2"/>
+      <line x1="220" y1="30" x2="220" y2="60" class="sig-line" id="leftLine" stroke="#8FA0C2" stroke-width="2"/>
+      <line x1="680" y1="30" x2="680" y2="60" class="sig-line" id="rightLine" stroke="#8FA0C2" stroke-width="2"/>
+      <polygon points="215,60 225,60 220,70" fill="#8FA0C2" id="leftArrow" style="opacity:0.35;transition:opacity .3s ease, fill .3s ease;"/>
+      <polygon points="675,60 685,60 680,70" fill="#8FA0C2" id="rightArrow" style="opacity:0.35;transition:opacity .3s ease, fill .3s ease;"/>
+      <circle cx="220" cy="80" r="4" class="sig-dot" id="leftDot" fill="#E5636B"/>
+      <circle cx="680" cy="80" r="4" class="sig-dot" id="rightDot" fill="#E5636B"/>
+    </svg>
+  </div>
+
+  <!-- TWO OUTCOMES -->
+  <div class="grid-2">
+
+    <!-- OEE PANEL -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Manufacturing Productivity</h3>
+        <span class="panel-tag blue">OEE</span>
+      </div>
+      <p class="panel-sub">Availability &times; Performance &times; Quality &mdash; Line Coiling A</p>
+
+      <div class="oee-score-row">
+        <div class="oee-big" id="oeeBig">87%</div>
+        <div class="oee-delta" id="oeeDelta" style="color:#33B27A;">&#9650; stabil</div>
+      </div>
+
+      <div class="oee-components">
+        <div class="comp-row">
+          <div class="clabel">Availability</div>
+          <div class="comp-track"><div class="comp-fill" id="availFill" style="width:91%"></div></div>
+          <div class="cval" id="availVal">91%</div>
+        </div>
+        <div class="comp-row">
+          <div class="clabel">Performance</div>
+          <div class="comp-track"><div class="comp-fill" id="perfFill" style="width:88%"></div></div>
+          <div class="cval" id="perfVal">88%</div>
+        </div>
+        <div class="comp-row">
+          <div class="clabel">Quality</div>
+          <div class="comp-track"><div class="comp-fill" id="qualFill" style="width:97%"></div></div>
+          <div class="cval" id="qualVal">97%</div>
+        </div>
+      </div>
+
+      <div class="alert-card hidden-state" id="oeeAlert" style="background:var(--danger-soft);border-color:rgba(229,99,107,0.35);color:#F5C7CA;">
+        <b>Bottleneck terdeteksi &mdash; Stasiun Coiling.</b> Availability diprediksi turun dalam 2\u20134 jam jika tidak ada tindakan. Rekomendasi: siapkan realokasi 1 operator dari Stasiun Packing.
+      </div>
+
+      <div class="util-block">
+        <div class="util-head">
+          <span class="util-title">Utilisasi Tenaga Kerja per Stasiun</span>
+          <span class="util-note" id="utilNote">Beban merata &mdash; tidak ada tindakan</span>
+        </div>
+        <div class="util-rows" id="utilRows">
+          <div class="util-row">
+            <div class="ulabel">Cutting</div>
+            <div class="utrack"><div class="ufill" id="uFillA" style="width:74%;background:#2F5AC7;"></div></div>
+            <div class="uval" id="uValA">74%</div>
+          </div>
+          <div class="util-row" id="uRowB">
+            <div class="ulabel">Coiling <span class="utag" id="uTagB"></span></div>
+            <div class="utrack"><div class="ufill" id="uFillB" style="width:78%;background:#2F5AC7;"></div></div>
+            <div class="uval" id="uValB">78%</div>
+          </div>
+          <div class="util-row">
+            <div class="ulabel">Heat Treat</div>
+            <div class="utrack"><div class="ufill" id="uFillC" style="width:71%;background:#2F5AC7;"></div></div>
+            <div class="uval" id="uValC">71%</div>
+          </div>
+          <div class="util-row" id="uRowD">
+            <div class="ulabel">Packing <span class="utag" id="uTagD"></span></div>
+            <div class="utrack"><div class="ufill" id="uFillD" style="width:68%;background:#2F5AC7;"></div></div>
+            <div class="uval" id="uValD">68%</div>
+          </div>
+        </div>
+
+        <button class="util-detail-btn" id="utilDetailBtn" onclick="toggleUtilDetail()">Lihat detail per shift &amp; dampak kualitas &rarr;</button>
+
+        <div class="util-detail" id="utilDetail">
+          <div class="util-detail-inner">
+            <table class="shift-table">
+              <thead><tr><th>Shift</th><th>Stasiun Coiling</th><th>Reject rate historis</th></tr></thead>
+              <tbody id="shiftTableBody">
+                <tr><td>Pagi (06:00\u201314:00)</td><td id="shPagi">76%</td><td id="rjPagi">0.8%</td></tr>
+                <tr><td>Siang (14:00\u201322:00)</td><td id="shSiang">81%</td><td id="rjSiang">1.0%</td></tr>
+                <tr><td>Malam (22:00\u201306:00)</td><td id="shMalam">77%</td><td id="rjMalam">0.9%</td></tr>
+              </tbody>
+            </table>
+
+            <div class="quality-alert hidden-state" id="qualityAlert" style="background:var(--danger-soft);border-color:rgba(229,99,107,0.35);color:#F5C7CA;">
+              <b>Dampak ke Quality (komponen OEE):</b> saat utilisasi stasiun bertahan di atas 90% dalam satu shift, data historis menunjukkan reject rate cenderung naik \u2014 kemungkinan akibat kecepatan kerja yang dipaksakan tanpa jeda. Shift Siang berisiko paling tinggi saat ini.
+            </div>
+
+            <div class="privacy-note">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:2px;"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span>Data ditampilkan agregat per shift, bukan per individu karyawan \u2014 sesuai batasan ruang lingkup governance quick win ini.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kpi-chips">
+        <span class="chip">OEE &uarr;</span>
+        <span class="chip">Downtime tak terduga &darr;</span>
+        <span class="chip">Utilisasi tenaga kerja &uarr;</span>
+      </div>
+    </div>
+
+    <!-- SPARE PART PANEL -->
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Spare Part Readiness</h3>
+        <span class="panel-tag gold">FORECAST</span>
+      </div>
+      <p class="panel-sub">Prediksi kebutuhan &amp; status stok part kritis</p>
+
+      <div class="part-list">
+        <div class="part-row">
+          <div class="pname"><div class="t1">Wire Guide Bushing</div><div class="t2" id="wireEta">Prediksi kebutuhan: &gt;30 hari</div></div>
+          <div class="part-stock"><div class="strack"><div class="sfill" id="wireFill" style="width:82%;background:#33B27A;"></div></div></div>
+          <div class="part-status ok" id="wireStatus">AMAN</div>
+        </div>
+        <div class="part-row">
+          <div class="pname"><div class="t1">Bearing 6205-ZZ</div><div class="t2">Prediksi kebutuhan: 18 hari</div></div>
+          <div class="part-stock"><div class="strack"><div class="sfill" style="width:56%;background:#33B27A;"></div></div></div>
+          <div class="part-status ok">AMAN</div>
+        </div>
+        <div class="part-row">
+          <div class="pname"><div class="t1">Drive Belt B-52</div><div class="t2">Prediksi kebutuhan: 25 hari</div></div>
+          <div class="part-stock"><div class="strack"><div class="sfill" style="width:64%;background:#33B27A;"></div></div></div>
+          <div class="part-status ok">AMAN</div>
+        </div>
+      </div>
+
+      <div class="alert-card hidden-state" id="partAlert" style="background:var(--gold-soft);border-color:rgba(210,162,39,0.35);color:#F5E7C4;">
+        <b>Rekomendasi reorder sekarang &mdash; Wire Guide Bushing.</b> Sinyal getaran mengindikasikan keausan dini. Prediksi kebutuhan dalam 4 hari, lead time pemasok 6 hari.
+      </div>
+
+      <div class="kpi-chips">
+        <span class="chip">Forecast accuracy &uarr;</span>
+        <span class="chip">Stockout rate &darr;</span>
+        <span class="chip">Inventory carrying cost &darr;</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NATURAL LANGUAGE ANALYTICS -->
+  <div class="nla-section">
+    <div class="nla-head">
+      <h3>Tanya AI Secara Otomatis</h3>
+      <p>Ajukan pertanyaan bahasa sehari-hari tentang kondisi mesin, OEE, atau kesiapan sparepart &mdash; jawaban ditarik langsung dari data di atas.</p>
+    </div>
+    <div class="nla-box">
+      <span class="nla-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </span>
+      <input id="nlaInput" type="text" placeholder="Contoh: &ldquo;Kenapa Stasiun Coiling kelebihan beban?&rdquo;" />
+      <button id="nlaAsk" onclick="askNLA()">Tanya AI</button>
+    </div>
+    <div class="nla-chips">
+      <div class="nla-chip" data-q="bottleneck">Kenapa Stasiun Coiling kelebihan beban?</div>
+      <div class="nla-chip" data-q="reject">Apa dampaknya ke tingkat reject produksi?</div>
+      <div class="nla-chip" data-q="part">Part apa yang perlu di-reorder sekarang?</div>
+      <div class="nla-chip" data-q="normal">Bagaimana kondisi mesin saat ini?</div>
+    </div>
+    <div id="nlaAnswer" class="nla-answer">
+      <strong>IndoOptima AI:</strong> <span id="nlaAnswerText"></span>
+    </div>
+  </div>
+
+  <footer class="note">Mockup interaktif &mdash; data simulasi untuk mendemonstrasikan konsep "satu sinyal condition monitoring, dua hasil". Bukan data produksi riil.</footer>
+
+</div>
+
+<script>
+  function toggleUtilDetail(){
+    const panel = document.getElementById('utilDetail');
+    const btn = document.getElementById('utilDetailBtn');
+    const open = panel.classList.toggle('open');
+    btn.textContent = open ? 'Sembunyikan detail per shift' : 'Lihat detail per shift & dampak kualitas \u2192';
+  }
+
+  const nlaAnswers = {
+    bottleneck: {
+      normal: 'Saat ini tidak ada bottleneck. Semua stasiun berada di rentang utilisasi normal (68\u201378%).',
+      anomaly: '<strong>Stasiun Coiling berada di 97% utilisasi</strong> karena sinyal getaran mesin CM-04 naik ke 7.8 mm/s \u2014 operator perlu melakukan pengecekan &amp; penyesuaian manual ekstra. Rekomendasi: realokasi 1 operator dari Stasiun Packing (saat ini hanya 52%).'
+    },
+    reject: {
+      normal: 'Reject rate seluruh shift stabil di kisaran 0.8\u20131.0% \u2014 dalam batas normal, tidak ada dampak kualitas yang perlu ditindaklanjuti.',
+      anomaly: '<strong>Reject rate Shift Siang naik ke 2.6%</strong> (dari 1.0% normal), bertepatan dengan utilisasi Stasiun Coiling yang mencapai 94% di shift tersebut. Data historis menunjukkan korelasi antara utilisasi &gt;90% dan naiknya cacat produksi.'
+    },
+    part: {
+      normal: 'Semua part kritis dalam status aman: Wire Guide Bushing, Bearing 6205-ZZ, dan Drive Belt B-52 diprediksi cukup untuk &gt;18 hari ke depan.',
+      anomaly: '<strong>Wire Guide Bushing perlu di-reorder sekarang.</strong> Sinyal getaran mengindikasikan keausan dini \u2014 prediksi kebutuhan dalam 4 hari, sementara lead time pemasok 6 hari. Reorder segera untuk menghindari stockout.'
+    },
+    normal: {
+      normal: 'Mesin CM-04 dalam kondisi normal \u2014 health score 92/100, seluruh sensor (getaran, suhu, arus) dalam rentang aman. OEE lini berada di 87%.',
+      anomaly: '<strong>Anomali sedang terdeteksi.</strong> Health score turun ke 58/100 \u2014 getaran, suhu bearing, dan arus motor di luar rentang normal. Sinyal ini sudah diteruskan ke panel OEE Productivity dan Spare Part Readiness.'
+    }
+  };
+
+  const nlaAnswerBox = document.getElementById('nlaAnswer');
+  const nlaAnswerText = document.getElementById('nlaAnswerText');
+  const nlaInput = document.getElementById('nlaInput');
+
+  function showNLAAnswer(key){
+    const state = anomaly ? 'anomaly' : 'normal';
+    const entry = nlaAnswers[key] || nlaAnswers.normal;
+    nlaAnswerText.innerHTML = entry[state];
+    nlaAnswerBox.classList.add('show');
+  }
+
+  document.querySelectorAll('.nla-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      nlaInput.value = chip.textContent;
+      showNLAAnswer(chip.dataset.q);
+    });
+  });
+
+  function askNLA(){
+    if(nlaInput.value.trim().length === 0) return;
+    showNLAAnswer('normal');
+  }
+  nlaInput?.addEventListener('keydown', (e) => { if(e.key === 'Enter') askNLA(); });
+
+  let anomaly = false;
+
+  function toggleAnomaly(){
+    anomaly = !anomaly;
+    document.getElementById('simToggle').classList.toggle('on', anomaly);
+
+    const statusText = document.getElementById('simStatusText');
+    const healthArc = document.getElementById('healthArc');
+    const healthNum = document.getElementById('healthNum');
+    const statusBox = document.getElementById('statusBox');
+    const statusTitle = document.getElementById('statusTitle');
+    const statusDesc = document.getElementById('statusDesc');
+
+    const stemLine = document.getElementById('stemLine');
+    const barLine = document.getElementById('barLine');
+    const leftLine = document.getElementById('leftLine');
+    const rightLine = document.getElementById('rightLine');
+    const leftArrow = document.getElementById('leftArrow');
+    const rightArrow = document.getElementById('rightArrow');
+    const leftDot = document.getElementById('leftDot');
+    const rightDot = document.getElementById('rightDot');
+
+    const oeeBig = document.getElementById('oeeBig');
+    const oeeDelta = document.getElementById('oeeDelta');
+    const availFill = document.getElementById('availFill');
+    const availVal = document.getElementById('availVal');
+    const oeeAlert = document.getElementById('oeeAlert');
+
+    const wireFill = document.getElementById('wireFill');
+    const wireStatus = document.getElementById('wireStatus');
+    const wireEta = document.getElementById('wireEta');
+    const partAlert = document.getElementById('partAlert');
+
+    if(anomaly){
+      statusText.textContent = 'ANOMALI TERDETEKSI';
+      statusText.className = 'sim-status bad';
+
+      // sensors
+      document.getElementById('sVib').textContent = '7.8';
+      document.getElementById('sVibBar').style.width = '86%';
+      document.getElementById('sVibBar').style.background = '#E5636B';
+      document.getElementById('sTemp').textContent = '71';
+      document.getElementById('sTempBar').style.width = '78%';
+      document.getElementById('sTempBar').style.background = '#E0A526';
+      document.getElementById('sCurr').textContent = '14.9';
+      document.getElementById('sCurrBar').style.width = '68%';
+      document.getElementById('sCurrBar').style.background = '#E0A526';
+
+      // health ring
+      healthArc.setAttribute('stroke-dashoffset', '190');
+      healthArc.setAttribute('stroke', '#E5636B');
+      healthNum.textContent = '58';
+      healthNum.style.color = '#E5636B';
+
+      statusBox.style.borderColor = 'rgba(229,99,107,0.4)';
+      statusBox.style.background = 'rgba(229,99,107,0.08)';
+      statusTitle.textContent = 'ANOMALI TERDETEKSI';
+      statusTitle.style.color = '#E5636B';
+      statusDesc.textContent = 'Pola getaran & suhu di luar batas normal. Sinyal ini diteruskan ke dua sistem sekaligus di bawah.';
+
+      // signal flow
+      [stemLine, barLine, leftLine, rightLine].forEach(l => { l.classList.add('active'); l.setAttribute('stroke', '#E5636B'); });
+      leftArrow.style.opacity = '1'; leftArrow.setAttribute('fill', '#E5636B');
+      rightArrow.style.opacity = '1'; rightArrow.setAttribute('fill', '#E5636B');
+      leftDot.classList.add('show'); rightDot.classList.add('show');
+
+      // OEE panel
+      oeeBig.textContent = '71%';
+      oeeBig.style.color = '#E5636B';
+      oeeDelta.innerHTML = '&#9660; berisiko turun';
+      oeeDelta.style.color = '#E5636B';
+      availFill.style.width = '64%';
+      availFill.style.background = '#E5636B';
+      availVal.textContent = '64%';
+      oeeAlert.classList.remove('hidden-state');
+
+      // Labour utilisation: Coiling overloaded, Packing flagged as reallocation source
+      document.getElementById('uFillB').style.width = '97%';
+      document.getElementById('uFillB').style.background = '#E5636B';
+      document.getElementById('uValB').textContent = '97%';
+      document.getElementById('uTagB').textContent = 'KELEBIHAN BEBAN';
+      document.getElementById('uTagB').style.display = 'inline-block';
+      document.getElementById('uTagB').style.background = 'var(--danger-soft)';
+      document.getElementById('uTagB').style.color = '#E5636B';
+
+      document.getElementById('uFillD').style.width = '52%';
+      document.getElementById('uFillD').style.background = '#E0A526';
+      document.getElementById('uValD').textContent = '52%';
+      document.getElementById('uTagD').textContent = 'KANDIDAT REALOKASI';
+      document.getElementById('uTagD').style.display = 'inline-block';
+      document.getElementById('uTagD').style.background = 'var(--amber-soft)';
+      document.getElementById('uTagD').style.color = '#E0A526';
+
+      document.getElementById('utilNote').textContent = 'Stasiun Coiling kelebihan beban';
+      document.getElementById('utilNote').style.color = '#E5636B';
+
+      // Quality component reacts to overload
+      document.getElementById('qualFill').style.width = '91%';
+      document.getElementById('qualFill').style.background = '#E0A526';
+      document.getElementById('qualVal').textContent = '91%';
+
+      // Shift-level detail + quality alert
+      document.getElementById('shSiang').textContent = '94%';
+      document.getElementById('rjSiang').textContent = '2.6%';
+      document.getElementById('qualityAlert').classList.remove('hidden-state');
+
+      // Spare part panel
+      wireFill.style.width = '31%';
+      wireFill.style.background = '#E5636B';
+      wireStatus.textContent = 'REORDER';
+      wireStatus.className = 'part-status watch';
+      wireEta.textContent = 'Prediksi kebutuhan: 4 hari';
+      partAlert.classList.remove('hidden-state');
+
+    } else {
+      statusText.textContent = 'NORMAL';
+      statusText.className = 'sim-status ok';
+
+      document.getElementById('sVib').textContent = '2.1';
+      document.getElementById('sVibBar').style.width = '28%';
+      document.getElementById('sVibBar').style.background = '#33B27A';
+      document.getElementById('sTemp').textContent = '54';
+      document.getElementById('sTempBar').style.width = '40%';
+      document.getElementById('sTempBar').style.background = '#33B27A';
+      document.getElementById('sCurr').textContent = '11.4';
+      document.getElementById('sCurrBar').style.width = '32%';
+      document.getElementById('sCurrBar').style.background = '#33B27A';
+
+      healthArc.setAttribute('stroke-dashoffset', '30');
+      healthArc.setAttribute('stroke', '#33B27A');
+      healthNum.textContent = '92';
+      healthNum.style.color = '#33B27A';
+
+      statusBox.style.borderColor = 'var(--border-soft)';
+      statusBox.style.background = 'rgba(255,255,255,0.02)';
+      statusTitle.textContent = 'KONDISI NORMAL';
+      statusTitle.style.color = '#33B27A';
+      statusDesc.textContent = 'Seluruh parameter dalam rentang aman. Tidak ada tindakan diperlukan.';
+
+      [stemLine, barLine, leftLine, rightLine].forEach(l => { l.classList.remove('active'); l.setAttribute('stroke', '#8FA0C2'); });
+      leftArrow.style.opacity = '0.35'; leftArrow.setAttribute('fill', '#8FA0C2');
+      rightArrow.style.opacity = '0.35'; rightArrow.setAttribute('fill', '#8FA0C2');
+      leftDot.classList.remove('show'); rightDot.classList.remove('show');
+
+      oeeBig.textContent = '87%';
+      oeeBig.style.color = '#EAF0FA';
+      oeeDelta.innerHTML = '&#9650; stabil';
+      oeeDelta.style.color = '#33B27A';
+      availFill.style.width = '91%';
+      availFill.style.background = '#2F5AC7';
+      availVal.textContent = '91%';
+      oeeAlert.classList.add('hidden-state');
+
+      document.getElementById('uFillB').style.width = '78%';
+      document.getElementById('uFillB').style.background = '#2F5AC7';
+      document.getElementById('uValB').textContent = '78%';
+      document.getElementById('uTagB').style.display = 'none';
+
+      document.getElementById('uFillD').style.width = '68%';
+      document.getElementById('uFillD').style.background = '#2F5AC7';
+      document.getElementById('uValD').textContent = '68%';
+      document.getElementById('uTagD').style.display = 'none';
+
+      document.getElementById('utilNote').textContent = 'Beban merata \u2014 tidak ada tindakan';
+      document.getElementById('utilNote').style.color = '#33B27A';
+
+      document.getElementById('qualFill').style.width = '97%';
+      document.getElementById('qualFill').style.background = '#2F5AC7';
+      document.getElementById('qualVal').textContent = '97%';
+
+      document.getElementById('shSiang').textContent = '81%';
+      document.getElementById('rjSiang').textContent = '1.0%';
+      document.getElementById('qualityAlert').classList.add('hidden-state');
+
+      wireFill.style.width = '82%';
+      wireFill.style.background = '#33B27A';
+      wireStatus.textContent = 'AMAN';
+      wireStatus.className = 'part-status ok';
+      wireEta.textContent = 'Prediksi kebutuhan: >30 hari';
+      partAlert.classList.add('hidden-state');
+    }
+  }
+</script>
+
+</body>
+</html>
