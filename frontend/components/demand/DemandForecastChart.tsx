@@ -36,11 +36,11 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
             <div className="flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-white/60" />
               <h3 className="text-white text-sm font-semibold">
-                Peramalan Konsumsi Suku Cadang
+                Peramalan Permintaan Produk (Demand Forecasting)
               </h3>
             </div>
             <p className="text-white/40 text-xs mt-1">
-              Estimasi kebutuhan suku cadang mesin 3 bulan ke depan berdasarkan pola konsumsi historis.
+              Data permintaan historis aktual 12 bulan dari database dan simulasi proyeksi kebutuhan 4 bulan ke depan.
             </p>
           </div>
 
@@ -49,16 +49,16 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
             <div className="relative self-start sm:self-auto">
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-2 px-3 py-2 bg-[#000711] border border-white/10 hover:border-white/20 text-xs text-white transition-colors min-w-[260px] justify-between"
+                className="flex items-center gap-2 px-3 py-2 bg-[#000711] border border-white/10 hover:border-white/20 text-xs text-white transition-colors min-w-[280px] justify-between"
               >
                 <span className="truncate text-left">
-                  {activeForecast?.part_name || "Pilih Suku Cadang"}
+                  {activeForecast?.part_name || "Pilih Produk"}
                 </span>
                 <ChevronDown className={`w-3.5 h-3.5 text-white/40 shrink-0 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute right-0 top-full mt-1 w-[320px] bg-[#000711] border border-white/10 shadow-2xl z-50 max-h-[280px] overflow-y-auto">
+                <div className="absolute right-0 top-full mt-1 w-[340px] bg-[#000711] border border-white/10 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
                   {forecasts.map((f) => (
                     <button
                       key={f.part_id}
@@ -86,7 +86,7 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
         {/* Chart Container / Fallback */}
         {chartData.length === 0 ? (
           <div className="py-20 text-center text-white/40 text-xs font-mono">
-            Belum ada data peramalan konsumsi suku cadang
+            Belum ada data peramalan permintaan produk
           </div>
         ) : (
           <div className="h-[300px] w-full my-2">
@@ -127,13 +127,13 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
                         </p>
                         {d.actual !== undefined && d.actual !== null && (
                           <div className="flex justify-between py-0.5">
-                            <span className="text-white/70">Konsumsi Aktual:</span>
+                            <span className="text-white/70">Permintaan Aktual:</span>
                             <span className="font-bold text-white font-mono">{d.actual.toLocaleString()} unit</span>
                           </div>
                         )}
                         {d.forecast !== undefined && d.forecast !== null && (
                           <div className="flex justify-between py-0.5">
-                            <span className="text-[#0555E0]">Estimasi Kebutuhan:</span>
+                            <span className="text-[#0555E0]">Estimasi Permintaan:</span>
                             <span className="font-bold text-[#0555E0] font-mono">{d.forecast.toLocaleString()} unit</span>
                           </div>
                         )}
@@ -155,11 +155,11 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
                   fill="url(#uncertaintyGradient)"
                 />
 
-                {/* Historical Actual Consumption Line */}
+                {/* Historical Actual Demand Line */}
                 <Line
                   type="monotone"
                   dataKey="actual"
-                  name="Konsumsi Aktual"
+                  name="Permintaan Aktual"
                   stroke="#ffffff"
                   strokeWidth={2}
                   dot={{ r: 3, fill: "#ffffff" }}
@@ -171,7 +171,7 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
                 <Line
                   type="monotone"
                   dataKey="forecast"
-                  name="Estimasi Kebutuhan"
+                  name="Estimasi Permintaan"
                   stroke="#0555E0"
                   strokeWidth={2.5}
                   strokeDasharray="4 4"
@@ -190,11 +190,11 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-white" />
-            <span className="text-white/70">Konsumsi Aktual (Historis)</span>
+            <span className="text-white/70">Permintaan Aktual (12 Bulan)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-[#0555E0] border-t border-dashed border-[#0555E0]" />
-            <span className="text-white/60">Estimasi Kebutuhan (Proyeksi 3 Bulan)</span>
+            <span className="text-white/60">Estimasi Permintaan (Proyeksi 4 Bulan)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2 bg-[#0555E0]/20 border border-[#0555E0]/40" />
