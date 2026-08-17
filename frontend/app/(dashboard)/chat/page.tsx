@@ -1,6 +1,11 @@
-﻿// AI Assistant Chatbot — /chat
-// Architecture: RAG + Text-to-SQL Agent via LangGraph/LangChain
-// Features: Multi-session, streaming response, suggested questions
+import { Metadata } from "next"
+import { ChatPanel } from "@/components/chat/ChatPanel"
+
+export const metadata: Metadata = {
+  title: "AI Analytics Copilot | SCIC Indoprima",
+  description: "Asisten analitik cerdas manufaktur dan rantai pasok berbasis MotherDuck NL2SQL dan LangGraph multi-tier agent.",
+}
+
 export default function ChatPage() {
-  return <main>AI Assistant Chatbot</main>
+  return <ChatPanel />
 }

@@ -236,7 +236,7 @@ export function PlantOeeView({ lines, pareto, shifts }: PlantOeeViewProps) {
           <div>
             <div className="flex items-center justify-between mb-1">
               <h3 className="text-white text-sm font-semibold">
-                6 Big Losses & Downtime Pareto (80:20 Rule)
+                Big Losses & Downtime
               </h3>
               <span className="text-red-400 text-xs font-semibold font-mono">
                 Total: {paretoLosses.reduce((acc, curr) => acc + curr.minutes, 0).toLocaleString()} Min

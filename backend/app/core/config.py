@@ -52,7 +52,13 @@ class Settings(BaseSettings):
 
     # Groq
     GROQ_API_KEY: str = ""
-    GROQ_MODEL: str = "llama-3.3-70b-versatile"
+    GROQ_MODEL: str = "openai/gpt-oss-120b"
+
+    # AI Agent Runtime Controls
+    SQL_QUERY_TIMEOUT_SECONDS: int = 8
+    SQL_MAX_ROWS_LIMIT: int = 1000
+    AGENT_MAX_SQL_RETRIES: int = 3
+    AGENT_MAX_EXPERT_RETRIES: int = 2
 
     # LangSmith (optional — AI tracing)
     LANGCHAIN_TRACING_V2: bool = False
