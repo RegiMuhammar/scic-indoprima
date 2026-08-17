@@ -15,6 +15,22 @@ export function StockBalancingMatrix({ items = [] }: StockBalancingMatrixProps) 
     setTransfersApproved((prev) => [...prev, skuId]);
   };
 
+  const totalSavingsFormatted = React.useMemo(() => {
+    let total = 0;
+    for (const item of items) {
+      const raw = item.estimated_savings_idr?.replace(/[^0-9]/g, "");
+      if (raw) total += parseInt(raw, 10);
+    }
+    if (total === 0) return "-";
+    if (total >= 1_000_000_000) {
+      return `Rp ${(total / 1_000_000_000).toLocaleString("id-ID", { maximumFractionDigits: 1 })} Miliar`;
+    }
+    if (total >= 1_000_000) {
+      return `Rp ${(total / 1_000_000).toLocaleString("id-ID", { maximumFractionDigits: 1 })} Juta`;
+    }
+    return `Rp ${total.toLocaleString("id-ID")}`;
+  }, [items]);
+
   return (
     <div className="bg-[#000000] border border-white/10 p-6 font-poppins rounded-none flex flex-col justify-between">
       <div>
@@ -31,14 +47,14 @@ export function StockBalancingMatrix({ items = [] }: StockBalancingMatrixProps) 
               </span>
             </div>
             <p className="text-white/40 text-xs mt-1">
-              Rekomendasi relokasi stok dari gudang surplus (Karawang) ke gudang kritis (Surabaya) untuk menghemat pengadaan baru.
+              Rekomendasi relokasi stok dari gudang surplus ke gudang kritis untuk menghemat pengadaan baru.
             </p>
           </div>
 
           <div className="text-right">
             <span className="text-xs text-white/40 block">Total Potensi Efisiensi:</span>
             <span className="text-sm font-bold font-mono text-[#0555E0]">
-              Rp 23,3 Miliar
+              {totalSavingsFormatted}
             </span>
           </div>
         </div>

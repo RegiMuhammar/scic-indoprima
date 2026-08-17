@@ -111,13 +111,11 @@ export function BomCompatibilityViewer({ items = [] }: BomCompatibilityViewerPro
                     </div>
                   </div>
 
-                  {/* Jadwal Servis Berikutnya */}
+                  {/* Siklus Pergantian (replacement_freq_days from DB) */}
                   <div className="flex items-center justify-between pt-1.5 border-t border-white/5">
-                    <span className="text-white/40 text-[10px] uppercase tracking-wider">Servis Berikutnya</span>
-                    <span className={`font-mono font-semibold text-xs ${
-                      isUrgent ? "text-amber-400" : "text-white/70"
-                    }`}>
-                      {bom.next_maintenance_days} hari lagi
+                    <span className="text-white/40 text-[10px] uppercase tracking-wider">Siklus Pergantian</span>
+                    <span className="font-mono text-white/80 text-xs">
+                      Setiap {bom.replacement_freq_days} hari
                     </span>
                   </div>
                 </div>

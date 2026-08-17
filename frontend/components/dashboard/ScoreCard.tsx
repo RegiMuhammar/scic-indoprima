@@ -15,8 +15,8 @@ export interface ScoreCardProps {
   title: string;
   value: string;
   target?: string;
-  change: number;
-  changePeriod?: string;
+  change?: number | null;
+  changePeriod?: string | null;
   isPositiveGood?: boolean;
   status?: "healthy" | "warning" | "critical" | "good";
   badge?: string;
@@ -38,7 +38,8 @@ export function ScoreCard({
 }: ScoreCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const isUp = change >= 0;
+  const hasChange = change !== null && change !== undefined;
+  const isUp = hasChange ? change >= 0 : true;
   const isGood = isPositiveGood ? isUp : !isUp;
 
   const trendColor = isGood ? "text-emerald-400" : "text-red-400";
@@ -85,13 +86,19 @@ export function ScoreCard({
 
         {/* 3. Footer: Trend + Detail Text Button */}
         <div className="flex items-center justify-between text-xs font-poppins pt-3 border-t border-white/5">
-          <div className="flex items-center gap-1.5">
-            <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />
-            <span className={`${trendColor} font-semibold`}>
-              {isUp ? "+" : ""}{change}%
-            </span>
-            <span className="text-white/40 text-[11px]">{changePeriod}</span>
-          </div>
+          {hasChange ? (
+            <div className="flex items-center gap-1.5">
+              <TrendIcon className={`w-3.5 h-3.5 ${trendColor}`} />
+              <span className={`${trendColor} font-semibold`}>
+                {isUp ? "+" : ""}{change}%
+              </span>
+              {changePeriod && <span className="text-white/40 text-[11px]">{changePeriod}</span>}
+            </div>
+          ) : (
+            <div className="text-white/30 text-[11px] font-mono">
+              Live Database
+            </div>
+          )}
 
           <button
             onClick={() => setIsModalOpen(true)}

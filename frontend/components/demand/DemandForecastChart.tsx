@@ -72,7 +72,8 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
                     >
                       <div className="font-medium text-[11px]">{f.part_name}</div>
                       <div className="text-[10px] text-white/40 font-mono mt-0.5">
-                        {f.category} &bull; Akurasi: {f.mape_accuracy}%
+                        {f.category}
+                        {f.mape_accuracy != null && ` • Akurasi: ${f.mape_accuracy}%`}
                       </div>
                     </button>
                   ))}
@@ -189,18 +190,18 @@ export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-white" />
-            <span className="text-white/70">Konsumsi Aktual (12 Bulan)</span>
+            <span className="text-white/70">Konsumsi Aktual (Historis)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-[#0555E0] border-t border-dashed border-[#0555E0]" />
-            <span className="text-white/60">Estimasi Kebutuhan (3 Bulan)</span>
+            <span className="text-white/60">Estimasi Kebutuhan (Proyeksi 3 Bulan)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2 bg-[#0555E0]/20 border border-[#0555E0]/40" />
             <span className="text-white/50">Rentang Keyakinan 90%</span>
           </div>
         </div>
-        {activeForecast && (
+        {activeForecast?.mape_accuracy != null && (
           <span>Akurasi: <b className="text-emerald-400 font-mono">{activeForecast.mape_accuracy}%</b></span>
         )}
       </div>
