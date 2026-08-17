@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   ComposedChart,
   Area,
@@ -9,67 +9,89 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  ReferenceLine,
 } from "recharts";
-import { TrendingUp, Sparkles } from "lucide-react";
-import { DemandForecastItem } from "@/lib/api/demand";
+import { TrendingUp, ChevronDown } from "lucide-react";
+import { SparePartForecastItem, ForecastDataPoint } from "@/lib/api/demand";
 
 interface DemandForecastChartProps {
-  data?: DemandForecastItem[];
+  forecasts?: SparePartForecastItem[];
 }
 
-export function DemandForecastChart({ data = [] }: DemandForecastChartProps) {
-  const [horizon, setHorizon] = useState<"3M" | "6M" | "12M">("12M");
+export function DemandForecastChart({ forecasts = [] }: DemandForecastChartProps) {
+  const [selectedPartId, setSelectedPartId] = useState<string>("ALL");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const filteredData = horizon === "3M"
-    ? data.slice(-6)
-    : horizon === "6M"
-    ? data.slice(-9)
-    : data;
+  const activeForecast = useMemo(() => {
+    return forecasts.find((f) => f.part_id === selectedPartId) || forecasts[0] || null;
+  }, [forecasts, selectedPartId]);
+
+  const chartData = activeForecast?.series || [];
 
   return (
     <div className="bg-[#000000] border border-white/10 p-6 font-poppins rounded-none flex flex-col justify-between h-full">
       <div>
-        {/* Header & Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+        {/* Header & Spare Part Selector */}
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-[#0555E0]" />
+              <TrendingUp className="w-4 h-4 text-white/60" />
               <h3 className="text-white text-sm font-semibold">
-                Demand Forecasting & 90% Uncertainty Band
+                Peramalan Konsumsi Suku Cadang
               </h3>
             </div>
             <p className="text-white/40 text-xs mt-1">
-              Time-series projection (StatsForecast) dengan rentang keyakinan probabilistik (supply_chain.demand_history).
+              Estimasi kebutuhan suku cadang mesin 3 bulan ke depan berdasarkan pola konsumsi historis.
             </p>
           </div>
 
-          {/* Horizon Switcher */}
-          <div className="flex items-center gap-1 bg-[#000711] border border-white/10 p-0.5 self-start sm:self-auto">
-            {(["3M", "6M", "12M"] as const).map((h) => (
+          {/* Spare Part Dropdown Selector */}
+          {forecasts.length > 0 && (
+            <div className="relative self-start sm:self-auto">
               <button
-                key={h}
-                onClick={() => setHorizon(h)}
-                className={`px-2.5 py-1 text-[11px] font-medium transition-colors ${
-                  horizon === h ? "bg-[#0555E0] text-white font-semibold" : "text-white/40 hover:text-white"
-                }`}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-2 px-3 py-2 bg-[#000711] border border-white/10 hover:border-white/20 text-xs text-white transition-colors min-w-[260px] justify-between"
               >
-                {h} View
+                <span className="truncate text-left">
+                  {activeForecast?.part_name || "Pilih Suku Cadang"}
+                </span>
+                <ChevronDown className={`w-3.5 h-3.5 text-white/40 shrink-0 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-            ))}
-          </div>
+
+              {isDropdownOpen && (
+                <div className="absolute right-0 top-full mt-1 w-[320px] bg-[#000711] border border-white/10 shadow-2xl z-50 max-h-[280px] overflow-y-auto">
+                  {forecasts.map((f) => (
+                    <button
+                      key={f.part_id}
+                      onClick={() => {
+                        setSelectedPartId(f.part_id);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full text-left px-3 py-2.5 text-xs hover:bg-white/5 transition-colors border-b border-white/5 last:border-b-0 ${
+                        selectedPartId === f.part_id ? "bg-[#0555E0]/10 text-white" : "text-white/70"
+                      }`}
+                    >
+                      <div className="font-medium text-[11px]">{f.part_name}</div>
+                      <div className="text-[10px] text-white/40 font-mono mt-0.5">
+                        {f.category} &bull; Akurasi: {f.mape_accuracy}%
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Chart Container / Fallback */}
-        {filteredData.length === 0 ? (
+        {chartData.length === 0 ? (
           <div className="py-20 text-center text-white/40 text-xs font-mono">
-            Belum ada data histori permintaan dari MotherDuck
+            Belum ada data peramalan konsumsi suku cadang
           </div>
         ) : (
           <div className="h-[300px] w-full my-2">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart
-                data={filteredData}
+                data={chartData}
                 margin={{ top: 15, right: 15, left: -15, bottom: 10 }}
               >
                 <defs>
@@ -88,12 +110,15 @@ export function DemandForecastChart({ data = [] }: DemandForecastChartProps) {
                   tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
                   axisLine={false}
                   tickLine={false}
-                  tickFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
+                  tickFormatter={(v: number) => {
+                    if (v >= 1000) return `${(v / 1000).toFixed(1)}k`;
+                    return `${v}`;
+                  }}
                 />
                 <Tooltip
                   content={({ active, payload, label }) => {
                     if (!active || !payload?.length) return null;
-                    const d = payload[0].payload as DemandForecastItem;
+                    const d = payload[0].payload as ForecastDataPoint;
                     return (
                       <div className="bg-[#000711] border border-white/20 p-3 text-xs text-white shadow-2xl rounded-none min-w-[200px]">
                         <p className="font-mono font-medium text-white/40 text-[11px] border-b border-white/10 pb-1 mb-1.5">
@@ -101,17 +126,17 @@ export function DemandForecastChart({ data = [] }: DemandForecastChartProps) {
                         </p>
                         {d.actual !== undefined && d.actual !== null && (
                           <div className="flex justify-between py-0.5">
-                            <span className="text-white/70">Permintaan Aktual:</span>
+                            <span className="text-white/70">Konsumsi Aktual:</span>
                             <span className="font-bold text-white font-mono">{d.actual.toLocaleString()} unit</span>
                           </div>
                         )}
                         {d.forecast !== undefined && d.forecast !== null && (
                           <div className="flex justify-between py-0.5">
-                            <span className="text-[#0555E0]">AI Forecast:</span>
+                            <span className="text-[#0555E0]">Estimasi Kebutuhan:</span>
                             <span className="font-bold text-[#0555E0] font-mono">{d.forecast.toLocaleString()} unit</span>
                           </div>
                         )}
-                        {d.upper_bound && d.lower_bound && (
+                        {d.upper_bound && d.lower_bound && d.is_projected && (
                           <div className="mt-1 pt-1 border-t border-white/10 text-[10px] text-white/50 font-mono">
                             <span>Rentang 90%: {d.lower_bound.toLocaleString()} &ndash; {d.upper_bound.toLocaleString()} unit</span>
                           </div>
@@ -129,27 +154,29 @@ export function DemandForecastChart({ data = [] }: DemandForecastChartProps) {
                   fill="url(#uncertaintyGradient)"
                 />
 
-                {/* Historical Actual Demand Line */}
+                {/* Historical Actual Consumption Line */}
                 <Line
                   type="monotone"
                   dataKey="actual"
-                  name="Actual Demand"
+                  name="Konsumsi Aktual"
                   stroke="#ffffff"
                   strokeWidth={2}
                   dot={{ r: 3, fill: "#ffffff" }}
                   activeDot={{ r: 5 }}
+                  connectNulls={false}
                 />
 
                 {/* AI Forecast Projected Line */}
                 <Line
                   type="monotone"
                   dataKey="forecast"
-                  name="AI Forecast"
+                  name="Estimasi Kebutuhan"
                   stroke="#0555E0"
                   strokeWidth={2.5}
                   strokeDasharray="4 4"
                   dot={{ r: 4, fill: "#0555E0", stroke: "#ffffff", strokeWidth: 1.5 }}
                   activeDot={{ r: 6 }}
+                  connectNulls={false}
                 />
               </ComposedChart>
             </ResponsiveContainer>
@@ -162,18 +189,20 @@ export function DemandForecastChart({ data = [] }: DemandForecastChartProps) {
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-white" />
-            <span className="text-white/70">Permintaan Aktual</span>
+            <span className="text-white/70">Konsumsi Aktual (12 Bulan)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-0.5 bg-[#0555E0] border-t border-dashed border-[#0555E0]" />
-            <span className="text-[#0555E0] font-medium">AI Forecast (3 Bulan)</span>
+            <span className="text-white/60">Estimasi Kebutuhan (3 Bulan)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2 bg-[#0555E0]/20 border border-[#0555E0]/40" />
-            <span className="text-white/50">90% Uncertainty Band</span>
+            <span className="text-white/50">Rentang Keyakinan 90%</span>
           </div>
         </div>
-        <span>MAPE Accuracy: <b className="text-emerald-400 font-mono">92.4%</b></span>
+        {activeForecast && (
+          <span>Akurasi: <b className="text-emerald-400 font-mono">{activeForecast.mape_accuracy}%</b></span>
+        )}
       </div>
     </div>
   );

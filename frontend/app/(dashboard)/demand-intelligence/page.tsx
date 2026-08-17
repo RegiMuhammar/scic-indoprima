@@ -165,7 +165,7 @@ export default function DemandIntelligencePage() {
           
           {/* Demand Forecast Chart with 90% Uncertainty Band */}
           <div className="w-full">
-            <DemandForecastChart data={data?.demand_forecast} />
+            <DemandForecastChart forecasts={data?.spare_part_forecasts} />
           </div>
 
           {/* Multi-Warehouse Stock Balancing Matrix */}

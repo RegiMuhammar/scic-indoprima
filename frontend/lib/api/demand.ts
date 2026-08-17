@@ -44,18 +44,31 @@ export interface BomCompatibilityItem {
   part_category: string;
   machine_id: string;
   machine_name: string;
+  machine_category: string;
   line_id: string;
   qty_required: number;
+  available_stock: number;
+  is_stock_ready: boolean;
   replacement_freq_days: number;
+  next_maintenance_days: number;
 }
 
-export interface DemandForecastItem {
+export interface ForecastDataPoint {
   period: string;
   actual?: number | null;
   forecast?: number | null;
   upper_bound?: number | null;
   lower_bound?: number | null;
   is_projected: boolean;
+}
+
+export interface SparePartForecastItem {
+  part_id: string;
+  part_name: string;
+  category: string;
+  unit: string;
+  mape_accuracy: number;
+  series: ForecastDataPoint[];
 }
 
 export interface StockBalancingItem {
@@ -80,24 +93,8 @@ export interface DemandSummaryResponse {
   };
   spare_parts: SparePartItem[];
   bom_compatibility: BomCompatibilityItem[];
-  demand_forecast: DemandForecastItem[];
+  spare_part_forecasts: SparePartForecastItem[];
   stock_balancing: StockBalancingItem[];
-}
-
-export interface ScenarioResult {
-  demand_surge_pct: number;
-  lead_time_delay_days: number;
-  additional_buffer_cost_idr: string;
-  impacted_parts_count: number;
-  items: Array<{
-    part_id: string;
-    part_name: string;
-    base_rop: number;
-    new_rop: number;
-    current_stock: number;
-    additional_required: number;
-    is_risk_triggered: boolean;
-  }>;
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -116,30 +113,6 @@ export async function fetchDemandSummary(): Promise<DemandSummaryResponse | null
     return await res.json();
   } catch (error) {
     console.error("Error fetching demand summary:", error);
-    return null;
-  }
-}
-
-export async function simulateScenario(
-  demandSurgePct: number,
-  leadTimeDelayDays: number
-): Promise<ScenarioResult | null> {
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/v1/demand/scenario`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        demand_surge_pct: demandSurgePct,
-        lead_time_delay_days: leadTimeDelayDays,
-      }),
-    });
-    if (!res.ok) {
-      console.error(`Failed to run scenario: ${res.statusText}`);
-      return null;
-    }
-    return await res.json();
-  } catch (error) {
-    console.error("Error running scenario simulation:", error);
     return null;
   }
 }
