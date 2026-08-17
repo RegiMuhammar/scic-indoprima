@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Cpu, Layers, ArrowRight, ShieldCheck } from "lucide-react";
+import { Cpu } from "lucide-react";
 import { BomCompatibilityItem } from "@/lib/api/demand";
 
 interface BomCompatibilityViewerProps {
@@ -25,14 +25,14 @@ export function BomCompatibilityViewer({ items = [] }: BomCompatibilityViewerPro
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-white/60" />
             <h3 className="text-white text-sm font-semibold">
-              BOM Machine Compatibility Explorer
+              Kesesuaian Suku Cadang Mesin (BOM Compatibility)
             </h3>
             <span className="text-xs text-white/40 font-mono">
-              ({items.length} Mappings)
+              ({items.length} Pemetaan)
             </span>
           </div>
           <p className="text-white/40 text-xs mt-1">
-            Pemetaan kecocokan suku cadang terhadap aset mesin & frekuensi penggantian (dim_bom_compatibility).
+            Daftar suku cadang yang terpasang pada masing-masing mesin dan estimasi siklus pergantian.
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export function BomCompatibilityViewer({ items = [] }: BomCompatibilityViewerPro
               onClick={() => setSelectedLine(lineId)}
               className={`px-3 py-1 text-xs transition-colors ${
                 selectedLine === lineId
-                  ? "bg-[#0555E0] text-white font-medium shadow-sm"
+                  ? "bg-[#0555E0] text-white font-medium"
                   : "text-white/40 hover:text-white hover:bg-white/5"
               }`}
             >
@@ -54,9 +54,9 @@ export function BomCompatibilityViewer({ items = [] }: BomCompatibilityViewerPro
         </div>
       </div>
 
-      {/* Grid Cards / Fallback */}
+      {/* Grid Cards — Minimalist 4 Key Information Points */}
       {filteredItems.length === 0 ? (
-        <div className="py-16 text-center text-white/40 text-xs font-mono">
+        <div className="py-12 text-center text-white/40 text-xs font-mono">
           Belum ada pemetaan BOM compatibility dari MotherDuck
         </div>
       ) : (
@@ -64,49 +64,41 @@ export function BomCompatibilityViewer({ items = [] }: BomCompatibilityViewerPro
           {filteredItems.map((bom, index) => (
             <div
               key={`${bom.bom_id}-${index}`}
-              className="p-4 bg-[#000711] border border-white/10 hover:border-white/20 transition-colors flex flex-col justify-between"
+              className="p-4 bg-[#000711] border border-white/10 hover:border-white/20 transition-colors"
             >
-              <div>
-                {/* Line & Machine Header */}
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 bg-white/5 text-white/60 border border-white/10">
-                    {bom.line_id}
-                  </span>
-                  <span className="text-[11px] font-mono text-white/40">
-                    {bom.machine_id}
-                  </span>
-                </div>
-
-                <h4 className="text-white text-xs font-semibold mb-1">
-                  {bom.machine_name}
-                </h4>
-
-                {/* Compatibility Link Arrow */}
-                <div className="my-2.5 p-2 bg-white/[0.02] border border-white/5 flex items-center justify-between">
-                  <div className="min-w-0 flex-1">
-                    <span className="text-[10px] text-white/40 font-mono block">PART INSTALLED</span>
-                    <span className="text-xs text-[#0555E0] font-medium truncate block">
-                      {bom.part_name}
-                    </span>
-                    <span className="text-[10px] text-white/40 font-mono">
-                      {bom.part_id} &bull; {bom.part_category}
-                    </span>
-                  </div>
-                  <div className="text-right pl-2 shrink-0">
-                    <span className="text-xs font-bold font-mono text-white block">
-                      {bom.qty_required} pcs
-                    </span>
-                    <span className="text-[10px] text-white/40">per mesin</span>
-                  </div>
-                </div>
+              {/* 1. Mesin & Lini Produksi */}
+              <div className="flex items-center justify-between text-[11px] text-white/40 font-mono mb-1">
+                <span>{bom.line_id}</span>
+                <span>{bom.machine_id}</span>
               </div>
+              <h4 className="text-white text-xs font-semibold mb-3">
+                {bom.machine_name}
+              </h4>
 
-              {/* Replacement Cycle Footer */}
-              <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[10px] text-white/40 font-mono">
-                <span>Siklus Ganti: <b className="text-white">{bom.replacement_freq_days} Hari</b></span>
-                <span className="text-emerald-400 flex items-center gap-1">
-                  <ShieldCheck className="w-3 h-3" /> Compatible
-                </span>
+              {/* 2. Suku Cadang Terpasang */}
+              <div className="space-y-1.5 text-xs border-t border-white/5 pt-2.5">
+                <div className="flex justify-between items-start gap-2">
+                  <span className="text-white/50 text-[11px]">Suku Cadang:</span>
+                  <span className="text-white font-medium text-right text-[11px]">
+                    {bom.part_name}
+                  </span>
+                </div>
+
+                {/* 3. Kebutuhan Unit */}
+                <div className="flex justify-between items-center">
+                  <span className="text-white/50 text-[11px]">Kebutuhan:</span>
+                  <span className="text-white font-mono font-semibold text-[11px]">
+                    {bom.qty_required} unit / mesin
+                  </span>
+                </div>
+
+                {/* 4. Siklus Penggantian */}
+                <div className="flex justify-between items-center">
+                  <span className="text-white/50 text-[11px]">Siklus Ganti:</span>
+                  <span className="text-white/80 font-mono text-[11px]">
+                    Setiap {bom.replacement_freq_days} hari
+                  </span>
+                </div>
               </div>
             </div>
           ))}
