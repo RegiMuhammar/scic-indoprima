@@ -45,7 +45,16 @@ class ExplainabilityPayload(BaseModel):
 # ── 2. LLM Structured Outputs ───────────────────────────────────────────────
 
 class RouterPlanOutput(BaseModel):
-    intent: Literal["ANALYTICS_QUERY", "SOP_KNOWLEDGE", "CROSS_DOMAIN_EXECUTIVE", "CHIT_CHAT", "UNSAFE"] = Field(
+    intent: Literal[
+        "ANALYTICS_QUERY",
+        "FOLLOW_UP_INTERPRETATION",
+        "CLARIFICATION_NEEDED",
+        "OUT_OF_SCOPE",
+        "SOP_KNOWLEDGE",
+        "CROSS_DOMAIN_EXECUTIVE",
+        "CHIT_CHAT",
+        "UNSAFE"
+    ] = Field(
         description="Classification of user intent"
     )
     selected_domain: Literal[
@@ -56,6 +65,14 @@ class RouterPlanOutput(BaseModel):
         "executive_cross_domain",
         "general"
     ] = Field(description="Target business domain for schema scoping")
+    normalized_query: Optional[str] = Field(
+        default=None,
+        description="Self-contained disambiguated business query standardizing user terms and resolving conversation context"
+    )
+    clarification_prompt: Optional[str] = Field(
+        default=None,
+        description="Polite clarifying questions / menu options if intent is CLARIFICATION_NEEDED"
+    )
     reasoning: str = Field(description="Brief explanation of routing decision")
     target_tables_hint: List[str] = Field(default_factory=list, description="Initial list of tables likely needed")
 

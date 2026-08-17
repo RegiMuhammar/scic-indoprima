@@ -26,7 +26,33 @@ class ChatService:
         - data: {"type": "complete", "payload": {...}}
         - data: {"type": "error", "message": "..."}
         """
-        # 1. Save User Message to Supabase
+        # 1. Fetch previous messages for Augmented Memory Context
+        augmented_history_lines = []
+        last_executed_sql = None
+        try:
+            prev_messages = chat_repository.get_messages(session_id)
+            # Take up to last 6 messages
+            recent_prev = prev_messages[-6:] if len(prev_messages) > 6 else prev_messages
+            for m in recent_prev:
+                role = m.get("role", "user").upper()
+                content = str(m.get("content", "")).strip()
+                # Clean summary format
+                short_content = (content[:250] + "...") if len(content) > 250 else content
+                line = f"[{role}]: {short_content}"
+                if m.get("sql_query"):
+                    last_executed_sql = m.get("sql_query")
+                    line += f"\n  [Executed SQL]: {m.get('sql_query')}"
+                if m.get("explainability") and isinstance(m.get("explainability"), dict):
+                    kpi = m["explainability"].get("primary_kpi")
+                    if kpi:
+                        line += f"\n  [Primary KPI]: {kpi}"
+                augmented_history_lines.append(line)
+        except Exception as e:
+            print(f"Warning: Failed to fetch previous message history: {e}")
+
+        augmented_history_str = "\n".join(augmented_history_lines) if augmented_history_lines else "Tidak ada riwayat percakapan sebelumnya."
+
+        # 2. Save User Message to Supabase
         try:
             chat_repository.create_message(
                 session_id=session_id,
@@ -46,13 +72,15 @@ class ChatService:
             "messages": [HumanMessage(content=user_prompt)],
             "session_id": session_id,
             "user_query": user_prompt,
+            "augmented_history": augmented_history_str,
+            "last_executed_sql": last_executed_sql,
             "selected_domain": domain_override or "general",
             "sql_retry_count": 0,
             "expert_retry_count": 0,
             "action_steps_trace": []
         }
 
-        # 2. Yield initial start event
+        # 3. Yield initial start event
         yield f"data: {json.dumps({'type': 'step', 'content': '-> Memulai analisis SCIC AI Copilot...'}, default=str)}\n\n"
         await asyncio.sleep(0.05)
 
